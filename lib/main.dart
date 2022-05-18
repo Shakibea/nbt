@@ -5,6 +5,7 @@ import './providers/transactions.dart';
 import './screens/po_list_screen.dart';
 import './screens/new_orders_screen.dart';
 import './screens/main_dashboard_screen.dart';
+import './screens/old_orders_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         routes: {
           NewOrdersScreen.routeName: (_) => NewOrdersScreen(),
           POListScreen.routeName: (_) => POListScreen(),
+          OldOrdersScreen.routeName: (_) => OldOrdersScreen(),
         },
       ),
     );

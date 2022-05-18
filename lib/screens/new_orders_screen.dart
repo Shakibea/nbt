@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nbt/widgets/app_bar_functions.dart';
 
 class NewOrdersScreen extends StatelessWidget {
   const NewOrdersScreen({Key? key}) : super(key: key);
@@ -8,9 +9,7 @@ class NewOrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('New Orders'),
-      ),
+      appBar: appBarForNewOrder('CREATE NEW ORDER'),
     );
   }
 }

@@ -47,7 +47,7 @@ class MainGridDashboard extends StatelessWidget {
       subtitle: "",
       event: "2 Items",
       // img: "lib/assets/accounts_icon.png",
-      img: "lib/assets/returns_icon.png",
+      img: "lib/assets/notices_icon.png",
       color: 0xff89BA2B,
     ),
     DashboardItems(
