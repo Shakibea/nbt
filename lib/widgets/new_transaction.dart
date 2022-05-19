@@ -90,13 +90,6 @@ class _NewTransactionState extends State<NewTransaction> {
                             : DateFormat.yMd().format(_selectedDate),
                         style: Theme.of(context).textTheme.headline6),
                   ),
-
-                  /* TextButton(
-                    onPressed: _presentSelectDate,
-                    style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor),
-                    child: Text('Add Expense'),
-                  ), */
                   AdaptiveTextButton('Choose any date', _presentSelectDate),
                 ],
               ),

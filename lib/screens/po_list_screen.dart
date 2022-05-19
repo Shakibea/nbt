@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/new_orders_screen.dart';
 import '../screens/old_orders_screen.dart';
 import '../widgets/new_transaction.dart';
 import '../widgets/po_list_item.dart';
@@ -43,7 +42,11 @@ class POListScreen extends StatelessWidget {
       appBar: appBarForNewOrder('PO LIST'),
       body: Column(
         children: [
-          Padding(
+          Container(
+            height: (MediaQuery.of(context).size.height -
+                    AppBar().preferredSize.height -
+                    MediaQuery.of(context).padding.top) *
+                0.28,
             padding: const EdgeInsets.all(15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -58,8 +61,10 @@ class POListScreen extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () =>
-                      Navigator.pushNamed(context, OldOrdersScreen.routeName),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    OldOrdersScreen.routeName,
+                  ),
                   child: OrdersButton(
                     title: 'Old Order',
                     icon: 'lib/assets/reports_icon.png',
