@@ -46,8 +46,8 @@ class MainGridDashboard extends StatelessWidget {
       title: "Accounts",
       subtitle: "",
       event: "2 Items",
-      // img: "lib/assets/accounts_icon.png",
-      img: "lib/assets/notices_icon.png",
+      img: "lib/assets/accounts_icon.png",
+      // img: "lib/assets/notices_icon.png",
       color: 0xff89BA2B,
     ),
     DashboardItems(
@@ -70,37 +70,33 @@ class MainGridDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: GridView.count(
-          childAspectRatio: 1.1,
+          childAspectRatio: 1.0,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 44),
           crossAxisCount: 2,
           crossAxisSpacing: 18,
           mainAxisSpacing: 18,
           children: items.map((item) {
-            return InkWell(
-              onTap: () {
-                if (item.title == 'New Orders') {
-                  // Navigator.pushNamed(
-                  //   context,
-                  //   NewOrdersScreen.routeName,
-                  // );
-                  Navigator.pushNamed(
-                    context,
-                    POListScreen.routeName,
-                  );
-                }
-                if (item.title == 'Accounts') {
-                  Navigator.pushNamed(
-                    context,
-                    NewOrdersScreen.routeName,
-                  );
-                }
-              },
-              child: Card(
-                elevation: 20,
-                color: Color(item.color),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
+            return Card(
+              elevation: 20,
+              color: Color(item.color),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(90),
+              ),
+              child: InkWell(
+                onTap: () {
+                  if (item.title == 'New Orders') {
+                    Navigator.pushNamed(
+                      context,
+                      POListScreen.routeName,
+                    );
+                  }
+                  if (item.title == 'Accounts') {
+                    Navigator.pushNamed(
+                      context,
+                      NewOrdersScreen.routeName,
+                    );
+                  }
+                },
                 child: Container(
                   // decoration: BoxDecoration(
                   //     color: Color(color),
