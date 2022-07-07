@@ -73,8 +73,8 @@ class _NewTransactionState extends State<NewTransaction> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             InputTextField(
-                textTitle: 'Title',
-                textAmount: 'Amount',
+                textTitle: 'Party Name',
+                textAmount: 'Factory Name',
                 titleController: _titleText,
                 amountController: _amountText,
                 handler: _submitData),
@@ -100,7 +100,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 onPressed: _submitData,
                 style: ElevatedButton.styleFrom(
                     primary: Theme.of(context).primaryColor),
-                child: const Text('Add Expense'),
+                child: const Text('Add Order'),
               ),
             )
           ],

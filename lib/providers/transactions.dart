@@ -7,7 +7,7 @@ class Transactions with ChangeNotifier {
     Transaction(
       id: '101',
       productName: 'Shakib',
-      partyName: 'SEAI',
+      partyName: 'Shakib',
       factoryName: 'Super Kid',
       address: 'address',
       quantity: '1.2 MT',
@@ -18,7 +18,7 @@ class Transactions with ChangeNotifier {
     Transaction(
       id: '102',
       productName: 'kib',
-      partyName: 'SAI',
+      partyName: 'Ebna',
       factoryName: 'Super',
       address: 'address 2',
       quantity: '1.5 MT',
@@ -29,7 +29,7 @@ class Transactions with ChangeNotifier {
     Transaction(
       id: '103',
       productName: 'kib',
-      partyName: 'SAI',
+      partyName: 'Atiq',
       factoryName: 'Super',
       address: 'address 2',
       quantity: '1.5 MT',
@@ -40,7 +40,7 @@ class Transactions with ChangeNotifier {
     Transaction(
       id: '104',
       productName: 'kib',
-      partyName: 'SAI',
+      partyName: 'Ifti',
       factoryName: 'Super',
       address: 'address 2',
       quantity: '1.5 MT',
@@ -51,7 +51,7 @@ class Transactions with ChangeNotifier {
     Transaction(
       id: '105',
       productName: 'kib',
-      partyName: 'SAI',
+      partyName: 'Seai',
       factoryName: 'Super',
       address: 'address 2',
       quantity: '1.5 MT',
@@ -62,7 +62,7 @@ class Transactions with ChangeNotifier {
     Transaction(
       id: '105',
       productName: 'kib',
-      partyName: 'SAI',
+      partyName: 'Hello',
       factoryName: 'Super',
       address: 'address 2',
       quantity: '1.5 MT',
@@ -73,7 +73,7 @@ class Transactions with ChangeNotifier {
     Transaction(
       id: '105',
       productName: 'kib',
-      partyName: 'SAI',
+      partyName: 'SAfI',
       factoryName: 'Super',
       address: 'address 2',
       quantity: '1.5 MT',
