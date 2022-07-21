@@ -1,46 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:nbt/screens/new_orders_screen.dart';
+import 'package:nbt/providers/requisitions.dart';
+import 'package:nbt/screens/inventory_screen.dart';
+import 'package:nbt/screens/new_requisition_screen.dart';
+import 'package:nbt/widgets/requisition_list_item.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/old_orders_screen.dart';
-import '../widgets/new_transaction.dart';
-import '../widgets/po_list_item.dart';
 import '../providers/transactions.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/app_bar_functions.dart';
+import '../widgets/po_list_item.dart';
+import 'new_orders_screen.dart';
+import 'old_orders_screen.dart';
 
-class POListScreen extends StatelessWidget {
-  const POListScreen({Key? key}) : super(key: key);
+class RequisitionScreen extends StatelessWidget {
+  const RequisitionScreen({Key? key}) : super(key: key);
 
-  static const routeName = '/po-list';
-
-  /*todo*/
-  void _ass() {}
-  void _startAddNewTransaction(BuildContext context) {
-    // From StackOverflow
-    showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      context: context,
-      isScrollControlled: true,
-      builder: (builder) {
-        return Container(
-          height: MediaQuery.of(context).size.height - 50,
-          padding: MediaQuery.of(context).viewInsets,
-          child: NewTransaction(_ass),
-        );
-      },
-    );
-  }
-  /*todo*/
+  static const routeName = '/requisition';
 
   @override
   Widget build(BuildContext context) {
-    var transactionData = Provider.of<Transactions>(context);
-    var transaction = transactionData.transactions;
+    var requisitionData = Provider.of<Requisitions>(context);
+    var requisition = requisitionData.requisitions;
     return Scaffold(
-      appBar: appBarForNewOrder('PO LIST'),
+      appBar: AppBar(
+        title: const Text('Requisition'),
+        backgroundColor: const Color(0xff662D91),
+      ),
       body: Column(
         children: [
           Container(
@@ -56,24 +40,24 @@ class POListScreen extends StatelessWidget {
                   // onTap: () => _startAddNewTransaction(context),
                   onTap: () => Navigator.pushNamed(
                     context,
-                    NewOrdersScreen.routeName,
+                    NewRequisitionScreen.routeName,
                   ),
                   // Navigator.pushNamed(context, NewOrdersScreen.routeName),
                   child: CustomButton(
-                    title: 'Create New Order',
-                    icon: 'lib/assets/new_order_icon.png',
-                    color: 0xff511C74,
+                    title: 'New Requisition',
+                    icon: 'lib/assets/requisition_icon.png',
+                    color: 0xff662D91,
                   ),
                 ),
                 InkWell(
                   onTap: () => Navigator.pushNamed(
                     context,
-                    OldOrdersScreen.routeName,
+                    InventoryScreen.routeName,
                   ),
                   child: CustomButton(
-                    title: 'Old Order',
+                    title: 'Inventory',
                     icon: 'lib/assets/reports_icon.png',
-                    color: 0xff505153,
+                    color: 0xff0057A5,
                   ),
                 ),
               ],
@@ -87,10 +71,10 @@ class POListScreen extends StatelessWidget {
                 0.7,
             child: ListView.builder(
               itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-                value: transaction[index],
-                child: POListItem(),
+                value: requisition[index],
+                child: RequisitionListItem(),
               ),
-              itemCount: transaction.length,
+              itemCount: requisition.length,
             ),
           ),
         ],

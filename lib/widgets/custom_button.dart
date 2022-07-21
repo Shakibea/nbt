@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class OrdersButton extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String title;
   final String icon;
   final int color;
 
-  OrdersButton({
+  CustomButton({
     Key? key,
     required this.title,
     required this.icon,

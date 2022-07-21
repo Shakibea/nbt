@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nbt/screens/inventory_screen.dart';
 import 'package:nbt/screens/po_list_screen.dart';
+import 'package:nbt/screens/requisition_screen.dart';
 
 import '../screens/new_orders_screen.dart';
 import '../models/dashboard_items.dart';
@@ -83,6 +85,7 @@ class MainGridDashboard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(90),
               ),
               child: InkWell(
+                //MAIN DASHBOARD BUTTONS, CLICKING BUTTON WILL SHOW DIFFERENT PAGE
                 onTap: () {
                   if (item.title == 'New Orders') {
                     Navigator.pushNamed(
@@ -90,10 +93,16 @@ class MainGridDashboard extends StatelessWidget {
                       POListScreen.routeName,
                     );
                   }
-                  if (item.title == 'Accounts') {
+                  if (item.title == 'Requisition') {
                     Navigator.pushNamed(
                       context,
-                      NewOrdersScreen.routeName,
+                      RequisitionScreen.routeName,
+                    );
+                  }
+                  if (item.title == 'Inventory') {
+                    Navigator.pushNamed(
+                      context,
+                      InventoryScreen.routeName,
                     );
                   }
                 },

@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:nbt/providers/inventories.dart';
+import 'package:nbt/providers/requisitions.dart';
+import 'package:nbt/screens/inventory_details_screen.dart';
+import 'package:nbt/screens/inventory_screen.dart';
+import 'package:nbt/screens/new_inventory_screen.dart';
+import 'package:nbt/screens/new_requisition_screen.dart';
+import 'package:nbt/screens/order_details_screen.dart';
+import 'package:nbt/screens/requisition_details_screen.dart';
+import 'package:nbt/screens/requisition_screen.dart';
 import 'package:provider/provider.dart';
 
 import './providers/transactions.dart';
@@ -17,8 +26,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => Transactions(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => Transactions(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Requisitions(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Inventories(),
+        ),
+      ],
+      // create: (_) => Transactions(),
       child: MaterialApp(
         title: 'NBT',
         theme: ThemeData(
@@ -29,6 +49,13 @@ class MyApp extends StatelessWidget {
           NewOrdersScreen.routeName: (_) => NewOrdersScreen(),
           POListScreen.routeName: (_) => POListScreen(),
           OldOrdersScreen.routeName: (_) => OldOrdersScreen(),
+          RequisitionScreen.routeName: (_) => RequisitionScreen(),
+          NewRequisitionScreen.routeName: (_) => NewRequisitionScreen(),
+          InventoryScreen.routeName: (_) => InventoryScreen(),
+          NewInventoryScreen.routeName: (_) => NewInventoryScreen(),
+          InventoryDetailsScreen.routeName: (_) => InventoryDetailsScreen(),
+          RequisitionDetailsScreen.routeName: (_) => RequisitionDetailsScreen(),
+          OrderDetailsScreen.routeName: (_) => OrderDetailsScreen(),
         },
       ),
     );

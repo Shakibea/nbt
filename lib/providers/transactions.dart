@@ -87,6 +87,10 @@ class Transactions with ChangeNotifier {
     return [..._transactions];
   }
 
+  Transaction findById(String id) {
+    return _transactions.firstWhere((element) => element.id == id);
+  }
+
   void addNew(Transaction value) {
     _transactions.add(value);
   }
