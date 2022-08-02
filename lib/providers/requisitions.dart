@@ -10,6 +10,7 @@ class Requisitions with ChangeNotifier {
       productName: 'Shakib',
       reqQuantity: '1.2 MT',
       date: DateTime.now(),
+      remarks: 'Yeeee',
       status: Status.OrderPlaced,
     ),
     Requisition(

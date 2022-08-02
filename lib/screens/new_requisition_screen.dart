@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../utils/colors.dart';
+
 class NewRequisitionScreen extends StatefulWidget {
   const NewRequisitionScreen({Key? key}) : super(key: key);
 
@@ -36,7 +38,7 @@ class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('CREATE NEW REQUISITION'),
-        backgroundColor: const Color(0xff662D91),
+        backgroundColor: colors['requisition'],
         actions: [
           IconButton(
             onPressed: _saveForm,
@@ -107,7 +109,15 @@ class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
                 // },
               ),
               ElevatedButton(
-                  onPressed: () {}, child: const Text('Request Sent'))
+                onPressed: () {},
+                child: const Text(
+                  'Request Sent',
+                ),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(const Color(0xffF77E0B)),
+                ),
+              ),
             ],
           ),
         ),

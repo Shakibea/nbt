@@ -25,7 +25,7 @@ class OldOrdersScreen extends StatelessWidget {
             return Card(
               elevation: 20,
               //todo
-              color: const Color(0xff00A0EC),
+              color: const Color(0xff007DC5),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(90),
               ),

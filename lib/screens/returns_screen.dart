@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:nbt/screens/new_inventory_screen.dart';
+import 'package:nbt/providers/returns.dart';
+import 'package:nbt/screens/new_returns_screen.dart';
+import 'package:nbt/utils/colors.dart';
+import 'package:nbt/widgets/app_drawer.dart';
+import 'package:nbt/widgets/returns_list_item.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/inventories.dart';
-import '../widgets/app_drawer.dart';
-import '../widgets/inventory_list_item.dart';
+class ReturnsScreen extends StatelessWidget {
+  const ReturnsScreen({Key? key}) : super(key: key);
 
-class InventoryScreen extends StatelessWidget {
-  const InventoryScreen({Key? key}) : super(key: key);
-
-  static const routeName = '/inventory';
+  static const routeName = '/returns';
 
   @override
   Widget build(BuildContext context) {
-    var inventoryData = Provider.of<Inventories>(context);
-    var inventory = inventoryData.inventories;
+    var returns = Provider.of<Returns>(context).returns;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inventory'),
-        backgroundColor: const Color(0xff0057A5),
+        title: const Text('Returns'),
+        backgroundColor: colors['returns'],
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, NewInventoryScreen.routeName);
+              Navigator.pushNamed(context, NewReturnsScreen.routeName);
             },
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
       ),
       drawer: const AppDrawer(),
@@ -38,10 +37,10 @@ class InventoryScreen extends StatelessWidget {
             0.7,
         child: ListView.builder(
           itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-            value: inventory[index],
-            child: InventoryListItem(),
+            value: returns[index],
+            child: ReturnsListItem(),
           ),
-          itemCount: inventory.length,
+          itemCount: returns.length,
         ),
       ),
     );

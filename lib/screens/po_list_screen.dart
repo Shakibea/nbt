@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nbt/screens/new_orders_screen.dart';
+import 'package:nbt/screens/o_order_screen.dart';
+import 'package:nbt/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/old_orders_screen.dart';
@@ -41,6 +43,7 @@ class POListScreen extends StatelessWidget {
     var transaction = transactionData.transactions;
     return Scaffold(
       appBar: appBarForNewOrder('PO LIST'),
+      drawer: const AppDrawer(),
       body: Column(
         children: [
           Container(
@@ -68,7 +71,8 @@ class POListScreen extends StatelessWidget {
                 InkWell(
                   onTap: () => Navigator.pushNamed(
                     context,
-                    OldOrdersScreen.routeName,
+                    OOrderScreen.routeName,
+                    // OldOrdersScreen.routeName,
                   ),
                   child: CustomButton(
                     title: 'Old Order',

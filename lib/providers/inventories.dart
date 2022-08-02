@@ -19,6 +19,13 @@ class Inventories with ChangeNotifier {
       date: DateTime.now(),
       remarks: 'Grade 1',
     ),
+    Inventory(
+      id: '103',
+      productName: 'Ace Tic',
+      initStock: '1700 KG',
+      date: DateTime.now(),
+      remarks: 'Grade 6',
+    ),
   ];
 
   List<Inventory> get inventories {

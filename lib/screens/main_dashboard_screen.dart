@@ -6,6 +6,8 @@ import '../widgets/main_grid_dashboard.dart';
 class MainDashboardScreen extends StatelessWidget {
   const MainDashboardScreen({Key? key}) : super(key: key);
 
+  static const routeName = '/main-dashboard';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/screens/inventory_details_screen.dart';
+import 'package:nbt/utils/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/inventory.dart';
@@ -23,7 +24,7 @@ class InventoryListItem extends StatelessWidget {
                   arguments: inventory.id);
             },
             leading: CircleAvatar(
-                backgroundColor: const Color(0xff0057A5),
+                backgroundColor: colors['inventory'],
                 child: Padding(
                   padding: const EdgeInsets.all(5),
                   child: FittedBox(
@@ -50,8 +51,8 @@ class InventoryListItem extends StatelessWidget {
               children: [
                 Text(
                   inventory.initStock,
-                  style: const TextStyle(
-                      color: Color(0xff0057A5), fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: colors['inventory'], fontWeight: FontWeight.bold),
                 ),
                 Text(
                   DateFormat.yMMMMd().format(inventory.date),

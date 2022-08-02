@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nbt/screens/inventory_screen.dart';
 import 'package:nbt/screens/po_list_screen.dart';
 import 'package:nbt/screens/requisition_screen.dart';
+import 'package:nbt/screens/returns_screen.dart';
 
 import '../screens/new_orders_screen.dart';
 import '../models/dashboard_items.dart';
@@ -14,7 +15,7 @@ class MainGridDashboard extends StatelessWidget {
       subtitle: "March, Wednesday",
       event: "3 Events",
       img: "lib/assets/new_order_icon.png",
-      color: 0xff453658,
+      color: 0xff511C74,
     ),
     DashboardItems(
       title: "Requisition",
@@ -103,6 +104,12 @@ class MainGridDashboard extends StatelessWidget {
                     Navigator.pushNamed(
                       context,
                       InventoryScreen.routeName,
+                    );
+                  }
+                  if (item.title == 'Returns') {
+                    Navigator.pushNamed(
+                      context,
+                      ReturnsScreen.routeName,
                     );
                   }
                 },

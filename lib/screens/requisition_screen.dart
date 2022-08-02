@@ -6,6 +6,7 @@ import 'package:nbt/widgets/requisition_list_item.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/transactions.dart';
+import '../widgets/app_drawer.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/po_list_item.dart';
 import 'new_orders_screen.dart';
@@ -25,6 +26,7 @@ class RequisitionScreen extends StatelessWidget {
         title: const Text('Requisition'),
         backgroundColor: const Color(0xff662D91),
       ),
+      drawer: const AppDrawer(),
       body: Column(
         children: [
           Container(
