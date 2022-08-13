@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nbt/providers/requisitions.dart';
 import 'package:nbt/screens/inventory_screen.dart';
@@ -5,6 +6,7 @@ import 'package:nbt/screens/new_requisition_screen.dart';
 import 'package:nbt/widgets/requisition_list_item.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/requisition.dart';
 import '../providers/transactions.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/custom_button.dart';
@@ -21,7 +23,10 @@ class RequisitionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var requisitionData = Provider.of<Requisitions>(context);
     var requisition = requisitionData.requisitions;
+    final CollectionReference requisitions =
+        FirebaseFirestore.instance.collection('requisitions');
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Requisition'),
         backgroundColor: const Color(0xff662D91),
@@ -71,13 +76,36 @@ class RequisitionScreen extends StatelessWidget {
                     AppBar().preferredSize.height -
                     MediaQuery.of(context).padding.top) *
                 0.7,
-            child: ListView.builder(
-              itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-                value: requisition[index],
-                child: RequisitionListItem(),
-              ),
-              itemCount: requisition.length,
+            child: StreamBuilder(
+              stream: requisitions.snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                if (streamSnapshot.hasData) {
+                  final snapShot = streamSnapshot.data!.docs;
+                  return ListView.builder(
+                      itemCount: snapShot.length,
+                      itemBuilder: (context, index) {
+                        final documentSnapshotToList = snapShot
+                            .map((e) => Requisition.fromJson(
+                                e.data() as Map<String, dynamic>))
+                            .toList();
+
+                        return RequisitionListItem(
+                            documentSnapshotToList[index]);
+                      });
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
+
+            // ListView.builder(
+            //   itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+            //     value: requisition[index],
+            //     child: RequisitionListItem(),
+            //   ),
+            //   itemCount: requisition.length,
+            // ),
           ),
         ],
       ),

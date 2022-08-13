@@ -1,21 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/providers/requisitions.dart';
+import 'package:nbt/screens/requisition_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/requisition.dart';
 import '../utils/colors.dart';
 
-class NewRequisitionScreen extends StatefulWidget {
-  const NewRequisitionScreen({Key? key}) : super(key: key);
+class EditRequisitionScreen extends StatefulWidget {
+  const EditRequisitionScreen({Key? key}) : super(key: key);
 
-  static const routeName = '/new-requisition';
+  static const routeName = '/edit-requisition';
 
   @override
-  State<NewRequisitionScreen> createState() => _NewRequisitionScreenState();
+  State<EditRequisitionScreen> createState() => _NewRequisitionScreenState();
 }
 
-class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
+class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
   final _form = GlobalKey<FormState>();
 
   final _dateController = TextEditingController();
@@ -24,10 +26,42 @@ class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
   final _reqQuantityController = TextEditingController();
   final _remarksController = TextEditingController();
 
+  var _initLoad = false;
+  late String id;
+
   @override
   void initState() {
     _dateController.text = DateFormat.yMMMMd().format(DateTime.now());
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (!_initLoad) {
+      final orderId = ModalRoute.of(context)?.settings.arguments as String;
+      final docRef =
+          FirebaseFirestore.instance.collection("requisitions").doc(orderId);
+      docRef.get().then(
+        (DocumentSnapshot doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          // _dateController.text = DateFormat.yMMMMd().format(data['date']);
+          id = data['id'];
+          _requisitionNumController.text = id;
+          _dateController.text =
+              DateFormat.yMMMMd().format((data['date'] as Timestamp).toDate());
+          _nameOfProductController.text = data['productName'];
+          _reqQuantityController.text = data['reqQuantity'];
+          _remarksController.text = data['remarks'];
+
+          // status = data['status'];
+        },
+        onError: (e) => print("Error getting document: $e"),
+      );
+
+      _initLoad = true;
+    }
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -47,8 +81,8 @@ class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
     }
     _form.currentState?.save();
 
-    Provider.of<Requisitions>(context, listen: false).createOrder(requisition);
-    Navigator.of(context).pop();
+    Provider.of<Requisitions>(context, listen: false)
+        .updateRequisition(requisition, id);
   }
 
   @override
@@ -68,7 +102,7 @@ class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
                 decoration:
                     const InputDecoration(label: Text('Requisition Number')),
                 textInputAction: TextInputAction.next,
-                // enabled: false,
+                enabled: false,
                 controller: _requisitionNumController,
               ),
               TextFormField(
@@ -132,6 +166,9 @@ class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
                       reqQuantity: _reqQuantityController.text,
                       remarks: _remarksController.text);
                   _saveForm(newReq);
+
+                  Navigator.pop(
+                      context);
                 },
                 child: const Text(
                   'Request Sent',

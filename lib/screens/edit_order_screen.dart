@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nbt/providers/transaction.dart';
 import 'package:nbt/widgets/app_bar_functions.dart';
@@ -6,19 +7,32 @@ import 'package:provider/provider.dart';
 
 import '../providers/transactions.dart';
 
-class NewOrdersScreen extends StatefulWidget {
-  const NewOrdersScreen({Key? key}) : super(key: key);
+class EditOrdersScreen extends StatefulWidget {
+  const EditOrdersScreen({Key? key}) : super(key: key);
 
-  static const routeName = '/new-orders';
+  static const routeName = '/edit-orders';
 
   @override
-  State<NewOrdersScreen> createState() => _NewOrdersScreenState();
+  State<EditOrdersScreen> createState() => _EditOrdersScreenState();
 }
 
-class _NewOrdersScreenState extends State<NewOrdersScreen> {
+class _EditOrdersScreenState extends State<EditOrdersScreen> {
   final _form = GlobalKey<FormState>();
   final _dateController = TextEditingController();
   final _poNumController = TextEditingController();
+  final _poNameController = TextEditingController();
+  final _partyNameController = TextEditingController();
+  final _factoryNameController = TextEditingController();
+  final _addressController = TextEditingController();
+  final _quantityController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
+  late String status;
+  late String id;
+  String? orderId;
+  String? getColor;
+
+  var _initLoad = false;
 
   var _newOrder = Transaction1(
     id: '',
@@ -33,7 +47,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
 
   @override
   void initState() {
-    _dateController.text = DateFormat.yMMMMd().format(DateTime.now());
+    // _dateController.text = DateFormat.yMMMMd().format(DateTime.now());
+
     // _dateController.text = DateTime.now() as String;
     // final args = ModalRoute.of(context)?.settings.arguments as String;
     // print('Arguments pass from list with length: $args');
@@ -52,6 +67,62 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
     //
     // _poNumController.text = total.toString();
 
+    // final orderId = ModalRoute.of(context)?.settings.arguments as String;
+    // final docRef = FirebaseFirestore.instance.collection("orders").doc(orderId);
+    // docRef.get().then(
+    //   (DocumentSnapshot doc) {
+    //     final data = doc.data() as Map<String, dynamic>;
+    //
+    //
+    //     _newOrder = Transaction1(
+    //       id: data['id'],
+    //       productName: data['productName'],
+    //       partyName: data['partyName'],
+    //       factoryName: data['factoryName'],
+    //       address: data['address'],
+    //       quantity: data['quantity'],
+    //       productDetail: data['productDetail'],
+    //       date: data['date'],
+    //     );
+    //   },
+    //   onError: (e) => print("Error getting document: $e"),
+    // );
+
+    if (!_initLoad) {
+      final orderId = ModalRoute.of(context)?.settings.arguments as String;
+      // final routeArgs = (ModalRoute.of(context)?.settings.arguments ??
+      //     <String, String>{}) as Map;
+      // orderId = routeArgs['id'];
+      // getColor = routeArgs['getColor'];
+
+      final docRef =
+          FirebaseFirestore.instance.collection("orders").doc(orderId);
+      docRef.get().then(
+        (DocumentSnapshot doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          // _dateController.text = DateFormat.yMMMMd().format(data['date']);
+          id = data['id'];
+          _poNumController.text = id;
+          _dateController.text =
+              DateFormat.yMMMMd().format((data['date'] as Timestamp).toDate());
+          _poNameController.text = data['productName'];
+          _partyNameController.text = data['partyName'];
+          _factoryNameController.text = data['factoryName'];
+          _addressController.text = data['address'];
+          _quantityController.text = data['quantity'];
+          _descriptionController.text = data['productDetail'];
+
+          status = data['status'];
+
+          // print(
+          //     'productName from firestore: ${(data['date'] as Timestamp).toDate()}');
+        },
+        onError: (e) => print("Error getting document: $e"),
+      );
+
+      _initLoad = true;
+    }
+
     super.didChangeDependencies();
   }
 
@@ -59,6 +130,12 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
   void dispose() {
     _dateController.dispose();
     _poNumController.dispose();
+    _poNameController.dispose();
+    _partyNameController.dispose();
+    _factoryNameController.dispose();
+    _addressController.dispose();
+    _quantityController.dispose();
+    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -70,7 +147,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
     _form.currentState?.save();
 
     // Provider.of<Transactions>(context, listen: false).addProduct(_newOrder);
-    Provider.of<Transactions>(context, listen: false).createOrder(_newOrder);
+    Provider.of<Transactions>(context, listen: false)
+        .updateOrders(_newOrder, id, status);
     Navigator.of(context).pop();
   }
 
@@ -118,9 +196,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
               TextFormField(
                 decoration: const InputDecoration(label: Text('PO Number')),
                 textInputAction: TextInputAction.next,
-                // enabled: false,
+                enabled: false,
                 controller: _poNumController,
-                // initialValue: transaction.toString(),
                 onSaved: (value) {
                   _newOrder = Transaction1(
                       id: value!,
@@ -146,6 +223,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                   }
                   return null;
                 },
+                controller: _poNameController,
                 onSaved: (value) {
                   _newOrder = Transaction1(
                       id: _newOrder.id,
@@ -170,6 +248,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                   }
                   return null;
                 },
+                controller: _partyNameController,
                 onSaved: (value) {
                   _newOrder = Transaction1(
                       id: _newOrder.id,
@@ -190,10 +269,11 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Please enter Product Name!';
+                    return 'Please enter Factory Name!';
                   }
                   return null;
                 },
+                controller: _factoryNameController,
                 onSaved: (value) {
                   _newOrder = Transaction1(
                       id: _newOrder.id,
@@ -233,6 +313,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                   // }
                   return null;
                 },
+                controller: _addressController,
+                //
                 onSaved: (value) {
                   _newOrder = Transaction1(
                       id: _newOrder.id,
@@ -246,7 +328,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                 },
               ),
               TextFormField(
-                decoration: const InputDecoration(label: Text('Quantity (KG)')),
+                decoration: const InputDecoration(label: Text('Quantity')),
                 textInputAction: TextInputAction.next,
                 // onFieldSubmitted: (_) {
                 //   FocusScope.of(context).requestFocus();
@@ -257,6 +339,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                   }
                   return null;
                 },
+                controller: _quantityController,
+
                 onSaved: (value) {
                   _newOrder = Transaction1(
                       id: _newOrder.id,
@@ -283,6 +367,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                   // }
                   return null;
                 },
+                controller: _descriptionController,
+
                 onSaved: (value) {
                   _newOrder = Transaction1(
                       id: _newOrder.id,

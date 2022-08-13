@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:nbt/screens/edit_order_screen.dart';
+import 'package:nbt/screens/edit_requisition_screen.dart';
+import 'package:nbt/screens/login_screen.dart';
+import 'package:provider/provider.dart';
+
 import 'package:nbt/providers/inventories.dart';
 import 'package:nbt/providers/requisitions.dart';
 import 'package:nbt/providers/returns.dart';
@@ -15,7 +21,6 @@ import 'package:nbt/screens/requisition_screen.dart';
 import 'package:nbt/screens/returns_screen.dart';
 import 'package:nbt/screens/splash_screen.dart';
 import 'package:nbt/widgets/custom_radio_button.dart';
-import 'package:provider/provider.dart';
 
 import './providers/transactions.dart';
 import './screens/po_list_screen.dart';
@@ -23,7 +28,10 @@ import './screens/new_orders_screen.dart';
 import './screens/main_dashboard_screen.dart';
 import './screens/old_orders_screen.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -72,6 +80,9 @@ class MyApp extends StatelessWidget {
           OOrderScreen.routeName: (_) => OOrderScreen(),
           PartyDetailsScreen.routeName: (_) => PartyDetailsScreen(),
           CustomRadio.routeName: (_) => CustomRadio(),
+          EditOrdersScreen.routeName: (_) => EditOrdersScreen(),
+          EditRequisitionScreen.routeName: (_) => EditRequisitionScreen(),
+          MyLogin.routeName: (_) => MyLogin(),
         },
       ),
     );

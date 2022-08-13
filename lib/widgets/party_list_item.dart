@@ -10,7 +10,7 @@ class PartyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Transaction>(context, listen: false);
+    final product = Provider.of<Transaction1>(context, listen: false);
 
     return Card(
       elevation: 6,

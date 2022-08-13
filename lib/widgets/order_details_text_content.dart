@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class OrderDetailsTextContent extends StatelessWidget {
-  final String title;
+  final String? title;
   const OrderDetailsTextContent({Key? key, required this.title})
       : super(key: key);
 
@@ -10,7 +10,7 @@ class OrderDetailsTextContent extends StatelessWidget {
     return Row(
       children: [
         Text(
-          title,
+          title!,
           style: const TextStyle(
             fontSize: 16,
           ),

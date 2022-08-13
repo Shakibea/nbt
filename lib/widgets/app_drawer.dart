@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nbt/screens/inventory_details_screen.dart';
 import 'package:nbt/screens/inventory_screen.dart';
+import 'package:nbt/screens/login_screen.dart';
 import 'package:nbt/screens/new_orders_screen.dart';
 import 'package:nbt/screens/o_order_screen.dart';
 import 'package:nbt/screens/po_list_screen.dart';
@@ -69,11 +70,12 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
             },
           ),
+          const Divider(),
           ListTile(
-            leading: const Icon(Icons.keyboard_return),
-            title: const Text('Custom Radio Button'),
+            leading: const Icon(Icons.login),
+            title: const Text('Login'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, CustomRadio.routeName);
+              Navigator.pushReplacementNamed(context, MyLogin.routeName);
             },
           ),
         ],

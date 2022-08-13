@@ -7,11 +7,14 @@ import 'package:provider/provider.dart';
 import '../providers/requisition.dart';
 
 class RequisitionListItem extends StatelessWidget {
-  const RequisitionListItem({Key? key}) : super(key: key);
+  // const RequisitionListItem({Key? key}) : super(key: key);
+
+  final Requisition requisition;
+  RequisitionListItem(this.requisition);
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Requisition>(context, listen: false);
+    // final product = Provider.of<Requisition>(context, listen: false);
     return Card(
       elevation: 6,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
@@ -22,16 +25,16 @@ class RequisitionListItem extends StatelessWidget {
               Navigator.pushNamed(
                 context,
                 RequisitionDetailsScreen.routeName,
-                arguments: product.id,
+                arguments: requisition.id,
               );
             },
             leading: CircleAvatar(
-                backgroundColor: product.getColor,
+                backgroundColor: requisition.getColor,
                 child: Padding(
                   padding: const EdgeInsets.all(5),
                   child: FittedBox(
                     child: Text(
-                      product.id,
+                      requisition.id,
                       style: GoogleFonts.openSans(
                         textStyle: const TextStyle(
                           fontSize: 18,
@@ -44,14 +47,14 @@ class RequisitionListItem extends StatelessWidget {
                 ),
                 radius: 30),
             title: Text(
-              product.productName,
+              requisition.productName,
               // style: Theme.of(context).textTheme.headline6,
             ),
-            subtitle: Text('Requested: ${product.reqQuantity}'),
+            subtitle: Text('Requested: ${requisition.reqQuantity}'),
             trailing: Text(
-              product.getStatus,
+              requisition.getStatus,
               style: TextStyle(
-                  color: product.getColor,
+                  color: requisition.getColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold),
             ),

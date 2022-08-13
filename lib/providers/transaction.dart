@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 enum Status { Complete, MltShortage, InProcess, Delivered, NewOrder }
 
-class Transaction with ChangeNotifier {
+class Transaction1 with ChangeNotifier {
   final String id;
   final String productName;
   final String partyName;
@@ -13,7 +14,7 @@ class Transaction with ChangeNotifier {
   final DateTime date;
   Status status;
 
-  Transaction({
+  Transaction1({
     required this.id,
     required this.productName,
     required this.partyName,
@@ -24,6 +25,30 @@ class Transaction with ChangeNotifier {
     required this.date,
     this.status = Status.NewOrder,
   });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'productName': productName,
+        'partyName': partyName,
+        'factoryName': factoryName,
+        'address': address,
+        'quantity': quantity,
+        'productDetail': productDetail,
+        'date': date,
+        'status': status.name
+      };
+
+  factory Transaction1.fromJson(Map<String, dynamic> json) => Transaction1(
+        id: json['id'],
+        productName: json['productName'],
+        partyName: json['partyName'],
+        factoryName: json['factoryName'],
+        address: json['address'],
+        quantity: json['quantity'],
+        productDetail: json['productDetail'],
+        date: (json['date'] as Timestamp).toDate(),
+        status: Status.values.byName(json['status']),
+      );
 
   String get getStatus {
     switch (status) {

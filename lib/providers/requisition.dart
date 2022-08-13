@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 enum Status { RequestSent, OrderPlaced }
@@ -8,7 +9,7 @@ class Requisition with ChangeNotifier {
   final String reqQuantity;
   final DateTime date;
   String remarks;
-  Status status;
+  final Status status;
 
   Requisition({
     required this.id,
@@ -18,6 +19,24 @@ class Requisition with ChangeNotifier {
     this.remarks = '',
     this.status = Status.RequestSent,
   });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'productName': productName,
+        'reqQuantity': reqQuantity,
+        'remarks': remarks,
+        'date': date,
+        'status': status.name,
+      };
+
+  factory Requisition.fromJson(Map<String, dynamic> json) => Requisition(
+        id: json['id'],
+        productName: json['productName'],
+        reqQuantity: json['reqQuantity'],
+        remarks: json['remarks'],
+        date: (json['date'] as Timestamp).toDate(),
+        status: Status.values.byName(json['status']),
+      );
 
   String get getStatus {
     switch (status) {

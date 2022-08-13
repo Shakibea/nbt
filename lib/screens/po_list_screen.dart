@@ -1,20 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:nbt/screens/new_orders_screen.dart';
 import 'package:nbt/screens/o_order_screen.dart';
 import 'package:nbt/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/transaction.dart';
 import '../screens/old_orders_screen.dart';
 import '../widgets/new_transaction.dart';
 import '../widgets/po_list_item.dart';
 import '../providers/transactions.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/app_bar_functions.dart';
+import 'order_details_screen.dart';
 
 class POListScreen extends StatelessWidget {
   const POListScreen({Key? key}) : super(key: key);
 
   static const routeName = '/po-list';
+
+  Widget buildUser() {
+    return Center();
+  }
 
   /*todo*/
   void _ass() {}
@@ -41,7 +50,20 @@ class POListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var transactionData = Provider.of<Transactions>(context);
     var transaction = transactionData.transactions;
+    var transaction2 = transactionData.readOrders();
+
+    final CollectionReference products =
+        FirebaseFirestore.instance.collection('orders');
+
+    Stream<List<Transaction1>> readOrders() => FirebaseFirestore.instance
+        .collection('orders')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Transaction1.fromJson(doc.data()))
+            .toList());
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: appBarForNewOrder('PO LIST'),
       drawer: const AppDrawer(),
       body: Column(
@@ -60,6 +82,7 @@ class POListScreen extends StatelessWidget {
                   onTap: () => Navigator.pushNamed(
                     context,
                     NewOrdersScreen.routeName,
+                    // arguments: transaction.length,
                   ),
                   // Navigator.pushNamed(context, NewOrdersScreen.routeName),
                   child: CustomButton(
@@ -70,8 +93,7 @@ class POListScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () => Navigator.pushNamed(
-                    context,
-                    OOrderScreen.routeName,
+                    context, OOrderScreen.routeName,
                     // OldOrdersScreen.routeName,
                   ),
                   child: CustomButton(
@@ -89,13 +111,36 @@ class POListScreen extends StatelessWidget {
                     AppBar().preferredSize.height -
                     MediaQuery.of(context).padding.top) *
                 0.7,
-            child: ListView.builder(
-              itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-                value: transaction[index],
-                child: POListItem(),
-              ),
-              itemCount: transaction.length,
+
+            child: StreamBuilder(
+              stream: products.snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                if (streamSnapshot.hasData) {
+                  final snapShot = streamSnapshot.data!.docs;
+                  return ListView.builder(
+                      itemCount: snapShot.length,
+                      itemBuilder: (context, index) {
+                        final documentSnapshotToList = snapShot
+                            .map((e) => Transaction1.fromJson(
+                                e.data() as Map<String, dynamic>))
+                            .toList();
+
+                        return POListItem(documentSnapshotToList[index]);
+                      });
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
+
+            // ListView.builder(
+            //   itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+            //     value: transaction[index],
+            //     child: POListItem(),
+            //   ),
+            //   itemCount: transaction.length,
+            // ),
           ),
         ],
       ),

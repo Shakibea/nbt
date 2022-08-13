@@ -8,11 +8,14 @@ import '../providers/transaction.dart';
 import '../screens/order_details_screen.dart';
 
 class OldOrderListItem extends StatelessWidget {
-  const OldOrderListItem({Key? key}) : super(key: key);
+  // const OldOrderListItem({Key? key}) : super(key: key);
+
+  // final Transaction1 order;
+  // OldOrderListItem(this.order);
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Transaction>(context, listen: false);
+    final order = Provider.of<Transaction1>(context, listen: false);
     return Card(
       elevation: 6,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
@@ -21,7 +24,7 @@ class OldOrderListItem extends StatelessWidget {
           ListTile(
             onTap: () {
               Navigator.pushNamed(context, PartyDetailsScreen.routeName,
-                  arguments: product.partyName);
+                  arguments: order.partyName);
             },
             onLongPress: () {},
             leading: CircleAvatar(
@@ -31,7 +34,7 @@ class OldOrderListItem extends StatelessWidget {
                   padding: const EdgeInsets.all(5),
                   child: FittedBox(
                     child: Text(
-                      product.id,
+                      order.id,
                       style: GoogleFonts.openSans(
                         textStyle: const TextStyle(
                           fontSize: 18,
@@ -44,7 +47,7 @@ class OldOrderListItem extends StatelessWidget {
                 ),
                 radius: 30),
             title: Text(
-              product.partyName,
+              order.partyName,
               style: const TextStyle(
                 fontSize: 19,
                 fontWeight: FontWeight.bold,
