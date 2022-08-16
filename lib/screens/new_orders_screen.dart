@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nbt/providers/transaction.dart';
+import 'package:nbt/screens/login_screen.dart';
 import 'package:nbt/widgets/app_bar_functions.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -79,226 +81,250 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
     var transactionData = Provider.of<Transactions>(context);
     // final transaction = transactionData.poId;
 
-    return Scaffold(
-      // appBar: appBarForNewOrder('CREATE NEW ORDER'),
-      appBar: AppBar(
-        title: const Text('CREATE NEW ORDER'),
-        backgroundColor: const Color(0xff511C74),
-        actions: [
-          IconButton(
-            onPressed: _saveForm,
-            icon: const Icon(Icons.save),
-          )
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _form,
-          child: ListView(
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(label: Text('Date')),
-                textInputAction: TextInputAction.next,
-                enabled: false,
-                controller: _dateController,
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                    id: _newOrder.id,
-                    productName: _newOrder.productName,
-                    partyName: _newOrder.partyName,
-                    factoryName: _newOrder.factoryName,
-                    address: _newOrder.address,
-                    quantity: _newOrder.quantity,
-                    productDetail: _newOrder.productDetail,
-                    date: DateTime.now(),
-                  );
-                },
+    return StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text("Something went wrong!!"),
+            );
+          }
+          if (snapshot.hasData) {
+            return Scaffold(
+              // appBar: appBarForNewOrder('CREATE NEW ORDER'),
+              appBar: AppBar(
+                title: const Text('CREATE NEW ORDER'),
+                backgroundColor: const Color(0xff511C74),
+                actions: [
+                  IconButton(
+                    onPressed: _saveForm,
+                    icon: const Icon(Icons.save),
+                  )
+                ],
               ),
-              TextFormField(
-                decoration: const InputDecoration(label: Text('PO Number')),
-                textInputAction: TextInputAction.next,
-                // enabled: false,
-                controller: _poNumController,
-                // initialValue: transaction.toString(),
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                      id: value!,
-                      productName: _newOrder.productName,
-                      partyName: _newOrder.partyName,
-                      factoryName: _newOrder.factoryName,
-                      address: _newOrder.address,
-                      quantity: _newOrder.quantity,
-                      productDetail: _newOrder.productDetail,
-                      date: _newOrder.date);
-                },
+              body: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _form,
+                  child: ListView(
+                    children: [
+                      TextFormField(
+                        decoration: const InputDecoration(label: Text('Date')),
+                        textInputAction: TextInputAction.next,
+                        enabled: false,
+                        controller: _dateController,
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                            id: _newOrder.id,
+                            productName: _newOrder.productName,
+                            partyName: _newOrder.partyName,
+                            factoryName: _newOrder.factoryName,
+                            address: _newOrder.address,
+                            quantity: _newOrder.quantity,
+                            productDetail: _newOrder.productDetail,
+                            date: DateTime.now(),
+                          );
+                        },
+                      ),
+                      TextFormField(
+                        decoration:
+                            const InputDecoration(label: Text('PO Number')),
+                        textInputAction: TextInputAction.next,
+                        // enabled: false,
+                        controller: _poNumController,
+                        // initialValue: transaction.toString(),
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                              id: value!,
+                              productName: _newOrder.productName,
+                              partyName: _newOrder.partyName,
+                              factoryName: _newOrder.factoryName,
+                              address: _newOrder.address,
+                              quantity: _newOrder.quantity,
+                              productDetail: _newOrder.productDetail,
+                              date: _newOrder.date);
+                        },
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            label: Text('Name of Product')),
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus();
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter Product Name!';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                              id: _newOrder.id,
+                              productName: value!,
+                              partyName: _newOrder.partyName,
+                              factoryName: _newOrder.factoryName,
+                              address: _newOrder.address,
+                              quantity: _newOrder.quantity,
+                              productDetail: _newOrder.productDetail,
+                              date: _newOrder.date);
+                        },
+                      ),
+                      TextFormField(
+                        decoration:
+                            const InputDecoration(label: Text('Party Name')),
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus();
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter Product Name!';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                              id: _newOrder.id,
+                              productName: _newOrder.productName,
+                              partyName: value!,
+                              factoryName: _newOrder.factoryName,
+                              address: _newOrder.address,
+                              quantity: _newOrder.quantity,
+                              productDetail: _newOrder.productDetail,
+                              date: _newOrder.date);
+                        },
+                      ),
+                      TextFormField(
+                        decoration:
+                            const InputDecoration(label: Text('Factory Name')),
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus();
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter Product Name!';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                              id: _newOrder.id,
+                              productName: _newOrder.productName,
+                              partyName: _newOrder.partyName,
+                              factoryName: value!,
+                              address: _newOrder.address,
+                              quantity: _newOrder.quantity,
+                              productDetail: _newOrder.productDetail,
+                              date: _newOrder.date);
+                        },
+                      ),
+                      // TextFormField(
+                      //   decoration: const InputDecoration(label: Text('Address')),
+                      //   textInputAction: TextInputAction.next,
+                      //   onFieldSubmitted: (_) {
+                      //     FocusScope.of(context).requestFocus();
+                      //   },
+                      //   validator: (value) {
+                      //     if (value!.isEmpty) {
+                      //       return 'Please enter Product Name!';
+                      //     }
+                      //     return null;
+                      //   },
+                      // ),
+                      TextFormField(
+                        decoration:
+                            const InputDecoration(label: Text('Address')),
+                        maxLines: 3,
+                        keyboardType: TextInputType.multiline,
+                        // focusNode: _descriptionFocusNode,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter anything';
+                          }
+                          // if (value.length <= 10) {
+                          //   return 'above 10';
+                          // }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                              id: _newOrder.id,
+                              productName: _newOrder.productName,
+                              partyName: _newOrder.partyName,
+                              factoryName: _newOrder.factoryName,
+                              address: value!,
+                              quantity: _newOrder.quantity,
+                              productDetail: _newOrder.productDetail,
+                              date: _newOrder.date);
+                        },
+                      ),
+                      TextFormField(
+                        decoration:
+                            const InputDecoration(label: Text('Quantity (KG)')),
+                        textInputAction: TextInputAction.next,
+                        // onFieldSubmitted: (_) {
+                        //   FocusScope.of(context).requestFocus();
+                        // },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter Quantity!';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                              id: _newOrder.id,
+                              productName: _newOrder.productName,
+                              partyName: _newOrder.partyName,
+                              factoryName: _newOrder.factoryName,
+                              address: _newOrder.address,
+                              quantity: value!,
+                              productDetail: _newOrder.productDetail,
+                              date: _newOrder.date);
+                        },
+                      ),
+                      TextFormField(
+                        decoration:
+                            const InputDecoration(label: Text('Description')),
+                        maxLines: 5,
+                        keyboardType: TextInputType.multiline,
+                        // focusNode: _descriptionFocusNode,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter anything';
+                          }
+                          // if (value.length <= 10) {
+                          //   return 'above 10';
+                          // }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                              id: _newOrder.id,
+                              productName: _newOrder.productName,
+                              partyName: _newOrder.partyName,
+                              factoryName: _newOrder.factoryName,
+                              address: _newOrder.address,
+                              quantity: _newOrder.quantity,
+                              productDetail: value!,
+                              date: _newOrder.date);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              TextFormField(
-                decoration:
-                    const InputDecoration(label: Text('Name of Product')),
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus();
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Product Name!';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                      id: _newOrder.id,
-                      productName: value!,
-                      partyName: _newOrder.partyName,
-                      factoryName: _newOrder.factoryName,
-                      address: _newOrder.address,
-                      quantity: _newOrder.quantity,
-                      productDetail: _newOrder.productDetail,
-                      date: _newOrder.date);
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(label: Text('Party Name')),
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus();
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Product Name!';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                      id: _newOrder.id,
-                      productName: _newOrder.productName,
-                      partyName: value!,
-                      factoryName: _newOrder.factoryName,
-                      address: _newOrder.address,
-                      quantity: _newOrder.quantity,
-                      productDetail: _newOrder.productDetail,
-                      date: _newOrder.date);
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(label: Text('Factory Name')),
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus();
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Product Name!';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                      id: _newOrder.id,
-                      productName: _newOrder.productName,
-                      partyName: _newOrder.partyName,
-                      factoryName: value!,
-                      address: _newOrder.address,
-                      quantity: _newOrder.quantity,
-                      productDetail: _newOrder.productDetail,
-                      date: _newOrder.date);
-                },
-              ),
-              // TextFormField(
-              //   decoration: const InputDecoration(label: Text('Address')),
-              //   textInputAction: TextInputAction.next,
-              //   onFieldSubmitted: (_) {
-              //     FocusScope.of(context).requestFocus();
-              //   },
-              //   validator: (value) {
-              //     if (value!.isEmpty) {
-              //       return 'Please enter Product Name!';
-              //     }
-              //     return null;
-              //   },
-              // ),
-              TextFormField(
-                decoration: const InputDecoration(label: Text('Address')),
-                maxLines: 3,
-                keyboardType: TextInputType.multiline,
-                // focusNode: _descriptionFocusNode,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter anything';
-                  }
-                  // if (value.length <= 10) {
-                  //   return 'above 10';
-                  // }
-                  return null;
-                },
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                      id: _newOrder.id,
-                      productName: _newOrder.productName,
-                      partyName: _newOrder.partyName,
-                      factoryName: _newOrder.factoryName,
-                      address: value!,
-                      quantity: _newOrder.quantity,
-                      productDetail: _newOrder.productDetail,
-                      date: _newOrder.date);
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(label: Text('Quantity (KG)')),
-                textInputAction: TextInputAction.next,
-                // onFieldSubmitted: (_) {
-                //   FocusScope.of(context).requestFocus();
-                // },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Quantity!';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                      id: _newOrder.id,
-                      productName: _newOrder.productName,
-                      partyName: _newOrder.partyName,
-                      factoryName: _newOrder.factoryName,
-                      address: _newOrder.address,
-                      quantity: value!,
-                      productDetail: _newOrder.productDetail,
-                      date: _newOrder.date);
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(label: Text('Description')),
-                maxLines: 5,
-                keyboardType: TextInputType.multiline,
-                // focusNode: _descriptionFocusNode,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter anything';
-                  }
-                  // if (value.length <= 10) {
-                  //   return 'above 10';
-                  // }
-                  return null;
-                },
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                      id: _newOrder.id,
-                      productName: _newOrder.productName,
-                      partyName: _newOrder.partyName,
-                      factoryName: _newOrder.factoryName,
-                      address: _newOrder.address,
-                      quantity: _newOrder.quantity,
-                      productDetail: value!,
-                      date: _newOrder.date);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            );
+          } else {
+            return const MyLogin();
+          }
+        });
   }
 }

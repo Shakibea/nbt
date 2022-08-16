@@ -24,19 +24,31 @@ class _MyLoginState extends State<MyLogin> {
   }
 
   Future singIn() async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+              child: CircularProgressIndicator(),
+            ));
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
 
       if (FirebaseAuth.instance.currentUser != null) {
-        Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
+        // Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        print(e);
       }
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
     }
+
+    Navigator.popUntil(context, (route) => route.isFirst);
   }
 
   @override

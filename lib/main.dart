@@ -58,6 +58,7 @@ class MyApp extends StatelessWidget {
       ],
       // create: (_) => Transactions(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'NBT',
         theme: ThemeData(
           primarySwatch: Colors.blue,
