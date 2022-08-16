@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nbt/screens/returns_screen.dart';
@@ -32,7 +33,9 @@ class _MyLoginState extends State<MyLogin> {
         Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 

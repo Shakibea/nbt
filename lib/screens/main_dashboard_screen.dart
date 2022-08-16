@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -31,14 +32,17 @@ class MainDashboardScreen extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            "Kh. Shakib Ebna Atiq",
-                            style: GoogleFonts.openSans(
-                                textStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold)),
-                          ),
+
+                            Text(
+                              FirebaseAuth.instance.currentUser == null ? "Default" : FirebaseAuth.instance.currentUser!.email.toString(),
+                              style: GoogleFonts.openSans(
+                                  textStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+
+
                           const SizedBox(
                             height: 4,
                           ),
