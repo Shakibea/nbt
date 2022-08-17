@@ -23,8 +23,11 @@ class RequisitionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var requisitionData = Provider.of<Requisitions>(context);
     var requisition = requisitionData.requisitions;
-    final CollectionReference requisitions =
-        FirebaseFirestore.instance.collection('requisitions');
+
+    // CollectionReference Will Not Because, using orderBy;
+    Query requisitions = FirebaseFirestore.instance
+        .collection('requisitions')
+        .orderBy('date', descending: true);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(

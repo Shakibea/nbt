@@ -8,21 +8,21 @@ class Requisitions with ChangeNotifier {
   final requisitionDB = FirebaseFirestore.instance.collection('requisitions');
 
   final List<Requisition> _requisitions = [
-    Requisition(
-      id: '101',
-      productName: 'Shakib',
-      reqQuantity: '1.2 MT',
-      date: DateTime.now(),
-      remarks: 'Yeeee',
-      status: Status.OrderPlaced,
-    ),
-    Requisition(
-      id: '102',
-      productName: 'kib',
-      reqQuantity: '1.5 MT',
-      date: DateTime.now(),
-      status: Status.RequestSent,
-    ),
+    // Requisition(
+    //   id: '101',
+    //   productName: 'Shakib',
+    //   reqQuantity: '1.2 MT',
+    //   date: DateTime.now(),
+    //   remarks: 'Yeeee',
+    //   status: Status.OrderPlaced,
+    // ),
+    // Requisition(
+    //   id: '102',
+    //   productName: 'kib',
+    //   reqQuantity: '1.5 MT',
+    //   date: DateTime.now(),
+    //   status: Status.RequestSent,
+    // ),
   ];
 
   List<Requisition> get requisitions {
@@ -40,6 +40,7 @@ class Requisitions with ChangeNotifier {
         FirebaseFirestore.instance.collection('requisitions').doc();
     final newRequistion = Requisition(
         id: requisition.id,
+        uid: docRequisition.id,
         productName: requisition.productName,
         reqQuantity: requisition.reqQuantity,
         remarks: requisition.remarks,
@@ -54,7 +55,7 @@ class Requisitions with ChangeNotifier {
     // final docOrder = requisitionDB.doc(id);
     // var ss = readSingleOrder(id);
     // final docOrder =
-    requisitionDB.where('id', isEqualTo: id).get().then((snapshot) async {
+    requisitionDB.where('uid', isEqualTo: id).get().then((snapshot) async {
       for (DocumentSnapshot ds in snapshot.docs) {
         await ds.reference.delete();
         print(ds.reference);
@@ -63,8 +64,8 @@ class Requisitions with ChangeNotifier {
     // await docOrder.delete();
   }
 
-  Future<Requisition?> readSingleOrder(String id) async {
-    final docReq = requisitionDB.where('id', isEqualTo: id);
+  Future<Requisition> readSingleOrder(String id) async {
+    final docReq = requisitionDB.where('uid', isEqualTo: id);
     final snapShot = await docReq.get();
 
     // if (snapShot.exists) {
@@ -72,10 +73,14 @@ class Requisitions with ChangeNotifier {
     // }
   }
 
-  Future<void> updateRequisition(Requisition requisition, String id) async {
-    // final docRequisition = requisitionDB.doc(id);
+  Future updateRequisition(Requisition requisition, String id) async {
+    // final tentativeETA = requisitionDB
+    //     .doc(id)
+    //     .get()
+    //     .then((value) => value['tentativeETA']) as String;
     final updateReq = Requisition(
       id: requisition.id,
+      uid: id,
       productName: requisition.productName,
       reqQuantity: requisition.reqQuantity,
       remarks: requisition.remarks,
@@ -85,7 +90,7 @@ class Requisitions with ChangeNotifier {
     final json = updateReq.toJson();
     // await docRequisition.update(json);
 
-    requisitionDB.where('id', isEqualTo: id).get().then((snapshot) async {
+    requisitionDB.where('uid', isEqualTo: id).get().then((snapshot) async {
       for (DocumentSnapshot ds in snapshot.docs) {
         await ds.reference.update(json);
       }

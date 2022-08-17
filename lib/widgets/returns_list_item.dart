@@ -5,15 +5,20 @@ import 'package:nbt/providers/return.dart';
 import 'package:nbt/utils/colors.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/returns.dart';
+
 class ReturnsListItem extends StatelessWidget {
-  const ReturnsListItem({Key? key}) : super(key: key);
+  // const ReturnsListItem({Key? key}) : super(key: key);
+
+  final Return returns;
+  ReturnsListItem(this.returns);
 
   @override
   Widget build(BuildContext context) {
-    final returns = Provider.of<Return>(context, listen: false);
+    // final returns = Provider.of<Return>(context, listen: false);
     return Card(
       elevation: 6,
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
       child: Column(
         children: [
           ListTile(
@@ -24,7 +29,7 @@ class ReturnsListItem extends StatelessWidget {
             leading: CircleAvatar(
                 backgroundColor: colors['returns'],
                 child: Padding(
-                  padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(3),
                   child: FittedBox(
                     child: Text(
                       returns.id,
@@ -60,6 +65,7 @@ class ReturnsListItem extends StatelessWidget {
                 children: [
                   Text(
                     returns.quantity,
+                    softWrap: true,
                     style: TextStyle(
                         color: colors['returns'],
                         fontWeight: FontWeight.bold,
@@ -70,7 +76,11 @@ class ReturnsListItem extends StatelessWidget {
                   //   style: const TextStyle(fontWeight: FontWeight.bold),
                   // ),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<Returns>(context, listen: false)
+                            .deleteRequisition(returns.id);
+                        // Navigator.pop(context);
+                      },
                       icon: const Icon(
                         Icons.remove_circle_outline,
                         color: Colors.red,

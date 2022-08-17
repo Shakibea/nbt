@@ -20,6 +20,7 @@ class RequisitionDetailsScreen extends StatefulWidget {
 
 class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
   final _tentativeETAController = TextEditingController();
+  final _form = GlobalKey<FormFieldState>();
 
   @override
   void dispose() {
@@ -32,6 +33,7 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
     final requisitionId = ModalRoute.of(context)?.settings.arguments as String;
     var requisitions = Provider.of<Requisitions>(context, listen: false)
         .readSingleOrder(requisitionId);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Requisition'),
@@ -199,11 +201,21 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                       const SizedBox(
                         height: 30,
                       ),
-                      const TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Tentative ETA',
-                          hintText: 'Tentative ETA',
+                      Form(
+                        key: _form,
+                        child: TextFormField(
+                          controller: requisition.tentativeETA == ''
+                              ? _tentativeETAController
+                              : TextEditingController(
+                                  text: '${requisition.tentativeETA}'),
+                          onChanged: (value) {
+                            _tentativeETAController.text = value;
+                          },
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Tentative ETA',
+                            hintText: 'Tentative ETA',
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -218,14 +230,17 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                           //   'status': Status.OrderPlaced.name,
                           // });
 
+                          // _form.currentState!.save();
                           FirebaseFirestore.instance
                               .collection('requisitions')
-                              .where('id', isEqualTo: requisitionId)
+                              .where('uid', isEqualTo: requisitionId)
                               .get()
                               .then((snapshot) async {
                             for (DocumentSnapshot ds in snapshot.docs) {
                               await ds.reference.update({
                                 'status': Status.OrderPlaced.name,
+                                'tentativeETA':
+                                    _tentativeETAController.text.trim()
                               });
                             }
                           });

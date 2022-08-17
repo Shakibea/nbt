@@ -8,11 +8,14 @@ import 'package:provider/provider.dart';
 import '../providers/inventory.dart';
 
 class InventoryListItem extends StatelessWidget {
-  const InventoryListItem({Key? key}) : super(key: key);
+  // const InventoryListItem({Key? key}) : super(key: key);
+
+  final inventory;
+  InventoryListItem(this.inventory);
 
   @override
   Widget build(BuildContext context) {
-    final inventory = Provider.of<Inventory>(context, listen: false);
+    // final inventory = Provider.of<Inventory>(context, listen: false);
     return Card(
       elevation: 6,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),

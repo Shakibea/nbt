@@ -171,20 +171,20 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              width: double.infinity,
-              height: (MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.4,
-              child: ListView.builder(
-                itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-                  value: inventoryData[index],
-                  child: InventoryListItem(),
-                ),
-                itemCount: inventoryData.length,
-              ),
-            ),
+            // SizedBox(
+            //   width: double.infinity,
+            //   height: (MediaQuery.of(context).size.height -
+            //           AppBar().preferredSize.height -
+            //           MediaQuery.of(context).padding.top) *
+            //       0.4,
+            //   child: ListView.builder(
+            //     itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+            //       value: inventoryData[index],
+            //       child: InventoryListItem(),
+            //     ),
+            //     itemCount: inventoryData.length,
+            //   ),
+            // ),
           ],
         ),
       ),

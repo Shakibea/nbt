@@ -52,8 +52,9 @@ class POListScreen extends StatelessWidget {
     var transaction = transactionData.transactions;
     var transaction2 = transactionData.readOrders();
 
-    final CollectionReference products =
-        FirebaseFirestore.instance.collection('orders');
+    final Query products = FirebaseFirestore.instance
+        .collection('orders')
+        .orderBy('date', descending: true);
 
     Stream<List<Transaction1>> readOrders() => FirebaseFirestore.instance
         .collection('orders')

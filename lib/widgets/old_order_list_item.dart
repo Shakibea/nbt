@@ -10,12 +10,12 @@ import '../screens/order_details_screen.dart';
 class OldOrderListItem extends StatelessWidget {
   // const OldOrderListItem({Key? key}) : super(key: key);
 
-  // final Transaction1 order;
-  // OldOrderListItem(this.order);
+  final Transaction1 order;
+  OldOrderListItem(this.order);
 
   @override
   Widget build(BuildContext context) {
-    final order = Provider.of<Transaction1>(context, listen: false);
+    // final order = Provider.of<Transaction1>(context, listen: false);
     return Card(
       elevation: 6,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),

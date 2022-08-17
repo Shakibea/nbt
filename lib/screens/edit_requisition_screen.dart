@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/providers/requisitions.dart';
+import 'package:nbt/screens/requisition_details_screen.dart';
 import 'package:nbt/screens/requisition_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +29,7 @@ class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
 
   var _initLoad = false;
   late String id;
+  late String uid;
 
   @override
   void initState() {
@@ -46,6 +48,7 @@ class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
           final data = doc.data() as Map<String, dynamic>;
           // _dateController.text = DateFormat.yMMMMd().format(data['date']);
           id = data['id'];
+          uid = data['uid'];
           _requisitionNumController.text = id;
           _dateController.text =
               DateFormat.yMMMMd().format((data['date'] as Timestamp).toDate());
@@ -82,7 +85,9 @@ class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
     _form.currentState?.save();
 
     Provider.of<Requisitions>(context, listen: false)
-        .updateRequisition(requisition, id);
+        .updateRequisition(requisition, uid);
+
+    // setState(() {});
   }
 
   @override
@@ -167,8 +172,9 @@ class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
                       remarks: _remarksController.text);
                   _saveForm(newReq);
 
-                  Navigator.pop(
-                      context);
+                  // Navigator.pop(context);
+                  Navigator.pushReplacementNamed(
+                      context, RequisitionScreen.routeName);
                 },
                 child: const Text(
                   'Request Sent',

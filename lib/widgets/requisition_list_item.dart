@@ -25,7 +25,7 @@ class RequisitionListItem extends StatelessWidget {
               Navigator.pushNamed(
                 context,
                 RequisitionDetailsScreen.routeName,
-                arguments: requisition.id,
+                arguments: requisition.uid,
               );
             },
             leading: CircleAvatar(

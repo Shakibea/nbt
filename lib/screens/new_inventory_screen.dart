@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nbt/providers/inventory.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/inventories.dart';
 
 class NewInventoryScreen extends StatefulWidget {
   const NewInventoryScreen({Key? key}) : super(key: key);
@@ -15,6 +19,18 @@ class _NewInventoryScreenState extends State<NewInventoryScreen> {
   final _initStockController = TextEditingController();
   final _remarksController = TextEditingController();
   final _entryDateController = TextEditingController();
+  final _idController = TextEditingController();
+
+  void _saveForm(Inventory inventory) {
+    // var valid = _form.currentState?.validate();
+    // if (!valid!) {
+    //   return; // not valid
+    // }
+    // _form.currentState?.save();
+
+    Provider.of<Inventories>(context, listen: false).createOrder(inventory);
+    Navigator.of(context).pop();
+  }
 
   @override
   void initState() {
@@ -28,6 +44,7 @@ class _NewInventoryScreenState extends State<NewInventoryScreen> {
     _initStockController.dispose();
     _remarksController.dispose();
     _entryDateController.dispose();
+    _idController.dispose();
     super.dispose();
   }
 
@@ -43,6 +60,14 @@ class _NewInventoryScreenState extends State<NewInventoryScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Container(
+                margin: const EdgeInsets.only(top: 8, bottom: 8),
+                child: TextFormField(
+                  controller: _idController,
+                  decoration: const InputDecoration(
+                      label: Text('Id'), border: OutlineInputBorder()),
+                ),
+              ),
               Container(
                 margin: const EdgeInsets.only(top: 8, bottom: 8),
                 child: TextFormField(
@@ -83,7 +108,14 @@ class _NewInventoryScreenState extends State<NewInventoryScreen> {
                 padding: const EdgeInsets.all(8),
                 child: ElevatedButton(
                   onPressed: () {
-                    //todo
+                    final newReq = Inventory(
+                        id: _idController.text,
+                        uid: '',
+                        date: DateTime.now(),
+                        productName: _nameOfProductController.text,
+                        initStock: _initStockController.text,
+                        remarks: _remarksController.text);
+                    _saveForm(newReq);
                   },
                   child: const Text(
                     'Save',

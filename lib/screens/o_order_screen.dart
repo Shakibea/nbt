@@ -32,8 +32,8 @@ class _OOrderScreenState extends State<OOrderScreen> {
   @override
   void didChangeDependencies() {
     if (!initLoad) {
-      var transactionData = Provider.of<Transactions>(context, listen: false);
-      transactionData.getData();
+      // var transactionData = Provider.of<Transactions>(context, listen: false);
+      // transactionData.getData();
       initLoad = true;
     }
     super.didChangeDependencies();
@@ -46,50 +46,51 @@ class _OOrderScreenState extends State<OOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final CollectionReference oldOrders =
-        FirebaseFirestore.instance.collection('orders');
+    final Query oldOrders = FirebaseFirestore.instance
+        .collection('orders')
+        .where('status', isEqualTo: 'Delivered');
 
-    final transactionData = Provider.of<Transactions>(context, listen: false);
     // var transaction = transactionData.transactions;
     // var transactionName = Provider.of<Transaction>(context);
 
-    final transaction = transactionData.sortedList;
-    transaction.clear();
+    //can be use
+    // final transactionData = Provider.of<Transactions>(context, listen: false);
+    // final transaction = transactionData.sortedList;
+    // transaction.clear();
 
     return Scaffold(
       appBar: appBarForNewOrder('Old Order List'),
       drawer: const AppDrawer(),
-      body:
-          // StreamBuilder(
-          //   stream: oldOrders.snapshots(),
-          //   builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          //     if (streamSnapshot.hasData) {
-          //       final snapShot = streamSnapshot.data!.docs;
-          //       return ListView.builder(
-          //           itemCount: snapShot.length,
-          //           itemBuilder: (context, index) {
-          //             final documentSnapshotToList = snapShot
-          //                 .map((e) => Transaction1.fromJson(
-          //                     e.data() as Map<String, dynamic>))
-          //                 .toList();
-          //
-          //             return OldOrderListItem(documentSnapshotToList[index]);
-          //           });
-          //     }
-          //     return const Center(
-          //       child: CircularProgressIndicator(),
-          //     );
-          //   },
-          // ),
+      body: StreamBuilder(
+        stream: oldOrders.snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+          if (streamSnapshot.hasData) {
+            final snapShot = streamSnapshot.data!.docs;
+            return ListView.builder(
+                itemCount: snapShot.length,
+                itemBuilder: (context, index) {
+                  final documentSnapshotToList = snapShot
+                      .map((e) => Transaction1.fromJson(
+                          e.data() as Map<String, dynamic>))
+                      .toList();
 
-          //OLD WITH PROVIDER
-          ListView.builder(
-        itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
-          value: transaction[index],
-          child: OldOrderListItem(),
-        ),
-        itemCount: transaction.length,
+                  return OldOrderListItem(documentSnapshotToList[index]);
+                });
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
+
+      //OLD WITH PROVIDER
+      //     ListView.builder(
+      //   itemBuilder: (ctx, index) => ChangeNotifierProvider.value(
+      //     value: transaction[index],
+      //     child: OldOrderListItem(),
+      //   ),
+      //   itemCount: transaction.length,
+      // ),
     );
   }
 }
