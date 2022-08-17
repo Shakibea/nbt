@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/screens/edit_order_screen.dart';
 import 'package:nbt/utils/colors.dart';
+import 'package:nbt/widgets/custom_radio_button.dart';
 import 'package:nbt/widgets/order_details_text_content.dart';
 import 'package:nbt/widgets/order_details_text_title.dart';
 import 'package:provider/provider.dart';
@@ -125,7 +126,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                   MaterialStateProperty.all(Colors.red)),
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
               );

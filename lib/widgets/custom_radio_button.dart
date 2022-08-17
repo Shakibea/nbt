@@ -35,7 +35,7 @@ class _CustomRadioState extends State<CustomRadio> {
 
       orderId = routeArgs['id'];
       getStatus = routeArgs['getStatus'];
-      print(routeArgs['getStatus']);
+      // print(routeArgs['getStatus']);
       sampleData.add(RadioModel(getStatus == Status.MltShortage ? true : false,
           'Mlt Shortage', 0xffE50019, 'MltShortage'));
       sampleData.add(RadioModel(getStatus == Status.Delivered ? true : false,

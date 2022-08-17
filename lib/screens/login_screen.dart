@@ -38,10 +38,10 @@ class _MyLoginState extends State<MyLogin> {
       if (FirebaseAuth.instance.currentUser != null) {
         // Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
       }
-    } on FirebaseAuthException catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+    // } on FirebaseAuthException catch (e) {
+    //   if (kDebugMode) {
+    //     print(e);
+    //   }
     } catch (e) {
       if (kDebugMode) {
         print(e);

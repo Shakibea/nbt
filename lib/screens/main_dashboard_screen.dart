@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +14,7 @@ class MainDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fireAuth = FirebaseAuth.instance;
+
     return Scaffold(
       // backgroundColor: const Color(0xff392850),
       body: Column(
@@ -28,6 +30,9 @@ class MainDashboardScreen extends StatelessWidget {
                 StreamBuilder<User?>(
                     stream: fireAuth.authStateChanges(),
                     builder: (context, snapshot) {
+                      // if(snapshot.hasData){
+                      //   getUser(snapshot.data!.uid);
+                      // }
                       return Padding(
                         padding: const EdgeInsets.only(left: 16, right: 16),
                         child: Row(
@@ -40,7 +45,7 @@ class MainDashboardScreen extends StatelessWidget {
                                 Text(
                                   fireAuth.currentUser == null
                                       ? "NBT User"
-                                      : fireAuth.currentUser!.email.toString(),
+                                      : "${fireAuth.currentUser!.email.toString()}",
                                   style: GoogleFonts.openSans(
                                       textStyle: const TextStyle(
                                           color: Colors.white,
