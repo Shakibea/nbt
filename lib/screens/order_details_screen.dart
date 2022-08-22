@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/screens/edit_order_screen.dart';
+import 'package:nbt/screens/po_list_screen.dart';
 import 'package:nbt/utils/colors.dart';
 import 'package:nbt/widgets/custom_radio_button.dart';
 import 'package:nbt/widgets/order_details_text_content.dart';
 import 'package:nbt/widgets/order_details_text_title.dart';
+import 'package:nbt/widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/transaction.dart';
@@ -22,6 +24,11 @@ class OrderDetailsScreen extends StatelessWidget {
     // var order = Provider.of<Transactions>(context).findById(orderId);
     var order = Provider.of<Transactions>(context).readSingleOrder(orderId);
     // final deleteOrder = Provider.of<Transactions>(context).deleteOrder(orderId);
+
+    void deleteOrder() {
+      Provider.of<Transactions>(context, listen: false).deleteOrder(orderId);
+      Navigator.pushReplacementNamed(context, POListScreen.routeName);
+    }
 
     return Scaffold(
       appBar: appBarForNewOrder('Order Details Page'),
@@ -108,17 +115,22 @@ class OrderDetailsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, EditOrdersScreen.routeName,
-                                  arguments: orderId);
-                            },
-                            child: const Text('Edit')),
+                          onPressed: () {
+                            showAlertDialog(context, () {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                EditOrdersScreen.routeName,
+                                arguments: orderId,
+                              );
+                            });
+                          },
+                          child: const Text('Edit'),
+                        ),
                         ElevatedButton(
                           onPressed: () {
-                            Provider.of<Transactions>(context, listen: false)
-                                .deleteOrder(orderId);
-                            Navigator.pop(context);
+                            showAlertDialog(context, deleteOrder);
+
+                            // Navigator.pop(context);
                           },
                           child: const Text('Delete'),
                           style: ButtonStyle(

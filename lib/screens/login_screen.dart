@@ -24,12 +24,12 @@ class _MyLoginState extends State<MyLogin> {
   }
 
   Future singIn() async {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(
-              child: CircularProgressIndicator(),
-            ));
+    // showDialog(
+    //     context: context,
+    //     barrierDismissible: false,
+    //     builder: (context) => const Center(
+    //           child: CircularProgressIndicator(),
+    //         ));
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
@@ -48,7 +48,7 @@ class _MyLoginState extends State<MyLogin> {
       }
     }
 
-    Navigator.popUntil(context, (route) => route.isFirst);
+    // Navigator.popUntil(context, (route) => route.isFirst);
   }
 
   @override

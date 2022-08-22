@@ -10,7 +10,7 @@ import '../providers/inventory.dart';
 class InventoryListItem extends StatelessWidget {
   // const InventoryListItem({Key? key}) : super(key: key);
 
-  final inventory;
+  final Inventory inventory;
   InventoryListItem(this.inventory);
 
   @override
@@ -24,7 +24,7 @@ class InventoryListItem extends StatelessWidget {
           ListTile(
             onTap: () {
               Navigator.pushNamed(context, InventoryDetailsScreen.routeName,
-                  arguments: inventory.id);
+                  arguments: inventory.uid);
             },
             leading: CircleAvatar(
                 backgroundColor: colors['inventory'],

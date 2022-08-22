@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nbt/screens/change_pin_screen.dart';
 import 'package:nbt/screens/edit_order_screen.dart';
 import 'package:nbt/screens/edit_requisition_screen.dart';
 import 'package:nbt/screens/login_screen.dart';
@@ -84,6 +85,7 @@ class MyApp extends StatelessWidget {
           EditOrdersScreen.routeName: (_) => EditOrdersScreen(),
           EditRequisitionScreen.routeName: (_) => EditRequisitionScreen(),
           MyLogin.routeName: (_) => MyLogin(),
+          ChangePIN.routeName: (_) => ChangePIN(),
         },
       ),
     );

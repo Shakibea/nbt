@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nbt/screens/order_details_screen.dart';
 import 'package:nbt/widgets/custom_radio_button.dart';
+import 'package:nbt/widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -21,52 +22,52 @@ class _POListItemState extends State<POListItem> {
   final _pinController = TextEditingController();
   var _expanded = false;
 
-  void showAlertDialog(BuildContext context) {
-    // set up the buttons
-    Widget cancelButton = TextButton(
-      child: Text("Cancel"),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = TextButton(
-      child: Text("Continue"),
-      onPressed: () {
-        if (_pinController.text == '1234') {
-          Navigator.pushReplacementNamed(context, CustomRadio.routeName,
-              arguments: {
-                'id': widget.product.id,
-                'getStatus': widget.product.status
-              });
-
-          _pinController.text = '';
-        } else {
-          Navigator.pop(context);
-        }
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("AlertDialog"),
-      content: TextField(
-        decoration: const InputDecoration(label: Text('PIN')),
-        controller: _pinController,
-      ),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
+  // void showAlertDialog(BuildContext context) {
+  //   // set up the buttons
+  //   Widget cancelButton = TextButton(
+  //     child: const Text("Cancel"),
+  //     onPressed: () {
+  //       Navigator.pop(context);
+  //     },
+  //   );
+  //   Widget continueButton = TextButton(
+  //     child: const Text("Continue"),
+  //     onPressed: () {
+  //       if (_pinController.text == '1234') {
+  //         Navigator.pushReplacementNamed(context, CustomRadio.routeName,
+  //             arguments: {
+  //               'id': widget.product.id,
+  //               'getStatus': widget.product.status
+  //             });
+  //
+  //         _pinController.text = '';
+  //       } else {
+  //         Navigator.pop(context);
+  //       }
+  //     },
+  //   );
+  //
+  //   // set up the AlertDialog
+  //   AlertDialog alert = AlertDialog(
+  //     title: Text("AlertDialog"),
+  //     content: TextField(
+  //       decoration: const InputDecoration(label: Text('PIN')),
+  //       controller: _pinController,
+  //     ),
+  //     actions: [
+  //       cancelButton,
+  //       continueButton,
+  //     ],
+  //   );
+  //
+  //   // show the dialog
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return alert;
+  //     },
+  //   );
+  // }
 
   @override
   void dispose() {
@@ -88,7 +89,18 @@ class _POListItemState extends State<POListItem> {
                   arguments: widget.product.id);
             },
             onLongPress: () {
-              showAlertDialog(context);
+              // final Map<String, dynamic> dd = {
+              //   'id': widget.product.id,
+              //   'status': widget.product.status
+              // };
+              // showAlertDialog(context);
+              showAlertDialog(context, () {
+                Navigator.pushReplacementNamed(context, CustomRadio.routeName,
+                    arguments: {
+                      'id': widget.product.id,
+                      'getStatus': widget.product.status
+                    });
+              });
               // Navigator.pushNamed(context, CustomRadio.routeName, arguments: {
               //   'id': widget.product.id,
               //   'getStatus': widget.product.status

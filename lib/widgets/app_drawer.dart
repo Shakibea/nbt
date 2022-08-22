@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nbt/screens/change_pin_screen.dart';
 import 'package:nbt/screens/inventory_details_screen.dart';
 import 'package:nbt/screens/inventory_screen.dart';
 import 'package:nbt/screens/login_screen.dart';
@@ -76,6 +77,14 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Login'),
             onTap: () {
               Navigator.pushReplacementNamed(context, MyLogin.routeName);
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.password),
+            title: const Text('Change PIN'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, ChangePIN.routeName);
             },
           ),
         ],

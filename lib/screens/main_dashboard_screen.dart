@@ -44,7 +44,7 @@ class MainDashboardScreen extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                   fireAuth.currentUser == null
-                                      ? "NBT User"
+                                      ? "NBT Admin"
                                       : "${fireAuth.currentUser!.email.toString()}",
                                   style: GoogleFonts.openSans(
                                       textStyle: const TextStyle(

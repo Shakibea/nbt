@@ -60,5 +60,20 @@ class Inventories with ChangeNotifier {
     await docInventory.set(json);
   }
 
+  Future<Inventory?> readSingleOrder(String id) async {
+    final docOrder =
+        FirebaseFirestore.instance.collection('inventories').doc(id);
+    final snapShot = await docOrder.get();
+
+    if (snapShot.exists) {
+      return Inventory.fromJson(snapShot.data()!);
+    }
+  }
+
+  Future deleteOrder(String id) async {
+    final docOrder =
+        FirebaseFirestore.instance.collection('inventories').doc(id);
+    await docOrder.delete();
+  }
 //FIRESTORE END
 }

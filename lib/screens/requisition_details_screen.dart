@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/screens/edit_requisition_screen.dart';
+import 'package:nbt/screens/requisition_screen.dart';
 import 'package:nbt/utils/colors.dart';
+import 'package:nbt/widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/requisition.dart';
@@ -172,9 +174,11 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context, EditRequisitionScreen.routeName,
-                                  arguments: requisitionId);
+                              showAlertDialog(context, () {
+                                Navigator.pushReplacementNamed(
+                                    context, EditRequisitionScreen.routeName,
+                                    arguments: requisitionId);
+                              });
                             },
                             child: const Text('Edit'),
                             style: ButtonStyle(
@@ -185,9 +189,13 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              Provider.of<Requisitions>(context, listen: false)
-                                  .deleteRequisition(requisitionId);
-                              Navigator.pop(context);
+                              showAlertDialog(context, () {
+                                Provider.of<Requisitions>(context,
+                                        listen: false)
+                                    .deleteRequisition(requisitionId);
+                                Navigator.pushReplacementNamed(
+                                    context, RequisitionScreen.routeName);
+                              });
                             },
                             child: const Text('Delete'),
                             style: ButtonStyle(
