@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +16,29 @@ class MyLogin extends StatefulWidget {
 class _MyLoginState extends State<MyLogin> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  String role = 'user';
+
+  void _checkAuth() async {
+    final fireCurrentAuth = FirebaseAuth.instance.currentUser!.uid;
+    final DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(fireCurrentAuth)
+        .get();
+
+    // setState(() {
+    role = snapshot['role'];
+    // });
+
+    if (role == 'admin') {
+      // Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
+      print('your role: $role');
+    } else if (role == 'member') {
+      // Navigator.pushReplacementNamed(context, RequisitionScreen.routeName);
+      print('your role: $role');
+    }
+    print('your role: $role');
+  }
 
   @override
   void dispose() {
@@ -36,6 +60,15 @@ class _MyLoginState extends State<MyLogin> {
           password: _passwordController.text.trim());
 
       if (FirebaseAuth.instance.currentUser != null) {
+        // _checkAuth();
+        final DocumentSnapshot snapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .get();
+
+        role = snapshot['role'];
+
+        // Navigator.pop(context);
         // Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
       }
     } on FirebaseAuthException catch (e) {

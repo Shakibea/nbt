@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nbt/providers/requisitions.dart';
 import 'package:nbt/screens/inventory_screen.dart';
@@ -11,6 +12,7 @@ import '../providers/transactions.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/po_list_item.dart';
+import '../widgets/snackbar_widget.dart';
 import 'new_orders_screen.dart';
 import 'old_orders_screen.dart';
 
@@ -48,10 +50,18 @@ class RequisitionScreen extends StatelessWidget {
               children: [
                 InkWell(
                   // onTap: () => _startAddNewTransaction(context),
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    NewRequisitionScreen.routeName,
-                  ),
+                  onTap: () {
+                    final user = FirebaseAuth.instance.currentUser;
+                    if (user == null) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(snackBar(context));
+                      return;
+                    }
+                    Navigator.pushNamed(
+                      context,
+                      NewRequisitionScreen.routeName,
+                    );
+                  },
                   // Navigator.pushNamed(context, NewOrdersScreen.routeName),
                   child: CustomButton(
                     title: 'New Requisition',

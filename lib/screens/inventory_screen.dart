@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nbt/screens/new_inventory_screen.dart';
 import 'package:nbt/widgets/show_alert_dialog.dart';
@@ -8,6 +9,7 @@ import '../providers/inventories.dart';
 import '../providers/inventory.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/inventory_list_item.dart';
+import '../widgets/snackbar_widget.dart';
 
 class InventoryScreen extends StatelessWidget {
   const InventoryScreen({Key? key}) : super(key: key);
@@ -30,6 +32,11 @@ class InventoryScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
+              final user = FirebaseAuth.instance.currentUser;
+              if (user == null) {
+                ScaffoldMessenger.of(context).showSnackBar(snackBar(context));
+                return;
+              }
               Navigator.pushNamed(context, NewInventoryScreen.routeName);
             },
             icon: const Icon(Icons.add),

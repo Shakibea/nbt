@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
+import 'package:nbt/screens/login_screen.dart';
 import 'package:nbt/screens/new_orders_screen.dart';
 import 'package:nbt/screens/o_order_screen.dart';
 import 'package:nbt/widgets/app_drawer.dart';
+import 'package:nbt/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/transaction.dart';
-import '../screens/old_orders_screen.dart';
 import '../widgets/new_transaction.dart';
 import '../widgets/po_list_item.dart';
 import '../providers/transactions.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/app_bar_functions.dart';
-import 'order_details_screen.dart';
 
 class POListScreen extends StatelessWidget {
   const POListScreen({Key? key}) : super(key: key);
@@ -80,11 +79,20 @@ class POListScreen extends StatelessWidget {
               children: [
                 InkWell(
                   // onTap: () => _startAddNewTransaction(context),
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    NewOrdersScreen.routeName,
-                    // arguments: transaction.length,
-                  ),
+                  onTap: () {
+                    final user = FirebaseAuth.instance.currentUser;
+                    if (user == null) {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(snackBar(context));
+                      return;
+                    }
+
+                    Navigator.pushNamed(
+                      context,
+                      NewOrdersScreen.routeName,
+                      // arguments: transaction.length,
+                    );
+                  },
                   // Navigator.pushNamed(context, NewOrdersScreen.routeName),
                   child: CustomButton(
                     title: 'Create New Order',

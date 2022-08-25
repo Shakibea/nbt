@@ -23,6 +23,12 @@ class RequisitionDetailsScreen extends StatefulWidget {
 class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
   final _tentativeETAController = TextEditingController();
   final _form = GlobalKey<FormFieldState>();
+  DateTime dateTime = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -54,7 +60,7 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                       Row(
                         children: [
                           Text(
-                            'Date',
+                            'Date ${dateTime.day}/${dateTime.month}/${dateTime.year}',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -212,13 +218,18 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                       Form(
                         key: _form,
                         child: TextFormField(
-                          controller: requisition.tentativeETA == ''
-                              ? _tentativeETAController
-                              : TextEditingController(
-                                  text: '${requisition.tentativeETA}'),
-                          onChanged: (value) {
-                            _tentativeETAController.text = value;
-                          },
+                          controller: TextEditingController(
+                              text:
+                                  '${dateTime.day}/${dateTime.month}/${dateTime.year}'),
+                          // controller: requisition.tentativeETA == ''
+                          //     ? _tentativeETAController
+                          //     : TextEditingController(
+                          //         text:
+                          //             '${dateTime.day}/${dateTime.month}/${dateTime.year}'),
+                          // onChanged: (value) {
+                          //   _tentativeETAController.text =
+                          //       '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+                          // },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Tentative ETA',
@@ -229,6 +240,23 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                       const SizedBox(
                         height: 26,
                       ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            DateTime? newDate = await showDatePicker(
+                                context: context,
+                                initialDate: dateTime,
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100));
+
+                            if (newDate == null) return;
+                            setState(() {
+                              dateTime = newDate;
+                            });
+                          },
+                          child: const Text('Choose Date!')),
+                      // const SizedBox(
+                      //   height: 26,
+                      // ),
                       ElevatedButton(
                         onPressed: () {
                           // final docOrder = FirebaseFirestore.instance

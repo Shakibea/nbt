@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nbt/providers/return.dart';
 import 'package:nbt/providers/returns.dart';
@@ -7,6 +8,8 @@ import 'package:nbt/utils/colors.dart';
 import 'package:nbt/widgets/app_drawer.dart';
 import 'package:nbt/widgets/returns_list_item.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/snackbar_widget.dart';
 
 class ReturnsScreen extends StatelessWidget {
   const ReturnsScreen({Key? key}) : super(key: key);
@@ -28,6 +31,11 @@ class ReturnsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
+              final user = FirebaseAuth.instance.currentUser;
+              if (user == null) {
+                ScaffoldMessenger.of(context).showSnackBar(snackBar(context));
+                return;
+              }
               Navigator.pushNamed(context, NewReturnsScreen.routeName);
             },
             icon: const Icon(Icons.add),

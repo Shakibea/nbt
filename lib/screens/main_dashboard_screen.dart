@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nbt/screens/login_screen.dart';
+import 'package:nbt/screens/requisition_screen.dart';
+import 'package:nbt/screens/returns_screen.dart';
 
 import '../widgets/main_grid_dashboard.dart';
 
@@ -14,6 +16,11 @@ class MainDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fireAuth = FirebaseAuth.instance;
+
+    // void nagivatePage(Widget route) {
+    //   Navigator.pushReplacementNamed(
+    //       context, MaterialPageRoute(builder: (context) => route));
+    // }
 
     return Scaffold(
       // backgroundColor: const Color(0xff392850),
@@ -45,7 +52,7 @@ class MainDashboardScreen extends StatelessWidget {
                                 Text(
                                   fireAuth.currentUser == null
                                       ? "NBT Admin"
-                                      : "${fireAuth.currentUser!.email.toString()}",
+                                      : fireAuth.currentUser!.email.toString(),
                                   style: GoogleFonts.openSans(
                                       textStyle: const TextStyle(
                                           color: Colors.white,
@@ -58,7 +65,7 @@ class MainDashboardScreen extends StatelessWidget {
                                 Text(
                                   fireAuth.currentUser == null
                                       ? "User Information"
-                                      : fireAuth.currentUser!.uid.toString(),
+                                      : "",
                                   style: GoogleFonts.openSans(
                                       textStyle: const TextStyle(
                                           color: Color(0xffa29aac),
