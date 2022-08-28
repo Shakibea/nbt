@@ -2,7 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nbt/models/user_auth.dart';
+import 'package:nbt/screens/po_list_screen.dart';
 import 'package:nbt/screens/returns_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'main_dashboard_screen.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({Key? key}) : super(key: key);
@@ -19,25 +24,30 @@ class _MyLoginState extends State<MyLogin> {
 
   String role = 'user';
 
+  Future<void> setUserRole(String roleP) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('user_role', roleP);
+  }
+
   void _checkAuth() async {
     final fireCurrentAuth = FirebaseAuth.instance.currentUser!.uid;
     final DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection('users')
-        .doc(fireCurrentAuth)
+        .doc(fireCurrentAuth.toString())
         .get();
 
-    // setState(() {
     role = snapshot['role'];
-    // });
+    print('your role: $role');
 
     if (role == 'admin') {
-      // Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
+      setUserRole(role);
       print('your role: $role');
+      // Navigator.pushReplacementNamed(context, MinDashboardScreen.routeName);
     } else if (role == 'member') {
-      // Navigator.pushReplacementNamed(context, RequisitionScreen.routeName);
+      setUserRole(role);
       print('your role: $role');
+      // Navigator.pushReplacementNamed(context, MainDashboardScreen.routeName);
     }
-    print('your role: $role');
   }
 
   @override
@@ -60,15 +70,9 @@ class _MyLoginState extends State<MyLogin> {
           password: _passwordController.text.trim());
 
       if (FirebaseAuth.instance.currentUser != null) {
-        // _checkAuth();
-        final DocumentSnapshot snapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .get();
+        _checkAuth();
 
-        role = snapshot['role'];
-
-        // Navigator.pop(context);
+        Navigator.pop(context);
         // Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
       }
     } on FirebaseAuthException catch (e) {
@@ -81,7 +85,7 @@ class _MyLoginState extends State<MyLogin> {
       }
     }
 
-    // Navigator.popUntil(context, (route) => route.isFirst);
+    // navigatorKey.currentState!.popUntil(context, (route) => route.isFirst);
   }
 
   @override

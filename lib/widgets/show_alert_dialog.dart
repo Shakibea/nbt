@@ -12,7 +12,7 @@ void showAlertDialog(BuildContext context, VoidCallback navigatorFun) async {
   final pref = await SharedPreferences.getInstance();
   pinNumber = pref.getString('changePin');
 
-  print(pinNumber);
+  // print(pinNumber);
 
   if (pinNumber == null) {
     pin = '1234';

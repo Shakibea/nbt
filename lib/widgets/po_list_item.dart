@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nbt/screens/order_details_screen.dart';
 import 'package:nbt/widgets/custom_radio_button.dart';
 import 'package:nbt/widgets/show_alert_dialog.dart';
+import 'package:nbt/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -94,13 +96,18 @@ class _POListItemState extends State<POListItem> {
               //   'status': widget.product.status
               // };
               // showAlertDialog(context);
-              showAlertDialog(context, () {
-                Navigator.pushReplacementNamed(context, CustomRadio.routeName,
-                    arguments: {
-                      'id': widget.product.id,
-                      'getStatus': widget.product.status
-                    });
-              });
+              if (FirebaseAuth.instance.currentUser != null) {
+                showAlertDialog(context, () {
+                  Navigator.pushReplacementNamed(context, CustomRadio.routeName,
+                      arguments: {
+                        'id': widget.product.id,
+                        'getStatus': widget.product.status
+                      });
+                });
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(snackBar(context));
+              }
+
               // Navigator.pushNamed(context, CustomRadio.routeName, arguments: {
               //   'id': widget.product.id,
               //   'getStatus': widget.product.status

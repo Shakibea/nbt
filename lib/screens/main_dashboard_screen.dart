@@ -2,20 +2,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nbt/models/user_auth.dart';
 import 'package:nbt/screens/login_screen.dart';
 import 'package:nbt/screens/requisition_screen.dart';
 import 'package:nbt/screens/returns_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../providers/transactions.dart';
 import '../widgets/main_grid_dashboard.dart';
 
 class MainDashboardScreen extends StatelessWidget {
   const MainDashboardScreen({Key? key}) : super(key: key);
-
   static const routeName = '/main-dashboard';
 
+//   @override
+//   State<MainDashboardScreen> createState() => _MainDashboardScreenState();
+// }
+//
+// class _MainDashboardScreenState extends State<MainDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final fireAuth = FirebaseAuth.instance;
+
+    final user = '';
 
     // void nagivatePage(Widget route) {
     //   Navigator.pushReplacementNamed(
@@ -71,7 +81,7 @@ class MainDashboardScreen extends StatelessWidget {
                                           color: Color(0xffa29aac),
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600)),
-                                ),
+                                )
                               ],
                             ),
 
@@ -80,7 +90,10 @@ class MainDashboardScreen extends StatelessWidget {
                                 ? IconButton(
                                     alignment: Alignment.topCenter,
                                     icon: const Icon(Icons.logout),
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      final pref =
+                                          await SharedPreferences.getInstance();
+                                      pref.setString('user_role', 'user');
                                       fireAuth.signOut();
                                     })
                                 : IconButton(

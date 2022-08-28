@@ -7,6 +7,7 @@ import 'package:nbt/screens/o_order_screen.dart';
 import 'package:nbt/widgets/app_drawer.dart';
 import 'package:nbt/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../providers/transaction.dart';
 import '../widgets/new_transaction.dart';
@@ -79,18 +80,35 @@ class POListScreen extends StatelessWidget {
               children: [
                 InkWell(
                   // onTap: () => _startAddNewTransaction(context),
-                  onTap: () {
+                  onTap: () async {
                     final user = FirebaseAuth.instance.currentUser;
+                    final userRole;
+                    final pref = await SharedPreferences.getInstance();
+                    userRole = pref.getString('user_role');
                     if (user == null) {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(snackBar(context));
                       return;
+                    } else if (userRole == 'member') {
+                      final roleCheckMsg = SnackBar(
+                        content:
+                            const Text('Oops! Admin not allowed to create?'),
+                        action: SnackBarAction(
+                          label: 'Sign In',
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, MyLogin.routeName);
+                          },
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(roleCheckMsg);
+                      return;
                     }
 
+                    print('your user role will be: $userRole');
                     Navigator.pushNamed(
                       context,
                       NewOrdersScreen.routeName,
-                      // arguments: transaction.length,
                     );
                   },
                   // Navigator.pushNamed(context, NewOrdersScreen.routeName),

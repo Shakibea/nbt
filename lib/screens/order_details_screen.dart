@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/screens/edit_order_screen.dart';
@@ -7,11 +8,14 @@ import 'package:nbt/widgets/custom_radio_button.dart';
 import 'package:nbt/widgets/order_details_text_content.dart';
 import 'package:nbt/widgets/order_details_text_title.dart';
 import 'package:nbt/widgets/show_alert_dialog.dart';
+import 'package:nbt/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../providers/transaction.dart';
 import '../providers/transactions.dart';
 import '../widgets/app_bar_functions.dart';
+import 'login_screen.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   const OrderDetailsScreen({Key? key}) : super(key: key);
@@ -115,7 +119,31 @@ class OrderDetailsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            final user = FirebaseAuth.instance.currentUser;
+                            final userRole;
+                            final pref = await SharedPreferences.getInstance();
+                            userRole = pref.getString('user_role');
+                            if (user == null) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar(context));
+                              return;
+                            } else if (userRole == 'member') {
+                              final roleCheckMsg = SnackBar(
+                                content: const Text(
+                                    'Oops! Admin not allowed to create?'),
+                                action: SnackBarAction(
+                                  label: 'Sign In',
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, MyLogin.routeName);
+                                  },
+                                ),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(roleCheckMsg);
+                              return;
+                            }
                             showAlertDialog(context, () {
                               Navigator.pushReplacementNamed(
                                 context,
@@ -123,12 +151,56 @@ class OrderDetailsScreen extends StatelessWidget {
                                 arguments: orderId,
                               );
                             });
+                            // if (FirebaseAuth.instance.currentUser != null) {
+                            //   showAlertDialog(context, () {
+                            //     Navigator.pushReplacementNamed(
+                            //       context,
+                            //       EditOrdersScreen.routeName,
+                            //       arguments: orderId,
+                            //     );
+                            //   });
+                            // } else {
+                            //   ScaffoldMessenger.of(context)
+                            //       .showSnackBar(snackBar(context));
+                            // }
                           },
                           child: const Text('Edit'),
                         ),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            final user = FirebaseAuth.instance.currentUser;
+                            final userRole;
+                            final pref = await SharedPreferences.getInstance();
+                            userRole = pref.getString('user_role');
+                            if (user == null) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar(context));
+                              return;
+                            } else if (userRole == 'member') {
+                              final roleCheckMsg = SnackBar(
+                                content: const Text(
+                                    'Oops! Admin not allowed to create?'),
+                                action: SnackBarAction(
+                                  label: 'Sign In',
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, MyLogin.routeName);
+                                  },
+                                ),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(roleCheckMsg);
+                              return;
+                            }
+
                             showAlertDialog(context, deleteOrder);
+
+                            // if (FirebaseAuth.instance.currentUser != null) {
+                            //   showAlertDialog(context, deleteOrder);
+                            // } else {
+                            //   ScaffoldMessenger.of(context)
+                            //       .showSnackBar(snackBar(context));
+                            // }
 
                             // Navigator.pop(context);
                           },

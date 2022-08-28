@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/providers/inventory.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../providers/inventories.dart';
 
@@ -53,7 +54,7 @@ class _NewInventoryScreenState extends State<NewInventoryScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff0057A5),
-        title: const Text('CREATE NEW INVENTORY'),
+        title: Text('CREATE NEW INVENTORY'),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),

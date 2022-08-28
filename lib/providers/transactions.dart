@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'transaction.dart';
 
@@ -205,6 +206,12 @@ class Transactions with ChangeNotifier {
   }
 
   //Firestore
+
+  Future getUserAuth() async {
+    final pref = await SharedPreferences.getInstance();
+    pref.getString('user_role');
+    print(pref.getString('user_role'));
+  }
 
   List<Transaction1> partyList(String partyName) {
     return transactions1
