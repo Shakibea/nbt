@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/screens/inventory_details_screen.dart';
 import 'package:nbt/utils/colors.dart';
+import 'package:nbt/widgets/functions.dart';
+import 'package:nbt/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/inventory.dart';
@@ -23,8 +26,12 @@ class InventoryListItem extends StatelessWidget {
         children: [
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, InventoryDetailsScreen.routeName,
-                  arguments: inventory.uid);
+              FirebaseAuth.instance.currentUser != null
+                  ? Navigator.pushNamed(
+                      context, InventoryDetailsScreen.routeName,
+                      arguments: inventory.uid)
+                  : ScaffoldMessenger.of(context)
+                      .showSnackBar(snackBar(context));
             },
             leading: CircleAvatar(
                 backgroundColor: colors['inventory'],

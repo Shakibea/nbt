@@ -23,8 +23,8 @@ class OldOrderListItem extends StatelessWidget {
         children: [
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, PartyDetailsScreen.routeName,
-                  arguments: order.partyName);
+              Navigator.pushNamed(context, OrderDetailsScreen.routeName,
+                  arguments: order.id);
             },
             onLongPress: () {},
             leading: CircleAvatar(

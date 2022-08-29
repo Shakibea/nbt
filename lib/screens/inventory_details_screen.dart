@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/utils/colors.dart';
+import 'package:nbt/widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/inventories.dart';
@@ -164,7 +166,49 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              //calling initStore from database to store initstock
+                              void initStore(int total) =>
+                                  FirebaseFirestore.instance
+                                      .collection('inventories')
+                                      .where('uid',
+                                          isEqualTo: inventoryData.uid)
+                                      .get()
+                                      .then((snapshot) async {
+                                    for (DocumentSnapshot ds in snapshot.docs) {
+                                      await ds.reference.update({
+                                        'initStock': total.toString(),
+                                        'beingUsed':
+                                            _beingUsedController.text.trim(),
+                                        'newStock':
+                                            _newStockController.text.trim()
+                                      });
+                                    }
+                                  });
+                              //pop navigation
+                              void previousPage() => Navigator.pop(context);
+
+                              final beingUsed =
+                                  _beingUsedController.text.trim();
+                              final newStock = _newStockController.text.trim();
+                              final initStock =
+                                  int.parse(inventoryData.initStock.trim());
+                              int totalUsed;
+                              showAlertDialog(context, () {
+                                //calculation beingUsed
+                                if (beingUsed.isNotEmpty) {
+                                  totalUsed = initStock - int.parse(beingUsed);
+                                  initStore(totalUsed);
+                                  previousPage();
+                                }
+                                //calculation newStock
+                                else if (newStock.isNotEmpty) {
+                                  totalUsed = initStock + int.parse(newStock);
+                                  initStore(totalUsed);
+                                  previousPage();
+                                }
+                              });
+                            },
                             child: const Text('Save Changes'),
                             style: ButtonStyle(
                               backgroundColor:
@@ -173,9 +217,11 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              Provider.of<Inventories>(context, listen: false)
-                                  .deleteOrder(inventoryId);
-                              Navigator.pop(context);
+                              showAlertDialog(context, () {
+                                Provider.of<Inventories>(context, listen: false)
+                                    .deleteOrder(inventoryId);
+                              });
+                              // Navigator.pop(context);
                             },
                             child: const Text('Delete'),
                             style: ButtonStyle(

@@ -215,7 +215,7 @@ class OrderDetailsScreen extends StatelessWidget {
                 ),
               );
             } else {
-              return const Center(child: Text('No Data'));
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),

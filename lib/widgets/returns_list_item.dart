@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/providers/return.dart';
 import 'package:nbt/utils/colors.dart';
+import 'package:nbt/widgets/show_alert_dialog.dart';
+import 'package:nbt/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/returns.dart';
@@ -77,8 +80,14 @@ class ReturnsListItem extends StatelessWidget {
                   // ),
                   IconButton(
                       onPressed: () {
-                        Provider.of<Returns>(context, listen: false)
-                            .deleteRequisition(returns.id);
+                        FirebaseAuth.instance.currentUser != null
+                            ? showAlertDialog(context, () {
+                                Provider.of<Returns>(context, listen: false)
+                                    .deleteRequisition(returns.id);
+                              })
+                            : ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar(context));
+
                         // Navigator.pop(context);
                       },
                       icon: const Icon(

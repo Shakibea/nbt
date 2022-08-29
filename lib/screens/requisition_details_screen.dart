@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/screens/edit_requisition_screen.dart';
 import 'package:nbt/screens/requisition_screen.dart';
 import 'package:nbt/utils/colors.dart';
 import 'package:nbt/widgets/show_alert_dialog.dart';
+import 'package:nbt/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/requisition.dart';
@@ -23,11 +25,18 @@ class RequisitionDetailsScreen extends StatefulWidget {
 class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
   final _tentativeETAController = TextEditingController();
   final _form = GlobalKey<FormFieldState>();
-  DateTime dateTime = DateTime.now();
+  DateTime? dateTime;
 
   @override
   void initState() {
+    dateTime = DateTime.now();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // dateTime = DateTime.now();
+    super.didChangeDependencies();
   }
 
   @override
@@ -41,6 +50,8 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
     final requisitionId = ModalRoute.of(context)?.settings.arguments as String;
     var requisitions = Provider.of<Requisitions>(context, listen: false)
         .readSingleOrder(requisitionId);
+
+    // void
 
     return Scaffold(
       appBar: AppBar(
@@ -60,7 +71,7 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                       Row(
                         children: [
                           Text(
-                            'Date ${dateTime.day}/${dateTime.month}/${dateTime.year}',
+                            'Date',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -180,6 +191,11 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                         children: [
                           ElevatedButton(
                             onPressed: () {
+                              if (FirebaseAuth.instance.currentUser == null) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar(context));
+                                return;
+                              }
                               showAlertDialog(context, () {
                                 Navigator.pushReplacementNamed(
                                     context, EditRequisitionScreen.routeName,
@@ -195,6 +211,11 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
+                              if (FirebaseAuth.instance.currentUser == null) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar(context));
+                                return;
+                              }
                               showAlertDialog(context, () {
                                 Provider.of<Requisitions>(context,
                                         listen: false)
@@ -215,28 +236,46 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                       const SizedBox(
                         height: 30,
                       ),
-                      Form(
-                        key: _form,
-                        child: TextFormField(
-                          controller: TextEditingController(
-                              text:
-                                  '${dateTime.day}/${dateTime.month}/${dateTime.year}'),
-                          // controller: requisition.tentativeETA == ''
-                          //     ? _tentativeETAController
-                          //     : TextEditingController(
-                          //         text:
-                          //             '${dateTime.day}/${dateTime.month}/${dateTime.year}'),
-                          // onChanged: (value) {
-                          //   _tentativeETAController.text =
-                          //       '${dateTime.day}/${dateTime.month}/${dateTime.year}';
-                          // },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Tentative ETA',
-                            hintText: 'Tentative ETA',
+
+                      Row(
+                        children: [
+                          Text(
+                            'Tentative ETA: ',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: colors['requisition'],
+                            ),
                           ),
-                        ),
+                          // requisition.tentativeETA != ''
+                          //     ?
+                          requisition.tentativeETA != null
+                              ? Text(requisition.tentativeETA!)
+                              : Text(DateFormat.yMMMd().format(dateTime!))
+                          //     : Text(''),
+                        ],
                       ),
+                      //FORM SUBMISSION WITH TENTATIVE ETA
+                      // Form(
+                      //   key: _form,
+                      //   child: TextFormField(
+                      //     controller: _tentativeETAController,
+                      //     // controller: requisition.tentativeETA == ''
+                      //     //     ? _tentativeETAController
+                      //     //     : TextEditingController(
+                      //     //         text:
+                      //     //             '${dateTime.day}/${dateTime.month}/${dateTime.year}'),
+                      //     // onChanged: (value) {
+                      //     //   _tentativeETAController.text =
+                      //     //       '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+                      //     // },
+                      //     decoration: const InputDecoration(
+                      //       border: OutlineInputBorder(),
+                      //       labelText: 'Tentative ETA',
+                      //       hintText: 'Tentative ETA',
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(
                         height: 26,
                       ),
@@ -244,7 +283,7 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                           onPressed: () async {
                             DateTime? newDate = await showDatePicker(
                                 context: context,
-                                initialDate: dateTime,
+                                initialDate: dateTime!,
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100));
 
@@ -267,21 +306,28 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                           // });
 
                           // _form.currentState!.save();
-                          FirebaseFirestore.instance
-                              .collection('requisitions')
-                              .where('uid', isEqualTo: requisitionId)
-                              .get()
-                              .then((snapshot) async {
-                            for (DocumentSnapshot ds in snapshot.docs) {
-                              await ds.reference.update({
-                                'status': Status.OrderPlaced.name,
-                                'tentativeETA':
-                                    _tentativeETAController.text.trim()
-                              });
-                            }
-                          });
 
-                          Navigator.pop(context);
+                          if (FirebaseAuth.instance.currentUser != null) {
+                            FirebaseFirestore.instance
+                                .collection('requisitions')
+                                .where('uid', isEqualTo: requisitionId)
+                                .get()
+                                .then((snapshot) async {
+                              for (DocumentSnapshot ds in snapshot.docs) {
+                                await ds.reference.update({
+                                  'status': Status.OrderPlaced.name,
+                                  'tentativeETA':
+                                      DateFormat.yMMMd().format(dateTime!)
+                                });
+                              }
+                            });
+                            Navigator.pop(context);
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar(context));
+                          }
+                          // print('status:${Status.OrderPlaced.name}');
+                          // print('tentativeETA:${dateTime}');
                         },
                         child: const Text('Order Placed'),
                         style: ButtonStyle(
@@ -294,7 +340,7 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                   ),
                 );
               } else {
-                return const Center(child: Text('No Data'));
+                return const Center(child: CircularProgressIndicator());
               }
             }),
       ),
