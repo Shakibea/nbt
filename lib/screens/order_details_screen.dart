@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nbt/providers/inventories.dart';
 import 'package:nbt/screens/edit_order_screen.dart';
 import 'package:nbt/screens/po_list_screen.dart';
 import 'package:nbt/utils/colors.dart';
@@ -33,6 +34,25 @@ class OrderDetailsScreen extends StatelessWidget {
       Provider.of<Transactions>(context, listen: false).deleteOrder(orderId);
       Navigator.pushReplacementNamed(context, POListScreen.routeName);
     }
+
+    var userRole;
+    // bool isUser;
+    Future<String?> userCheckFromSharedPref() async {
+      final pref = await SharedPreferences.getInstance();
+      return pref.getString('user_role');
+    }
+
+    // Future<bool> isUserCheck() async {
+    //   final role = await userCheckFromSharedPref();
+    //   if (role == 'user') {
+    //     isUser = true;
+    //     // print("your role: $role");
+    //   } else {
+    //     isUser = false;
+    //   }
+    //   // print("your role: $role");
+    //   return isUser;
+    // }
 
     return Scaffold(
       appBar: appBarForNewOrder('Order Details Page'),
@@ -106,12 +126,32 @@ class OrderDetailsScreen extends StatelessWidget {
                       height: 20,
                     ),
 
-                    //PRODUCT DETAILS
-                    OrderDetailsTitle('Product Details'),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    OrderDetailsTextContent(title: order.productDetail),
+                    FutureBuilder(
+                        future: userCheckFromSharedPref(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return CircularProgressIndicator();
+                          } else {
+                            if (snapshot.data != 'user') {
+                              return Container(
+                                child: Column(
+                                  children: [
+                                    //PRODUCT DETAILS
+                                    OrderDetailsTitle('Product Details'),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    OrderDetailsTextContent(
+                                        title: order.productDetail),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return Text(
+                                  'Super & Admin Only can view Description!');
+                            }
+                          }
+                        }),
                     const SizedBox(
                       height: 30,
                     ),
@@ -121,9 +161,10 @@ class OrderDetailsScreen extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () async {
                             final user = FirebaseAuth.instance.currentUser;
-                            final userRole;
-                            final pref = await SharedPreferences.getInstance();
-                            userRole = pref.getString('user_role');
+                            // final userRole;
+                            // final pref = await SharedPreferences.getInstance();
+                            // userRole = pref.getString('user_role');
+                            userRole = await userCheckFromSharedPref();
                             if (user == null) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar(context));
@@ -164,14 +205,15 @@ class OrderDetailsScreen extends StatelessWidget {
                             //       .showSnackBar(snackBar(context));
                             // }
                           },
-                          child: const Text('Edit'),
+                          child: Text('Edit'),
                         ),
                         ElevatedButton(
                           onPressed: () async {
                             final user = FirebaseAuth.instance.currentUser;
-                            final userRole;
-                            final pref = await SharedPreferences.getInstance();
-                            userRole = pref.getString('user_role');
+                            // final userRole;
+                            // final pref = await SharedPreferences.getInstance();
+                            // userRole = pref.getString('user_role');
+                            userRole = await userCheckFromSharedPref();
                             if (user == null) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar(context));

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nbt/providers/inventory.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'inventory.dart';
 
@@ -76,4 +77,9 @@ class Inventories with ChangeNotifier {
     await docOrder.delete();
   }
 //FIRESTORE END
+
+  // Future userCheckFromSharedPref() async {
+  //   final pref = await SharedPreferences.getInstance();
+  //   return pref.getString('user_role');
+  // }
 }
