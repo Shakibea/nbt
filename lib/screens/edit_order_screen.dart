@@ -26,6 +26,8 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
   final _addressController = TextEditingController();
   final _quantityController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _priceController = TextEditingController();
+  final _transportationController = TextEditingController();
 
   late String status;
   late String id;
@@ -42,6 +44,8 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
     address: '',
     quantity: '',
     productDetail: '',
+    price: '',
+    transportation: '',
     date: DateTime.now(),
   );
 
@@ -136,6 +140,8 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
     _addressController.dispose();
     _quantityController.dispose();
     _descriptionController.dispose();
+    _priceController.dispose();
+    _transportationController.dispose();
     super.dispose();
   }
 
@@ -189,6 +195,8 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
                     address: _newOrder.address,
                     quantity: _newOrder.quantity,
                     productDetail: _newOrder.productDetail,
+                    price: _newOrder.price,
+                    transportation: _newOrder.transportation,
                     date: DateTime.now(),
                   );
                 },
@@ -207,12 +215,16 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
                       address: _newOrder.address,
                       quantity: _newOrder.quantity,
                       productDetail: _newOrder.productDetail,
+                      price: _newOrder.price,
+                      transportation: _newOrder.transportation,
                       date: _newOrder.date);
                 },
               ),
               TextFormField(
                 decoration:
                     const InputDecoration(label: Text('Name of Product')),
+                maxLines: 3,
+                keyboardType: TextInputType.multiline,
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus();
@@ -233,6 +245,8 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
                       address: _newOrder.address,
                       quantity: _newOrder.quantity,
                       productDetail: _newOrder.productDetail,
+                      price: _newOrder.price,
+                      transportation: _newOrder.transportation,
                       date: _newOrder.date);
                 },
               ),
@@ -258,6 +272,8 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
                       address: _newOrder.address,
                       quantity: _newOrder.quantity,
                       productDetail: _newOrder.productDetail,
+                      price: _newOrder.price,
+                      transportation: _newOrder.transportation,
                       date: _newOrder.date);
                 },
               ),
@@ -283,6 +299,8 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
                       address: _newOrder.address,
                       quantity: _newOrder.quantity,
                       productDetail: _newOrder.productDetail,
+                      price: _newOrder.price,
+                      transportation: _newOrder.transportation,
                       date: _newOrder.date);
                 },
               ),
@@ -324,6 +342,8 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
                       address: value!,
                       quantity: _newOrder.quantity,
                       productDetail: _newOrder.productDetail,
+                      price: _newOrder.price,
+                      transportation: _newOrder.transportation,
                       date: _newOrder.date);
                 },
               ),
@@ -350,9 +370,74 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
                       address: _newOrder.address,
                       quantity: value!,
                       productDetail: _newOrder.productDetail,
+                      price: _newOrder.price,
+                      transportation: _newOrder.transportation,
                       date: _newOrder.date);
                 },
               ),
+              TextFormField(
+                decoration: const InputDecoration(label: Text('Price')),
+                textInputAction: TextInputAction.next,
+                // keyboardType: TextInputType.multiline,
+                // focusNode: _descriptionFocusNode,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter anything';
+                  }
+                  // if (value.length <= 10) {
+                  //   return 'above 10';
+                  // }
+                  return null;
+                },
+                controller: _priceController,
+
+                onSaved: (value) {
+                  _newOrder = Transaction1(
+                      id: _newOrder.id,
+                      productName: _newOrder.productName,
+                      partyName: _newOrder.partyName,
+                      factoryName: _newOrder.factoryName,
+                      address: _newOrder.address,
+                      quantity: _newOrder.quantity,
+                      productDetail: _newOrder.productDetail,
+                      price: value!,
+                      transportation: _newOrder.transportation,
+                      date: _newOrder.date);
+                },
+              ),
+              TextFormField(
+                decoration:
+                    const InputDecoration(label: Text('Transportation')),
+                // maxLines: 5,
+                textInputAction: TextInputAction.done,
+                // keyboardType: TextInputType.multiline,
+                // focusNode: _descriptionFocusNode,
+                // validator: (value) {
+                //   if (value!.isEmpty) {
+                //     return 'Please enter anything';
+                //   }
+                //   // if (value.length <= 10) {
+                //   //   return 'above 10';
+                //   // }
+                //   return null;
+                // },
+                controller: _transportationController,
+
+                onSaved: (value) {
+                  _newOrder = Transaction1(
+                      id: _newOrder.id,
+                      productName: _newOrder.productName,
+                      partyName: _newOrder.partyName,
+                      factoryName: _newOrder.factoryName,
+                      address: _newOrder.address,
+                      quantity: _newOrder.quantity,
+                      productDetail: _newOrder.productDetail,
+                      price: _newOrder.price,
+                      transportation: value!,
+                      date: _newOrder.date);
+                },
+              ),
+
               TextFormField(
                 decoration: const InputDecoration(label: Text('Description')),
                 maxLines: 5,
@@ -378,6 +463,8 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
                       address: _newOrder.address,
                       quantity: _newOrder.quantity,
                       productDetail: value!,
+                      price: _newOrder.price,
+                      transportation: _newOrder.transportation,
                       date: _newOrder.date);
                 },
               ),

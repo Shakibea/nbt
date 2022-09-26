@@ -12,6 +12,8 @@ class Transaction1 with ChangeNotifier {
   final String quantity;
   final String productDetail;
   final DateTime date;
+  final String price;
+  String? transportation;
   Status status;
 
   Transaction1({
@@ -23,6 +25,8 @@ class Transaction1 with ChangeNotifier {
     required this.quantity,
     required this.productDetail,
     required this.date,
+    required this.price,
+    this.transportation,
     this.status = Status.NewOrder,
   });
 
@@ -35,6 +39,8 @@ class Transaction1 with ChangeNotifier {
         'quantity': quantity,
         'productDetail': productDetail,
         'date': date,
+        'price': price,
+        'transportation': transportation,
         'status': status.name
       };
 
@@ -47,6 +53,8 @@ class Transaction1 with ChangeNotifier {
         quantity: json['quantity'],
         productDetail: json['productDetail'],
         date: (json['date'] as Timestamp).toDate(),
+        price: json['price'],
+        transportation: json['transportation'],
         status: Status.values.byName(json['status']),
       );
 

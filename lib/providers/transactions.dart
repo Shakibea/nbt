@@ -55,6 +55,8 @@ class Transactions with ChangeNotifier {
         address: transaction.address,
         quantity: transaction.quantity,
         productDetail: transaction.productDetail,
+        price: transaction.price,
+        transportation: transaction.transportation,
         date: transaction.date);
     transactions1.add(newProduct);
     notifyListeners();
@@ -93,6 +95,8 @@ class Transactions with ChangeNotifier {
         address: listt[i][i]['address'],
         quantity: listt[i][i]['quantity'],
         productDetail: listt[i][i]['productDetail'],
+        price: listt[i][i]['price'],
+        transportation: listt[i][i]['transportation'],
         date: (listt[i][i]['date'] as Timestamp).toDate(),
       );
       transactions1.add(trans);
@@ -132,6 +136,8 @@ class Transactions with ChangeNotifier {
         quantity: transaction.quantity,
         productDetail: transaction.productDetail,
         date: transaction.date,
+        price: transaction.price,
+        transportation: transaction.transportation,
         status: transaction.status);
 
     final json = newOrder.toJson();
@@ -157,6 +163,8 @@ class Transactions with ChangeNotifier {
       quantity: transaction.quantity,
       productDetail: transaction.productDetail,
       date: transaction.date,
+      price: transaction.price,
+      transportation: transaction.transportation,
       status: Status.values.byName(status),
     );
 
@@ -196,11 +204,11 @@ class Transactions with ChangeNotifier {
       // UniqueName is duplicate
       // return 'Unique name already exists';
       ist.add(name);
-      print('$ist is duplicate');
+      // print('$ist is duplicate');
 
       return ist;
     }
-    print('$name is not duplicate');
+    // print('$name is not duplicate');
     // ... the rest of your code. Go ahead and create an account.
     // remember to save the uniqueName to users collection.
   }
@@ -210,7 +218,7 @@ class Transactions with ChangeNotifier {
   Future getUserAuth() async {
     final pref = await SharedPreferences.getInstance();
     pref.getString('user_role');
-    print(pref.getString('user_role'));
+    // print(pref.getString('user_role'));
   }
 
   List<Transaction1> partyList(String partyName) {

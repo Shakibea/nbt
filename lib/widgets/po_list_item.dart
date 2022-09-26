@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,7 +7,6 @@ import 'package:nbt/screens/order_details_screen.dart';
 import 'package:nbt/widgets/custom_radio_button.dart';
 import 'package:nbt/widgets/show_alert_dialog.dart';
 import 'package:nbt/widgets/snackbar_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import '../providers/transaction.dart';
@@ -131,11 +132,12 @@ class _POListItemState extends State<POListItem> {
                   ),
                 ),
                 radius: 30),
+            //list
             title: Text(
-              '${widget.product.productName} (${widget.product.quantity})',
+              '${widget.product.partyName} (${widget.product.quantity})',
               // style: Theme.of(context).textTheme.headline6,
             ),
-            subtitle: Text(widget.product.partyName),
+            subtitle: Text(widget.product.factoryName),
             trailing:
                 // Row(
                 //   children: [
@@ -160,8 +162,11 @@ class _POListItemState extends State<POListItem> {
           ),
           if (_expanded)
             Container(
-              // height: min(product.date.length * 20 + 15, 100),
-              height: 40,
+              height: min(widget.product.partyName.length * 20 + 15, 100),
+              constraints: const BoxConstraints(
+                minHeight: 120,
+              ),
+              // height: 40,
               // width: 250,
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
               child: ListView(children: [
@@ -176,9 +181,14 @@ class _POListItemState extends State<POListItem> {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                        '${widget.product.factoryName} - ${DateFormat.yMMMMd().format(widget.product.date)}'),
+                        '- ${DateFormat.yMMMMd().format(widget.product.date)}'),
                   ],
                 ),
+                const Divider(),
+                const SizedBox(
+                  height: 2,
+                ),
+                Text(widget.product.productName)
               ]),
             )
         ],

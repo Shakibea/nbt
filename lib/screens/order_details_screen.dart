@@ -125,7 +125,48 @@ class OrderDetailsScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
+                    //TRANSPORTATION
+                    OrderDetailsTitle('Transportation'),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    OrderDetailsTextContent(title: order.transportation),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
+                    //PRICE
+                    FutureBuilder(
+                        future: userCheckFromSharedPref(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return CircularProgressIndicator();
+                          } else {
+                            if (snapshot.data != 'user' &&
+                                snapshot.data != 'member') {
+                              return Container(
+                                child: Column(
+                                  children: [
+                                    //PRODUCT DETAILS
+                                    OrderDetailsTitle('Price'),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    OrderDetailsTextContent(title: order.price),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return const Text(
+                                  'Super Admin Only can view Price!');
+                            }
+                          }
+                        }),
+                    const SizedBox(
+                      height: 20,
+                    ),
+
+                    //PRODUCT DETAILS
                     FutureBuilder(
                         future: userCheckFromSharedPref(),
                         builder: (context, snapshot) {
@@ -147,8 +188,8 @@ class OrderDetailsScreen extends StatelessWidget {
                                 ),
                               );
                             } else {
-                              return Text(
-                                  'Super & Admin Only can view Description!');
+                              return const Text(
+                                  'Super Admin & Admin Only can view Description!');
                             }
                           }
                         }),

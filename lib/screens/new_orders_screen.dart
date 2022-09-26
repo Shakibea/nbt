@@ -30,6 +30,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
     address: '',
     quantity: '',
     productDetail: '',
+    price: '',
+    transportation: '',
     date: DateTime.now(),
   );
 
@@ -127,6 +129,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                             address: _newOrder.address,
                             quantity: _newOrder.quantity,
                             productDetail: _newOrder.productDetail,
+                            price: _newOrder.price,
+                            transportation: _newOrder.transportation,
                             date: DateTime.now(),
                           );
                         },
@@ -147,13 +151,17 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                               address: _newOrder.address,
                               quantity: _newOrder.quantity,
                               productDetail: _newOrder.productDetail,
+                              price: _newOrder.price,
+                              transportation: _newOrder.transportation,
                               date: _newOrder.date);
                         },
                       ),
                       TextFormField(
                         decoration: const InputDecoration(
                             label: Text('Name of Product')),
-                        textInputAction: TextInputAction.next,
+                        maxLines: 3,
+                        // textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.multiline,
                         onFieldSubmitted: (_) {
                           FocusScope.of(context).requestFocus();
                         },
@@ -172,6 +180,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                               address: _newOrder.address,
                               quantity: _newOrder.quantity,
                               productDetail: _newOrder.productDetail,
+                              price: _newOrder.price,
+                              transportation: _newOrder.transportation,
                               date: _newOrder.date);
                         },
                       ),
@@ -197,6 +207,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                               address: _newOrder.address,
                               quantity: _newOrder.quantity,
                               productDetail: _newOrder.productDetail,
+                              price: _newOrder.price,
+                              transportation: _newOrder.transportation,
                               date: _newOrder.date);
                         },
                       ),
@@ -222,6 +234,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                               address: _newOrder.address,
                               quantity: _newOrder.quantity,
                               productDetail: _newOrder.productDetail,
+                              price: _newOrder.price,
+                              transportation: _newOrder.transportation,
                               date: _newOrder.date);
                         },
                       ),
@@ -262,6 +276,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                               address: value!,
                               quantity: _newOrder.quantity,
                               productDetail: _newOrder.productDetail,
+                              price: _newOrder.price,
+                              transportation: _newOrder.transportation,
                               date: _newOrder.date);
                         },
                       ),
@@ -287,6 +303,57 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                               address: _newOrder.address,
                               quantity: value!,
                               productDetail: _newOrder.productDetail,
+                              price: _newOrder.price,
+                              transportation: _newOrder.transportation,
+                              date: _newOrder.date);
+                        },
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(label: Text('Price')),
+                        textInputAction: TextInputAction.next,
+                        // keyboardType: TextInputType.multiline,
+                        // focusNode: _descriptionFocusNode,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter anything';
+                          }
+                          // if (value.length <= 10) {
+                          //   return 'above 10';
+                          // }
+                          return null;
+                        },
+
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                              id: _newOrder.id,
+                              productName: _newOrder.productName,
+                              partyName: _newOrder.partyName,
+                              factoryName: _newOrder.factoryName,
+                              address: _newOrder.address,
+                              quantity: _newOrder.quantity,
+                              productDetail: _newOrder.productDetail,
+                              price: value!,
+                              transportation: _newOrder.transportation,
+                              date: _newOrder.date);
+                        },
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            label: Text('Transportation')),
+                        // maxLines: 5,
+                        textInputAction: TextInputAction.next,
+
+                        onSaved: (value) {
+                          _newOrder = Transaction1(
+                              id: _newOrder.id,
+                              productName: _newOrder.productName,
+                              partyName: _newOrder.partyName,
+                              factoryName: _newOrder.factoryName,
+                              address: _newOrder.address,
+                              quantity: _newOrder.quantity,
+                              productDetail: _newOrder.productDetail,
+                              price: _newOrder.price,
+                              transportation: value!,
                               date: _newOrder.date);
                         },
                       ),
@@ -314,6 +381,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                               address: _newOrder.address,
                               quantity: _newOrder.quantity,
                               productDetail: value!,
+                              price: _newOrder.price,
+                              transportation: _newOrder.transportation,
                               date: _newOrder.date);
                         },
                       ),
