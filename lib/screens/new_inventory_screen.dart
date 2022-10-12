@@ -54,7 +54,7 @@ class _NewInventoryScreenState extends State<NewInventoryScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff0057A5),
-        title: Text('CREATE NEW INVENTORY'),
+        title: const Text('CREATE NEW INVENTORY'),
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
