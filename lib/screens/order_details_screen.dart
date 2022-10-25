@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/transaction.dart';
 import '../providers/transactions.dart';
 import '../widgets/app_bar_functions.dart';
+import '../widgets/order_details_text_content1.dart';
 import 'login_screen.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
@@ -35,7 +36,7 @@ class OrderDetailsScreen extends StatelessWidget {
       Navigator.pushReplacementNamed(context, POListScreen.routeName);
     }
 
-    var userRole;
+    String? userRole;
     // bool isUser;
     Future<String?> userCheckFromSharedPref() async {
       final pref = await SharedPreferences.getInstance();
@@ -81,7 +82,10 @@ class OrderDetailsScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    OrderDetailsTextContent(title: order.productName),
+                    OrderDetailsTextContent1(
+                        title: order.productName,
+                        quantity: order.quantity,
+                        price: order.price),
                     const SizedBox(
                       height: 20,
                     ),
@@ -140,21 +144,19 @@ class OrderDetailsScreen extends StatelessWidget {
                         future: userCheckFromSharedPref(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           } else {
                             if (snapshot.data != 'user' &&
                                 snapshot.data != 'member') {
-                              return Container(
-                                child: Column(
-                                  children: [
-                                    //PRODUCT DETAILS
-                                    OrderDetailsTitle('Price'),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    OrderDetailsTextContent(title: order.price),
-                                  ],
-                                ),
+                              return Column(
+                                children: [
+                                  //PRODUCT DETAILS
+                                  OrderDetailsTitle('Price'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  OrderDetailsTextContent(title: order.price),
+                                ],
                               );
                             } else {
                               return const Text(
@@ -171,21 +173,19 @@ class OrderDetailsScreen extends StatelessWidget {
                         future: userCheckFromSharedPref(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           } else {
                             if (snapshot.data != 'user') {
-                              return Container(
-                                child: Column(
-                                  children: [
-                                    //PRODUCT DETAILS
-                                    OrderDetailsTitle('Product Details'),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    OrderDetailsTextContent(
-                                        title: order.productDetail),
-                                  ],
-                                ),
+                              return Column(
+                                children: [
+                                  //PRODUCT DETAILS
+                                  OrderDetailsTitle('Product Details'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  OrderDetailsTextContent(
+                                      title: order.productDetail),
+                                ],
                               );
                             } else {
                               return const Text(
@@ -246,7 +246,7 @@ class OrderDetailsScreen extends StatelessWidget {
                             //       .showSnackBar(snackBar(context));
                             // }
                           },
-                          child: Text('Edit'),
+                          child: const Text('Edit'),
                         ),
                         ElevatedButton(
                           onPressed: () async {

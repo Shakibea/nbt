@@ -5,14 +5,14 @@ enum Status { Complete, MltShortage, InProcess, Delivered, NewOrder }
 
 class Transaction1 with ChangeNotifier {
   final String id;
-  String productName;
+  final String productName;
   final String partyName;
   final String factoryName;
   final String address;
-  String quantity;
+  final String quantity;
   final String productDetail;
   final DateTime date;
-  String price;
+  final String price;
   String? transportation;
   Status status;
 

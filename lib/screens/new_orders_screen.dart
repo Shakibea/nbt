@@ -4,7 +4,6 @@ import 'package:nbt/providers/transaction.dart';
 import 'package:nbt/screens/login_screen.dart';
 import 'package:nbt/widgets/app_bar_functions.dart';
 import 'package:intl/intl.dart';
-import 'package:nbt/widgets/new_order_muti_form.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/transactions.dart';
@@ -116,8 +115,6 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                   key: _form,
                   child: ListView(
                     children: [
-                      NewOrderMultiForm(, onRemove: () {}),
-
                       TextFormField(
                         decoration: const InputDecoration(label: Text('Date')),
                         textInputAction: TextInputAction.next,
@@ -168,12 +165,12 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                         onFieldSubmitted: (_) {
                           FocusScope.of(context).requestFocus();
                         },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter Product Name!';
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value!.isEmpty) {
+                        //     return 'Please enter Product Name!';
+                        //   }
+                        //   return null;
+                        // },
                         onSaved: (value) {
                           _newOrder = Transaction1(
                               id: _newOrder.id,
