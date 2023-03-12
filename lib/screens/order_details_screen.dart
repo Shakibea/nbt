@@ -1,11 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nbt/providers/inventories.dart';
 import 'package:nbt/screens/edit_order_screen.dart';
 import 'package:nbt/screens/po_list_screen.dart';
-import 'package:nbt/utils/colors.dart';
-import 'package:nbt/widgets/custom_radio_button.dart';
 import 'package:nbt/widgets/order_details_text_content.dart';
 import 'package:nbt/widgets/order_details_text_title.dart';
 import 'package:nbt/widgets/show_alert_dialog.dart';
@@ -35,7 +32,7 @@ class OrderDetailsScreen extends StatelessWidget {
       Navigator.pushReplacementNamed(context, POListScreen.routeName);
     }
 
-    var userRole;
+    String? userRole;
     // bool isUser;
     Future<String?> userCheckFromSharedPref() async {
       final pref = await SharedPreferences.getInstance();
@@ -130,24 +127,22 @@ class OrderDetailsScreen extends StatelessWidget {
                         future: userCheckFromSharedPref(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           } else {
                             if (snapshot.data != 'user') {
-                              return Container(
-                                child: Column(
-                                  children: [
-                                    //PRODUCT DETAILS
-                                    OrderDetailsTitle('Product Details'),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    OrderDetailsTextContent(
-                                        title: order.productDetail),
-                                  ],
-                                ),
+                              return Column(
+                                children: [
+                                  //PRODUCT DETAILS
+                                  OrderDetailsTitle('Product Details'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  OrderDetailsTextContent(
+                                      title: order.productDetail),
+                                ],
                               );
                             } else {
-                              return Text(
+                              return const Text(
                                   'Super & Admin Only can view Description!');
                             }
                           }
@@ -205,7 +200,7 @@ class OrderDetailsScreen extends StatelessWidget {
                             //       .showSnackBar(snackBar(context));
                             // }
                           },
-                          child: Text('Edit'),
+                          child: const Text('Edit'),
                         ),
                         ElevatedButton(
                           onPressed: () async {

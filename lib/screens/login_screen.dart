@@ -65,9 +65,11 @@ class _MyLoginState extends State<MyLogin> {
     //           child: CircularProgressIndicator(),
     //         ));
     try {
+      // await FirebaseAuth.instance.signInWithEmailAndPassword(
+      //     email: _emailController.text.trim(),
+      //     password: _passwordController.text.trim());
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+          email: _emailController.text.trim(), password: "password");
 
       if (FirebaseAuth.instance.currentUser != null) {
         _checkAuth();

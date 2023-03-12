@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nbt/dynamic%20form/multi_form.dart';
 import 'package:nbt/screens/change_pin_screen.dart';
 import 'package:nbt/screens/edit_order_screen.dart';
 import 'package:nbt/screens/edit_requisition_screen.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: SplashScreen(),
+        // home: MultiForm(),
         routes: {
           MainDashboardScreen.routeName: (_) => MainDashboardScreen(),
           NewOrdersScreen.routeName: (_) => NewOrdersScreen(),
