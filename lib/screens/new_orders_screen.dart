@@ -165,14 +165,15 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                         },
                         onSaved: (value) {
                           _newOrder = Transaction1(
-                              id: _newOrder.id,
-                              productName: value!,
-                              partyName: _newOrder.partyName,
-                              factoryName: _newOrder.factoryName,
-                              address: _newOrder.address,
-                              quantity: _newOrder.quantity,
-                              productDetail: _newOrder.productDetail,
-                              date: _newOrder.date);
+                            id: _newOrder.id,
+                            productName: value!,
+                            partyName: _newOrder.partyName,
+                            factoryName: _newOrder.factoryName,
+                            address: _newOrder.address,
+                            quantity: _newOrder.quantity,
+                            productDetail: _newOrder.productDetail,
+                            date: _newOrder.date,
+                          );
                         },
                       ),
                       TextFormField(

@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nbt/dynamic%20form/multi_form.dart';
@@ -5,6 +8,7 @@ import 'package:nbt/screens/change_pin_screen.dart';
 import 'package:nbt/screens/edit_order_screen.dart';
 import 'package:nbt/screens/edit_requisition_screen.dart';
 import 'package:nbt/screens/login_screen.dart';
+import 'package:nbt/screens/new_order_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:nbt/providers/inventories.dart';
@@ -33,6 +37,19 @@ import './screens/old_orders_screen.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // if (kIsWeb) {
+  //   await Firebase.initializeApp(
+  //     options: FirebaseOptions(
+  //       apiKey: 'AIzaSyBzH6teijKpJQIIZ9G860VD5KbFNWF1In0',
+  //       appId: "1:840002168632:web:e37c24dc9f2787bf6e43cd",
+  //       messagingSenderId: "840002168632",
+  //       projectId: "nbt-flutter",
+  //       storageBucket: "nbt-flutter.appspot.com",
+  //     ),
+  //   );
+  // } else {
+  //   await Firebase.initializeApp();
+  // }
 
   runApp(const MyApp());
 }
@@ -66,9 +83,11 @@ class MyApp extends StatelessWidget {
         title: 'NBT',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          dividerColor: Colors.transparent,
         ),
-        home: SplashScreen(),
+        // home: SplashScreen(),
         // home: MultiForm(),
+        home: NewOrderPage(),
         routes: {
           MainDashboardScreen.routeName: (_) => MainDashboardScreen(),
           NewOrdersScreen.routeName: (_) => NewOrdersScreen(),
