@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../providers/transaction.dart';
 import '../providers/transactions.dart';
@@ -97,7 +98,25 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
                     _increase;
                   } else {
                     _increase--;
+                    Fluttertoast.showToast(
+                      msg: "Product removed",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.white,
+                      textColor: Colors.red,
+                      fontSize: 16.0,
+                    );
                   }
+                  // Fluttertoast.showToast(
+                  //   msg: "Product removed",
+                  //   toastLength: Toast.LENGTH_SHORT,
+                  //   gravity: ToastGravity.CENTER,
+                  //   timeInSecForIosWeb: 1,
+                  //   backgroundColor: Colors.white,
+                  //   textColor: Colors.red,
+                  //   fontSize: 16.0,
+                  // );
                 });
               },
             );
