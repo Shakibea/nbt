@@ -20,7 +20,7 @@ class NewOrderPage extends StatefulWidget {
 }
 
 class _NewOrderPageState extends State<NewOrderPage> {
-  var _increase = 0;
+  var space = 15.0;
   final _form = GlobalKey<FormState>();
   final _dateController = TextEditingController();
   final _poNumController = TextEditingController();
@@ -69,210 +69,169 @@ class _NewOrderPageState extends State<NewOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text("Something went wrong!!"),
-            );
-          }
-          if (snapshot.hasData) {
-            return Scaffold(
-              appBar: AppBar(
-                elevation: 0,
-                title: const Text('CREATE NEW ORDER'),
-                backgroundColor: const Color(0xff511C74),
-                actions: [
-                  IconButton(
-                    onPressed: _saveForm,
-                    icon: const Icon(Icons.save),
-                  )
-                ],
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text('CREATE NEW ORDER'),
+        backgroundColor: const Color(0xff511C74),
+        actions: [
+          IconButton(
+            onPressed: _saveForm,
+            icon: const Icon(Icons.save),
+          )
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _form,
+          child: ListView(
+            children: [
+              //Date
+              CustomTextField(
+                labelText: 'Date',
+                keyboardType: TextInputType.none,
+                textInputAction: TextInputAction.next,
+                enabled: false,
+                controller: _dateController,
+                onSaved: (value) {
+                  _newOrder = Transaction1(
+                    id: _newOrder.id,
+                    productName: _newOrder.productName,
+                    partyName: _newOrder.partyName,
+                    factoryName: _newOrder.factoryName,
+                    address: _newOrder.address,
+                    quantity: _newOrder.quantity,
+                    productDetail: _newOrder.productDetail,
+                    date: DateTime.now(),
+                  );
+                },
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _form,
-                  child: ListView(
-                    children: [
-                      //Date
-                      CustomTextField(
-                        labelText: 'Date',
-                        keyboardType: TextInputType.none,
-                        textInputAction: TextInputAction.next,
-                        enabled: false,
-                        controller: _dateController,
-                        onSaved: (value) {
-                          _newOrder = Transaction1(
-                            id: _newOrder.id,
-                            productName: _newOrder.productName,
-                            partyName: _newOrder.partyName,
-                            factoryName: _newOrder.factoryName,
-                            address: _newOrder.address,
-                            quantity: _newOrder.quantity,
-                            productDetail: _newOrder.productDetail,
-                            date: DateTime.now(),
-                          );
-                        },
-                      ),
-                      //PO Number
-                      CustomTextField(
-                        labelText: 'PO Number',
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.next,
-                        enabled: true,
-                        controller: _poNumController,
-                        onSaved: (value) {
-                          _newOrder = Transaction1(
-                            id: value!,
-                            productName: _newOrder.productName,
-                            partyName: _newOrder.partyName,
-                            factoryName: _newOrder.factoryName,
-                            address: _newOrder.address,
-                            quantity: _newOrder.quantity,
-                            productDetail: _newOrder.productDetail,
-                            date: _newOrder.date,
-                          );
-                        },
-                      ),
-                      // Product Name
-                      // CustomTextField(
-                      //   labelText: 'Name of Product',
-                      //   keyboardType: TextInputType.text,
-                      //   textInputAction: TextInputAction.next,
-                      //   enabled: true,
-                      //   controller: _dateController,
-                      //   validator: (value) {
-                      //     if (value!.isEmpty) {
-                      //       return 'Please enter Product Name!';
-                      //     }
-                      //     return null;
-                      //   },
-                      //   onSaved: (value) {
-                      //     _newOrder = Transaction1(
-                      //       id: _newOrder.id,
-                      //       productName: value!,
-                      //       partyName: _newOrder.partyName,
-                      //       factoryName: _newOrder.factoryName,
-                      //       address: _newOrder.address,
-                      //       quantity: _newOrder.quantity,
-                      //       productDetail: _newOrder.productDetail,
-                      //       date: _newOrder.date,
-                      //     );
-                      //   },
-                      // ),
-                      // Party Name
-                      CustomTextField(
-                        labelText: 'Party Name',
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.next,
-                        enabled: true,
-                        controller: _partyNameController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter Product Name!';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _newOrder = Transaction1(
-                              id: _newOrder.id,
-                              productName: _newOrder.productName,
-                              partyName: value!,
-                              factoryName: _newOrder.factoryName,
-                              address: _newOrder.address,
-                              quantity: _newOrder.quantity,
-                              productDetail: _newOrder.productDetail,
-                              date: _newOrder.date);
-                        },
-                      ),
-                      // Factory Name
-                      CustomTextField(
-                        labelText: 'Factory Name',
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.next,
-                        enabled: true,
-                        controller: _factoryNameController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter Product Name!';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _newOrder = Transaction1(
-                              id: _newOrder.id,
-                              productName: _newOrder.productName,
-                              partyName: _newOrder.partyName,
-                              factoryName: value!,
-                              address: _newOrder.address,
-                              quantity: _newOrder.quantity,
-                              productDetail: _newOrder.productDetail,
-                              date: _newOrder.date);
-                        },
-                      ),
-                      // Address
-                      CustomTextField(
-                        labelText: 'Address',
-                        maxLines: 3,
-                        keyboardType: TextInputType.multiline,
-                        // textInputAction: TextInputAction.next,
-                        enabled: true,
-                        controller: _addressController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter anything';
-                          }
-                          // if (value.length <= 10) {
-                          //   return 'above 10';
-                          // }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _newOrder = Transaction1(
-                            id: _newOrder.id,
-                            productName: _newOrder.productName,
-                            partyName: _newOrder.partyName,
-                            factoryName: _newOrder.factoryName,
-                            address: value!,
-                            quantity: _newOrder.quantity,
-                            productDetail: _newOrder.productDetail,
-                            date: _newOrder.date,
-                          );
-                        },
-                      ),
-                      SizedBox(height: 40),
-                    ],
-                  ),
-                ),
+              SizedBox(height: space),
+              //PO Number
+              CustomTextField(
+                labelText: 'PO Number',
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                enabled: true,
+                controller: _poNumController,
+                onSaved: (value) {
+                  _newOrder = Transaction1(
+                    id: value!,
+                    productName: _newOrder.productName,
+                    partyName: _newOrder.partyName,
+                    factoryName: _newOrder.factoryName,
+                    address: _newOrder.address,
+                    quantity: _newOrder.quantity,
+                    productDetail: _newOrder.productDetail,
+                    date: _newOrder.date,
+                  );
+                },
               ),
-              // resizeToAvoidBottomInset: true,
-              extendBody: true,
+              SizedBox(height: space),
+              CustomTextField(
+                labelText: 'Party Name',
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                enabled: true,
+                controller: _partyNameController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter Product Name!';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _newOrder = Transaction1(
+                      id: _newOrder.id,
+                      productName: _newOrder.productName,
+                      partyName: value!,
+                      factoryName: _newOrder.factoryName,
+                      address: _newOrder.address,
+                      quantity: _newOrder.quantity,
+                      productDetail: _newOrder.productDetail,
+                      date: _newOrder.date);
+                },
+              ),
+              SizedBox(height: space),
+              // Factory Name
+              CustomTextField(
+                labelText: 'Factory Name',
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                enabled: true,
+                controller: _factoryNameController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter Product Name!';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _newOrder = Transaction1(
+                      id: _newOrder.id,
+                      productName: _newOrder.productName,
+                      partyName: _newOrder.partyName,
+                      factoryName: value!,
+                      address: _newOrder.address,
+                      quantity: _newOrder.quantity,
+                      productDetail: _newOrder.productDetail,
+                      date: _newOrder.date);
+                },
+              ),
+              SizedBox(height: space),
+              // Address
+              CustomTextField(
+                labelText: 'Address',
+                maxLines: 3,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.done,
+                enabled: true,
+                controller: _addressController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter anything';
+                  }
+                  // if (value.length <= 10) {
+                  //   return 'above 10';
+                  // }
+                  return null;
+                },
+                onSaved: (value) {
+                  _newOrder = Transaction1(
+                    id: _newOrder.id,
+                    productName: _newOrder.productName,
+                    partyName: _newOrder.partyName,
+                    factoryName: _newOrder.factoryName,
+                    address: value!,
+                    quantity: _newOrder.quantity,
+                    productDetail: _newOrder.productDetail,
+                    date: _newOrder.date,
+                  );
+                },
+              ),
+              SizedBox(height: 40),
+            ],
+          ),
+        ),
+      ),
+      // resizeToAvoidBottomInset: true,
+      extendBody: true,
 
-              // drawerScrimColor: Colors.white,
-              persistentFooterAlignment: AlignmentDirectional.center,
-              persistentFooterButtons: [
-                CustomButton(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => NewOrderProductPage(),
-                      ),
-                    );
-                  },
-                  text: 'Next',
-                ),
-              ],
+      // drawerScrimColor: Colors.white,
+      persistentFooterAlignment: AlignmentDirectional.center,
+      persistentFooterButtons: [
+        CustomButton(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => NewOrderProductPage(),
+              ),
             );
-          } else {
-            return const MyLogin();
-          }
-        });
+          },
+          text: 'Next',
+        ),
+      ],
+    );
   }
 }

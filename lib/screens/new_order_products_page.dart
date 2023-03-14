@@ -65,67 +65,54 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('ADD NEW PRODUCT'),
+        backgroundColor: const Color(0xff511C74),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                if (_increase == 10) {
+                  _increase;
+                } else {
+                  _increase++;
+                }
+              });
+            },
+            icon: const Icon(Icons.add_circle_outline),
+          )
+        ],
+      ),
+      body: Form(
+        key: _form,
+        child: ListView.builder(
+          itemCount: _increase,
+          itemBuilder: (context, i) {
+            return ProductDetails(
+              onPressed: () {
+                setState(() {
+                  if (_increase == 1) {
+                    _increase;
+                  } else {
+                    _increase--;
+                  }
+                });
+              },
             );
-          }
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text("Something went wrong!!"),
-            );
-          }
-          if (snapshot.hasData) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text('ADD NEW PRODUCT'),
-                backgroundColor: const Color(0xff511C74),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        if (_increase == 10) {
-                          _increase;
-                        } else {
-                          _increase++;
-                        }
-                      });
-                    },
-                    icon: const Icon(Icons.add_circle_outline),
-                  )
-                ],
-              ),
-              body: Form(
-                key: _form,
-                child: ListView.builder(
-                  itemCount: _increase,
-                  itemBuilder: (context, i) {
-                    return ProductDetails(
-                      onPressed: () {
-                        setState(() {
-                          _increase-- == 1;
-                        });
-                      },
-                    );
-                  },
-                ),
-              ),
-              // resizeToAvoidBottomInset: true,
-              // extendBody: true,
+          },
+        ),
+      ),
+      // resizeToAvoidBottomInset: true,
+      // extendBody: true,
 
-              // drawerScrimColor: Colors.white,
-              persistentFooterAlignment: AlignmentDirectional.center,
-              persistentFooterButtons: [
-                CustomButton(text: 'Submit'),
-              ],
-            );
-          } else {
-            return const MyLogin();
-          }
-        });
+      // drawerScrimColor: Colors.white,
+      persistentFooterAlignment: AlignmentDirectional.center,
+      persistentFooterButtons: [
+        CustomButton(text: 'Submit'),
+      ],
+    );
   }
 }
 
@@ -172,7 +159,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         borderRadius: BorderRadius.circular(25),
       ),
       child: Container(
-        height: 420,
+        height: 395,
         width: double.maxFinite,
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         decoration: BoxDecoration(
@@ -207,7 +194,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 );
               },
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 15),
             // Quantity
             CustomTextField(
               labelText: 'Quantity (KG)',
@@ -233,7 +220,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     date: _newOrder.date);
               },
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 15),
             // Price
             CustomTextField(
               labelText: 'Price',
@@ -260,14 +247,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                     date: _newOrder.date);
               },
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 15),
             // Description
             CustomTextField(
               labelText: 'Description',
               textInputAction: TextInputAction.done,
               enabled: true,
               controller: _descriptionController,
-              maxLines: 5,
+              maxLines: 4,
               keyboardType: TextInputType.multiline,
               // focusNode: _descriptionFocusNode,
               validator: (value) {
@@ -295,6 +282,15 @@ class _ProductDetailsState extends State<ProductDetails> {
             ListTile(
               trailing: TextButton(
                 onPressed: widget.onPressed,
+                // onPressed: () {
+                //   // setState(() {
+                //   //   if (_increase == 1) {
+                //   //     _increase;
+                //   //   } else {
+                //   //     _increase--;
+                //   //   }
+                //   // });
+                // },
                 child: Text(
                   'Remove',
                   style: TextStyle(

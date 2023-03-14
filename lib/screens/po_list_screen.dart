@@ -15,6 +15,7 @@ import '../widgets/po_list_item.dart';
 import '../providers/transactions.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/app_bar_functions.dart';
+import 'new_order_page.dart';
 
 class POListScreen extends StatelessWidget {
   const POListScreen({Key? key}) : super(key: key);
@@ -106,9 +107,15 @@ class POListScreen extends StatelessWidget {
                     }
 
                     print('your user role will be: $userRole');
-                    Navigator.pushNamed(
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   NewOrdersScreen.routeName,
+                    // );
+                    Navigator.push(
                       context,
-                      NewOrdersScreen.routeName,
+                      MaterialPageRoute(
+                        builder: (context) => NewOrderPage(),
+                      ),
                     );
                   },
                   // Navigator.pushNamed(context, NewOrdersScreen.routeName),

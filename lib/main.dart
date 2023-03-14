@@ -81,13 +81,13 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'NBT',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+        theme: ThemeData.light().copyWith(
+          scaffoldBackgroundColor: Colors.white,
           dividerColor: Colors.transparent,
         ),
-        // home: SplashScreen(),
+        home: SplashScreen(),
         // home: MultiForm(),
-        home: NewOrderPage(),
+        // home: NewOrderPage(),
         routes: {
           MainDashboardScreen.routeName: (_) => MainDashboardScreen(),
           NewOrdersScreen.routeName: (_) => NewOrdersScreen(),

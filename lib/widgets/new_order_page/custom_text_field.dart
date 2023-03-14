@@ -24,9 +24,25 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textFieldColor = const Color(0xff511C74);
     return TextFormField(
+      cursorColor: textFieldColor,
       decoration: InputDecoration(
+        contentPadding: const EdgeInsets.only(left: 4),
         label: Text(labelText),
+        labelStyle: TextStyle(
+          color: textFieldColor,
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: textFieldColor,
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: textFieldColor,
+          ),
+        ),
       ),
       maxLines: maxLines,
       keyboardType: keyboardType,
