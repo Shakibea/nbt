@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nbt/providers/NewOrderProvider.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/transaction.dart';
@@ -19,7 +20,7 @@ class NewOrderProductPage extends StatefulWidget {
 }
 
 class _NewOrderProductPageState extends State<NewOrderProductPage> {
-  var _increase = 1;
+  // var _increase = 1;
   final _form = GlobalKey<FormState>();
   final _productNameController = TextEditingController();
   final _quantityController = TextEditingController();
@@ -73,13 +74,15 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {
-                if (_increase == 10) {
-                  _increase;
-                } else {
-                  _increase++;
-                }
-              });
+              // setState(() {
+              //   if (_increase == 10) {
+              //     _increase;
+              //   } else {
+              //     _increase++;
+              //   }
+              // });
+              Provider.of<NewOrderProvider>(context, listen: false)
+                  .incrementCount();
             },
             icon: const Icon(Icons.add_circle_outline),
           )
@@ -88,17 +91,20 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
       body: Form(
         key: _form,
         child: ListView.builder(
-          itemCount: _increase,
+          // itemCount: _increase,
+          itemCount: Provider.of<NewOrderProvider>(context).count,
           itemBuilder: (context, i) {
             return ProductDetails(
               onPressed: () {
-                setState(() {
-                  if (_increase == 1) {
-                    _increase;
-                  } else {
-                    _increase--;
-                  }
-                });
+                // setState(() {
+                //   if (_increase == 1) {
+                //     _increase;
+                //   } else {
+                //     _increase--;
+                //   }
+                // });
+                Provider.of<NewOrderProvider>(context, listen: false)
+                    .decrementCount();
               },
             );
           },
