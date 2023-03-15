@@ -29,6 +29,12 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
 
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
   var _newOrder = Transaction1(
     id: '',
     productName: '',
@@ -70,6 +76,8 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
     ProductForm(),
   ];
 
+  void removeProduct(int i) {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +100,7 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
               _forms.add(
                 ProductForm(
                   onPressed: () {
-                    _forms.removeAt(1);
+                    // _forms.removeAt(1);
                   },
                   product: Product(),
                 ),
@@ -104,24 +112,44 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
           )
         ],
       ),
-      body: Form(
-        key: _form,
-        child: ListView.builder(
-          // itemCount: _increase,
-          // itemCount: Provider.of<NewOrderProvider>(context).count,
-          itemCount: _forms.length,
-          itemBuilder: (context, i) {
-            // return ProductForm(
-            //   onPressed: () {
-            //     // Provider.of<NewOrderProvider>(context, listen: false)
-            //     //     .decrementCount(i);
-            //     _forms.removeAt(i);
-            //   },
-            // );
+      body: ListView.builder(
+        // itemCount: _increase,
+        // itemCount: Provider.of<NewOrderProvider>(context).count,
+        itemCount: _forms.length,
+        itemBuilder: (context, i) {
+          final products = _forms[i];
+          return ListTile(
+            key: Key(i.toString()),
+            subtitle: TextButton(
+              style: TextButton.styleFrom(
+                fixedSize: Size(135, 20),
+              ),
+              onPressed: () {
+                setState(() {
+                  // _forms.removeAt(products);
+                  print(i);
+                });
+              },
+              child: Text('Delete'),
+            ),
+            title: _forms[i],
+          );
 
-            return _forms[i];
-          },
-        ),
+          // Column(
+          // children: [
+          //   _forms[i],
+          //   TextButton(
+          //     onPressed: () {
+          //       setState(() {
+          //         _forms.removeAt(i);
+          //         print(i);
+          //       });
+          //     },
+          //     child: Text('Delete'),
+          //   ),
+          // ],
+          // );
+        },
       ),
       // resizeToAvoidBottomInset: true,
       // extendBody: true,
@@ -151,15 +179,12 @@ class _ProductFormState extends State<ProductForm> {
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  var _newOrder = Transaction1(
+  var _newOrder = Product(
     id: '',
-    productName: '',
-    partyName: '',
-    factoryName: '',
-    address: '',
+    name: '',
     quantity: '',
-    productDetail: '',
-    date: DateTime.now(),
+    price: '',
+    description: '',
   );
 
   @override
@@ -171,154 +196,144 @@ class _ProductFormState extends State<ProductForm> {
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Container(
-        height: 395,
-        width: double.maxFinite,
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        decoration: BoxDecoration(
-          color: Colors.white,
+    return Form(
+      key: _formKey,
+      child: Card(
+        elevation: 2,
+        margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
         ),
-        child: Column(
-          children: [
-            // Product Name
-            CustomTextField(
-              labelText: 'Name of Product',
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              enabled: true,
-              controller: _productNameController,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter Product Name!';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _newOrder = Transaction1(
-                  id: _newOrder.id,
-                  productName: value!,
-                  partyName: _newOrder.partyName,
-                  factoryName: _newOrder.factoryName,
-                  address: _newOrder.address,
-                  quantity: _newOrder.quantity,
-                  productDetail: _newOrder.productDetail,
-                  date: _newOrder.date,
-                );
-              },
-            ),
-            SizedBox(height: 15),
-            // Quantity
-            CustomTextField(
-              labelText: 'Quantity (KG)',
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
-              enabled: true,
-              controller: _quantityController,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter Quantity!';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _newOrder = Transaction1(
+        child: Container(
+          height: 395,
+          width: double.maxFinite,
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: Column(
+            children: [
+              // Product Name
+              CustomTextField(
+                labelText: 'Name of Product',
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                enabled: true,
+                controller: _productNameController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter Product Name!';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _newOrder = Product(
                     id: _newOrder.id,
-                    productName: _newOrder.productName,
-                    partyName: _newOrder.partyName,
-                    factoryName: _newOrder.factoryName,
-                    address: _newOrder.address,
+                    name: value!,
+                    quantity: _newOrder.quantity,
+                    price: _newOrder.price,
+                    description: _newOrder.description,
+                  );
+                },
+              ),
+              SizedBox(height: 15),
+              // Quantity
+              CustomTextField(
+                labelText: 'Quantity (KG)',
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
+                enabled: true,
+                controller: _quantityController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter Quantity!';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _newOrder = Product(
+                    id: _newOrder.id,
+                    name: _newOrder.name,
                     quantity: value!,
-                    productDetail: _newOrder.productDetail,
-                    date: _newOrder.date);
-              },
-            ),
-            SizedBox(height: 15),
-            // Price
-            CustomTextField(
-              labelText: 'Price',
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
-              enabled: true,
-              controller: _priceController,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter Price!';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _newOrder = Transaction1(
+                    price: _newOrder.price,
+                    description: _newOrder.description,
+                  );
+                },
+              ),
+              SizedBox(height: 15),
+              // Price
+              CustomTextField(
+                labelText: 'Price',
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
+                enabled: true,
+                controller: _priceController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter Price!';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _newOrder = Product(
                     id: _newOrder.id,
-                    productName: _newOrder.productName,
-                    partyName: _newOrder.partyName,
-                    factoryName: _newOrder.factoryName,
-                    address: _newOrder.address,
+                    name: _newOrder.name,
                     quantity: _newOrder.quantity,
                     price: value!,
-                    productDetail: _newOrder.productDetail,
-                    date: _newOrder.date);
-              },
-            ),
-            SizedBox(height: 15),
-            // Description
-            CustomTextField(
-              labelText: 'Description',
-              textInputAction: TextInputAction.done,
-              enabled: true,
-              controller: _descriptionController,
-              maxLines: 4,
-              keyboardType: TextInputType.multiline,
-              // focusNode: _descriptionFocusNode,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter anything';
-                }
-                // if (value.length <= 10) {
-                //   return 'above 10';
-                // }
-                return null;
-              },
-              onSaved: (value) {
-                _newOrder = Transaction1(
+                    description: _newOrder.description,
+                  );
+                },
+              ),
+              SizedBox(height: 15),
+              // Description
+              CustomTextField(
+                labelText: 'Description',
+                textInputAction: TextInputAction.done,
+                enabled: true,
+                controller: _descriptionController,
+                maxLines: 4,
+                keyboardType: TextInputType.multiline,
+                // focusNode: _descriptionFocusNode,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter anything';
+                  }
+                  // if (value.length <= 10) {
+                  //   return 'above 10';
+                  // }
+                  return null;
+                },
+                onSaved: (value) {
+                  _newOrder = Product(
                     id: _newOrder.id,
-                    productName: _newOrder.productName,
-                    partyName: _newOrder.partyName,
-                    factoryName: _newOrder.factoryName,
-                    address: _newOrder.address,
+                    name: _newOrder.name,
                     quantity: _newOrder.quantity,
-                    productDetail: value!,
-                    date: _newOrder.date);
-              },
-            ),
-            SizedBox(height: 15),
-            ListTile(
-              trailing: TextButton(
-                onPressed: widget.onPressed,
-                // onPressed: () {
-                //   setState(() {
-                //     _
-                //   });
-                // },
-                child: Text(
-                  'Remove',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.red,
-                    fontWeight: FontWeight.w500,
+                    price: _newOrder.price,
+                    description: value!,
+                  );
+                },
+              ),
+              SizedBox(height: 15),
+              ListTile(
+                trailing: TextButton(
+                  onPressed: widget.onPressed,
+                  child: Text(
+                    'Remove',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

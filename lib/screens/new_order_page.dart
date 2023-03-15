@@ -216,7 +216,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         ),
       ),
       // resizeToAvoidBottomInset: true,
-      extendBody: true,
+      // extendBody: true,
 
       // drawerScrimColor: Colors.white,
       persistentFooterAlignment: AlignmentDirectional.center,

@@ -62,12 +62,12 @@ class NewOrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void decrementCount(int index) {
+  void decrementCount() {
     if (_count == 1) {
       _count;
     } else {
       // _count--;
-      deleteProduct(index);
+      // deleteProduct(index);
       Fluttertoast.showToast(
         msg: "Product removed",
         toastLength: Toast.LENGTH_SHORT,
@@ -80,5 +80,4 @@ class NewOrderProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
-
 }
