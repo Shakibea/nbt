@@ -33,6 +33,7 @@ import './screens/po_list_screen.dart';
 import './screens/new_orders_screen.dart';
 import './screens/main_dashboard_screen.dart';
 import './screens/old_orders_screen.dart';
+import 'dynamic form/DynamicProductForm.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,7 +87,8 @@ class MyApp extends StatelessWidget {
           dividerColor: Colors.transparent,
         ),
         // home: SplashScreen(),
-        home: MultiForm(),
+        // home: MultiForm(),
+        home: DynamicProductForm(),
         // home: NewOrderPage(),
         routes: {
           MainDashboardScreen.routeName: (_) => MainDashboardScreen(),
