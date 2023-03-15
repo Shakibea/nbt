@@ -17,10 +17,10 @@ class _MultiFormState extends State<MultiForm> {
     return Scaffold(
       appBar: AppBar(
         elevation: .0,
-        leading: Icon(
+        leading: const Icon(
           Icons.wb_cloudy,
         ),
-        title: Text('REGISTER USERS'),
+        title: const Text('REGISTER USERS'),
         actions: <Widget>[
           ElevatedButton(
             child: Text('Save'),
@@ -60,7 +60,7 @@ class _MultiFormState extends State<MultiForm> {
             //   textInputAction: TextInputAction.next,
             //   enabled: false,
             // ),
-            TextFormField(
+            /*TextFormField(
               decoration: const InputDecoration(label: Text('PO Number')),
               textInputAction: TextInputAction.next,
             ),
@@ -89,28 +89,30 @@ class _MultiFormState extends State<MultiForm> {
                 }
                 return null;
               },
-            ),
+            ),*/
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
         onPressed: onAddForm,
         foregroundColor: Colors.white,
+        child: const Icon(Icons.add),
       ),
     );
   }
 
   ///on form user deleted
-  void onDelete(User _user) {
+  void onDelete(User user) {
     setState(() {
       var find = users.firstWhere(
-        (it) => it.user == _user,
+        (it) => it.user == user,
         // orElse: (){
         //
         // },
       );
       if (find != null) users.removeAt(users.indexOf(find));
+
+      print("Your list find Id: $find");
     });
   }
 
@@ -122,6 +124,8 @@ class _MultiFormState extends State<MultiForm> {
         user: _user,
         onDelete: () => onDelete(_user),
       ));
+
+      print("Your users list: $users");
     });
   }
 
@@ -129,7 +133,9 @@ class _MultiFormState extends State<MultiForm> {
   void onSave() {
     if (users.length > 0) {
       var allValid = true;
-      users.forEach((form) => allValid = allValid && form.isValid());
+      for (var form in users) {
+        allValid = allValid && form.isValid();
+      }
       if (allValid) {
         var data = users.map((it) => it.user).toList();
         Navigator.push(
@@ -138,7 +144,7 @@ class _MultiFormState extends State<MultiForm> {
             fullscreenDialog: true,
             builder: (_) => Scaffold(
               appBar: AppBar(
-                title: Text('List of Users'),
+                title: const Text('List of Users'),
               ),
               body: ListView.builder(
                 itemCount: data.length,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'user.dart';
 
-typedef OnDelete();
+typedef OnDelete = Function();
 
 class UserForm extends StatefulWidget {
   final User user;

@@ -85,8 +85,8 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           dividerColor: Colors.transparent,
         ),
-        home: SplashScreen(),
-        // home: MultiForm(),
+        // home: SplashScreen(),
+        home: MultiForm(),
         // home: NewOrderPage(),
         routes: {
           MainDashboardScreen.routeName: (_) => MainDashboardScreen(),
