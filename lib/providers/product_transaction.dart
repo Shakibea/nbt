@@ -4,56 +4,54 @@ import 'package:nbt/providers/product.dart';
 
 enum Status { Complete, MltShortage, InProcess, Delivered, NewOrder }
 
-class Transaction1 with ChangeNotifier {
+class ProductTransaction with ChangeNotifier {
   final String id;
-  final String productName;
   final String partyName;
   final String factoryName;
   final String address;
-  final String quantity;
-  final String? price;
-  final String productDetail;
   final DateTime date;
   Status status;
 
-  Transaction1({
-    this.price,
+  ProductTransaction({
     required this.id,
-    required this.productName,
     required this.partyName,
     required this.factoryName,
     required this.address,
-    required this.quantity,
-    required this.productDetail,
     required this.date,
     this.status = Status.NewOrder,
   });
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'productName': productName,
         'partyName': partyName,
         'factoryName': factoryName,
         'address': address,
-        'quantity': quantity,
-        'price': price,
-        'productDetail': productDetail,
         'date': date,
         'status': status.name
       };
 
-  factory Transaction1.fromJson(Map<String, dynamic> json) => Transaction1(
+  factory ProductTransaction.fromJson(Map<String, dynamic> json) =>
+      ProductTransaction(
         id: json['id'],
-        productName: json['productName'],
         partyName: json['partyName'],
         factoryName: json['factoryName'],
         address: json['address'],
-        quantity: json['quantity'],
-        price: json['price'],
-        productDetail: json['productDetail'],
         date: (json['date'] as Timestamp).toDate(),
         status: Status.values.byName(json['status']),
       );
+
+  static ProductTransaction fromSnap(DocumentSnapshot snap) {
+    var snapshot = snap.data() as Map<String, dynamic>;
+
+    return ProductTransaction(
+      id: snapshot['id'],
+      partyName: snapshot['partyName'],
+      factoryName: snapshot['factoryName'],
+      address: snapshot['address'],
+      date: (snapshot['date'] as Timestamp).toDate(),
+      status: Status.values.byName(snapshot['status']),
+    );
+  }
 
   String get getStatus {
     switch (status) {

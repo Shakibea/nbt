@@ -3,9 +3,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nbt/providers/NewOrderProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../providers/product.dart';
 import '../providers/transaction.dart';
 import '../providers/transactions.dart';
 import './login_screen.dart';
@@ -20,7 +22,7 @@ class NewOrderProductPage extends StatefulWidget {
 }
 
 class _NewOrderProductPageState extends State<NewOrderProductPage> {
-  var _increase = 1;
+  // var _increase = 1;
   final _form = GlobalKey<FormState>();
   final _productNameController = TextEditingController();
   final _quantityController = TextEditingController();
@@ -64,6 +66,10 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
     Navigator.of(context).pop();
   }
 
+  List<ProductForm> _forms = [
+    ProductForm(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,13 +80,25 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {
-                if (_increase == 10) {
-                  _increase;
-                } else {
-                  _increase++;
-                }
-              });
+              // setState(() {
+              //   if (_increase == 10) {
+              //     _increase;
+              //   } else {
+              //     _increase++;
+              //   }
+              // });
+              // Provider.of<NewOrderProvider>(context, listen: false)
+              //     .incrementCount();
+              _forms.add(
+                ProductForm(
+                  onPressed: () {
+                    _forms.removeAt(1);
+                  },
+                  product: Product(),
+                ),
+              );
+              print(_forms);
+              setState(() {});
             },
             icon: const Icon(Icons.add_circle_outline),
           )
@@ -89,37 +107,19 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
       body: Form(
         key: _form,
         child: ListView.builder(
-          itemCount: _increase,
+          // itemCount: _increase,
+          // itemCount: Provider.of<NewOrderProvider>(context).count,
+          itemCount: _forms.length,
           itemBuilder: (context, i) {
-            return ProductDetails(
-              onPressed: () {
-                setState(() {
-                  if (_increase == 1) {
-                    _increase;
-                  } else {
-                    _increase--;
-                    Fluttertoast.showToast(
-                      msg: "Product removed",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.white,
-                      textColor: Colors.red,
-                      fontSize: 16.0,
-                    );
-                  }
-                  // Fluttertoast.showToast(
-                  //   msg: "Product removed",
-                  //   toastLength: Toast.LENGTH_SHORT,
-                  //   gravity: ToastGravity.CENTER,
-                  //   timeInSecForIosWeb: 1,
-                  //   backgroundColor: Colors.white,
-                  //   textColor: Colors.red,
-                  //   fontSize: 16.0,
-                  // );
-                });
-              },
-            );
+            // return ProductForm(
+            //   onPressed: () {
+            //     // Provider.of<NewOrderProvider>(context, listen: false)
+            //     //     .decrementCount(i);
+            //     _forms.removeAt(i);
+            //   },
+            // );
+
+            return _forms[i];
           },
         ),
       ),
@@ -135,15 +135,17 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
   }
 }
 
-class ProductDetails extends StatefulWidget {
+class ProductForm extends StatefulWidget {
   final Function()? onPressed;
-  const ProductDetails({Key? key, this.onPressed}) : super(key: key);
+  final Product? product;
+
+  const ProductForm({Key? key, this.onPressed, this.product}) : super(key: key);
 
   @override
-  State<ProductDetails> createState() => _ProductDetailsState();
+  State<ProductForm> createState() => _ProductFormState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
+class _ProductFormState extends State<ProductForm> {
   final _productNameController = TextEditingController();
   final _quantityController = TextEditingController();
   final _priceController = TextEditingController();
@@ -302,13 +304,9 @@ class _ProductDetailsState extends State<ProductDetails> {
               trailing: TextButton(
                 onPressed: widget.onPressed,
                 // onPressed: () {
-                //   // setState(() {
-                //   //   if (_increase == 1) {
-                //   //     _increase;
-                //   //   } else {
-                //   //     _increase--;
-                //   //   }
-                //   // });
+                //   setState(() {
+                //     _
+                //   });
                 // },
                 child: Text(
                   'Remove',
