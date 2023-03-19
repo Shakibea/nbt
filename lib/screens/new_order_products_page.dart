@@ -102,7 +102,7 @@ class _NewOrderProductPageState extends State<NewOrderProductPage> {
                   onPressed: () {
                     // _forms.removeAt(1);
                   },
-                  product: Product(),
+                  // product: Product(),
                 ),
               );
               print(_forms);
@@ -183,7 +183,7 @@ class _ProductFormState extends State<ProductForm> {
     id: '',
     name: '',
     quantity: '',
-    price: '',
+    price: double.parse(''),
     description: '',
   );
 
@@ -284,7 +284,7 @@ class _ProductFormState extends State<ProductForm> {
                     id: _newOrder.id,
                     name: _newOrder.name,
                     quantity: _newOrder.quantity,
-                    price: value!,
+                    price: double.parse(value!),
                     description: _newOrder.description,
                   );
                 },

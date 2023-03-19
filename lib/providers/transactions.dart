@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
+import '../providers/product.dart';
 import 'transaction.dart';
 
 class Transactions with ChangeNotifier {
@@ -136,6 +138,25 @@ class Transactions with ChangeNotifier {
 
     final json = newOrder.toJson();
     await docOrder.set(json);
+  }
+
+  Future createProduct(Product product, String id) async {
+    String productId = const Uuid().v1();
+    final docProduct = FirebaseFirestore.instance
+        .collection('orders')
+        .doc(id)
+        .collection('products')
+        .doc(productId);
+    final newProduct = Product(
+      id: docProduct.id,
+      name: product.name,
+      quantity: product.quantity,
+      price: product.price,
+      description: product.description,
+    );
+
+    final json = newProduct.toJson();
+    await docProduct.set(json);
   }
 
   Future updateOrder(String id, String status) async {

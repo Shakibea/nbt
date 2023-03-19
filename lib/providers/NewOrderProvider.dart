@@ -13,7 +13,7 @@ class NewOrderProvider extends ChangeNotifier {
       id: "01",
       name: 'ads',
       quantity: "15",
-      price: '5',
+      price: 5,
       description: 'sdhdha',
     ),
   ];

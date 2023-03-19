@@ -4,14 +4,14 @@ class Product {
   final String? id;
   final String? name;
   final String? quantity;
-  final String? price;
+  final double price;
   final String? description;
 
   Product({
     this.id,
     this.name,
     this.quantity,
-    this.price,
+    required this.price,
     this.description,
   });
 

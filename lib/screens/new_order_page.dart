@@ -3,9 +3,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nbt/resources/firestore_method.dart';
 import 'package:nbt/screens/new_order_products_page.dart';
 import 'package:provider/provider.dart';
 
+import '../dynamic form/DynamicProductForm.dart';
+import '../providers/product_transaction.dart';
 import '../providers/transaction.dart';
 import '../providers/transactions.dart';
 import './login_screen.dart';
@@ -55,6 +58,17 @@ class _NewOrderPageState extends State<NewOrderPage> {
     super.dispose();
   }
 
+  // void createOrder() async {
+  //   await FirestoreMethod().addOrder(_newOrder);
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (_) => DynamicProductForm(
+  //         id: _newOrder.id,
+  //       ),
+  //     ),
+  //   );
+  // }
+
   void _saveForm() {
     var valid = _form.currentState?.validate();
     if (!valid!) {
@@ -64,7 +78,14 @@ class _NewOrderPageState extends State<NewOrderPage> {
 
     // Provider.of<Transactions>(context, listen: false).addProduct(_newOrder);
     Provider.of<Transactions>(context, listen: false).createOrder(_newOrder);
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => DynamicProductForm(
+          id: _newOrder.id,
+        ),
+      ),
+    );
   }
 
   @override
@@ -143,14 +164,15 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 },
                 onSaved: (value) {
                   _newOrder = Transaction1(
-                      id: _newOrder.id,
-                      productName: _newOrder.productName,
-                      partyName: value!,
-                      factoryName: _newOrder.factoryName,
-                      address: _newOrder.address,
-                      quantity: _newOrder.quantity,
-                      productDetail: _newOrder.productDetail,
-                      date: _newOrder.date);
+                    id: _newOrder.id,
+                    productName: _newOrder.productName,
+                    partyName: value!,
+                    factoryName: _newOrder.factoryName,
+                    address: _newOrder.address,
+                    quantity: _newOrder.quantity,
+                    productDetail: _newOrder.productDetail,
+                    date: _newOrder.date,
+                  );
                 },
               ),
               SizedBox(height: space),
@@ -169,14 +191,15 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 },
                 onSaved: (value) {
                   _newOrder = Transaction1(
-                      id: _newOrder.id,
-                      productName: _newOrder.productName,
-                      partyName: _newOrder.partyName,
-                      factoryName: value!,
-                      address: _newOrder.address,
-                      quantity: _newOrder.quantity,
-                      productDetail: _newOrder.productDetail,
-                      date: _newOrder.date);
+                    id: _newOrder.id,
+                    productName: _newOrder.productName,
+                    partyName: _newOrder.partyName,
+                    factoryName: value!,
+                    address: _newOrder.address,
+                    quantity: _newOrder.quantity,
+                    productDetail: _newOrder.productDetail,
+                    date: _newOrder.date,
+                  );
                 },
               ),
               SizedBox(height: space),
@@ -222,13 +245,17 @@ class _NewOrderPageState extends State<NewOrderPage> {
       persistentFooterAlignment: AlignmentDirectional.center,
       persistentFooterButtons: [
         CustomButton(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => NewOrderProductPage(),
-              ),
-            );
-          },
+          onTap: _saveForm,
+          // onTap: () {
+          //   Navigator.of(context).push(
+          //     MaterialPageRoute(
+          //       builder: (_) => DynamicProductForm(
+          //         id: _newOrder.id,
+          //       ),
+          //     ),
+          //   );
+          //   createOrder();
+          // },
           text: 'Next',
         ),
       ],
