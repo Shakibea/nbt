@@ -140,6 +140,7 @@ class Transactions with ChangeNotifier {
     await docOrder.set(json);
   }
 
+  // Products
   Future createProduct(Product product, String id) async {
     String productId = const Uuid().v1();
     final docProduct = FirebaseFirestore.instance
@@ -147,6 +148,9 @@ class Transactions with ChangeNotifier {
         .doc(id)
         .collection('products')
         .doc(productId);
+
+    // print(docProduct.id);
+
     final newProduct = Product(
       id: docProduct.id,
       name: product.name,
@@ -157,6 +161,31 @@ class Transactions with ChangeNotifier {
 
     final json = newProduct.toJson();
     await docProduct.set(json);
+  }
+
+  // Products
+  Future<Transaction1?> readSingleProduct(String id, String productId) async {
+    final docOrder = FirebaseFirestore.instance
+        .collection('orders')
+        .doc(id)
+        .collection('products')
+        .doc(productId);
+    final snapShot = await docOrder.get();
+
+    if (snapShot.exists) {
+      return Transaction1.fromJson(snapShot.data()!);
+    }
+    return null;
+  }
+
+  //Products
+  Future deleteProduct(String id, String productId) async {
+    final docOrder = FirebaseFirestore.instance
+        .collection('orders')
+        .doc(id)
+        .collection('products')
+        .doc(productId);
+    await docOrder.delete();
   }
 
   Future updateOrder(String id, String status) async {

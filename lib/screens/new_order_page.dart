@@ -77,12 +77,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
     _form.currentState?.save();
 
     // Provider.of<Transactions>(context, listen: false).addProduct(_newOrder);
-    Provider.of<Transactions>(context, listen: false).createOrder(_newOrder);
+    // Provider.of<Transactions>(context, listen: false).createOrder(_newOrder);
     // Navigator.of(context).pop();
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => DynamicProductForm(
-          id: _newOrder.id,
+          transaction1: _newOrder,
         ),
       ),
     );

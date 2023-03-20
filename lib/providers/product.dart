@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product {
-  final String? id;
-  final String? name;
-  final String? quantity;
+  final String id;
+  final String name;
+  final String quantity;
   final double price;
-  final String? description;
+  final String description;
 
   Product({
-    this.id,
-    this.name,
-    this.quantity,
+    required this.id,
+    required this.name,
+    required this.quantity,
     required this.price,
-    this.description,
+    required this.description,
   });
 
   Map<String, dynamic> toJson() => {

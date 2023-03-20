@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_final_fields, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:nbt/providers/transaction.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/transactions.dart';
@@ -8,8 +9,11 @@ import '../widgets/new_order_page/custom_text_field.dart';
 import '../providers/product.dart';
 
 class DynamicProductForm extends StatefulWidget {
-  final String id;
-  const DynamicProductForm({Key? key, required this.id}) : super(key: key);
+  // final String id;
+  final Transaction1 transaction1;
+
+  const DynamicProductForm({Key? key, required this.transaction1})
+      : super(key: key);
 
   @override
   _DynamicProductFormState createState() => _DynamicProductFormState();
@@ -26,9 +30,33 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
   final TextEditingController _detailsController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
 
+  // var _newProduct = Product(
+  //   id: '',
+  //   name: '',
+  //   quantity: '',
+  //   price: 0,
+  //   description: '',
+  // );
+
+  late Product _newProduct;
+
+  @override
+  void initState() {
+    _newProduct = Product(
+      id: '',
+      name: '',
+      quantity: '',
+      price: 0,
+      description: '',
+    );
+
+    super.initState();
+  }
+
   void _addProduct() async {
     if (_formKey.currentState!.validate()) {
       final product = Product(
+        id: '',
         name: _nameController.text,
         price: double.parse(_priceController.text),
         description: _detailsController.text,
@@ -41,10 +69,49 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
         _detailsController.clear();
         _quantityController.clear();
       });
-      _formKey.currentState?.save();
-      Provider.of<Transactions>(context, listen: false)
-          .createProduct(product, widget.id);
+      // _formKey.currentState?.save();
+
+      // order
+      // Provider.of<Transactions>(context, listen: false).createOrder(
+      //   widget.transaction1,
+      // );
+
+      // product
+      // Provider.of<Transactions>(context, listen: false).createProduct(
+      //   product,
+      //   widget.transaction1.id,
+      // );
     }
+  }
+
+  void _saveForm() {
+    // var valid = _formKey.currentState?.validate();
+    // if (!valid!) {
+    //   return; // not valid
+    // }
+
+    print(_products);
+
+    _formKey.currentState?.save();
+
+    // order
+    Provider.of<Transactions>(context, listen: false).createOrder(
+      widget.transaction1,
+    );
+
+    // product
+    Provider.of<Transactions>(context, listen: false).createProduct(
+      _newProduct,
+      widget.transaction1.id,
+    );
+    // Navigator.of(context).pop();
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (_) => DynamicProductForm(
+    //       transaction1: _newOrder,
+    //     ),
+    //   ),
+    // );
   }
 
   void _removeProduct(int index) {
@@ -59,6 +126,19 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
       appBar: AppBar(
         title: const Text('ADD NEW PRODUCT'),
         backgroundColor: const Color(0xff511C74),
+        actions: [
+          TextButton(
+            onPressed: _saveForm,
+            child: Text(
+              'Submit',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          // IconButton(
+          //   onPressed: _saveForm,
+          //   icon: const Icon(Icons.save),
+          // )
+        ],
       ),
       body: Form(
         key: _formKey,
@@ -78,15 +158,15 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                   }
                   return null;
                 },
-                // onSaved: (value) {
-                //   _newProduct = Product(
-                //     id: _newProduct.id,
-                //     name: value!,
-                //     quantity: _newProduct.quantity,
-                //     price: _newProduct.price,
-                //     description: _newProduct.description,
-                //   );
-                // },
+                onSaved: (value) {
+                  _newProduct = Product(
+                    id: _newProduct.id,
+                    name: value!,
+                    quantity: _newProduct.quantity,
+                    price: _newProduct.price,
+                    description: _newProduct.description,
+                  );
+                },
               ),
               SizedBox(height: 15),
               // Quantity
@@ -102,15 +182,15 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                   }
                   return null;
                 },
-                // onSaved: (value) {
-                //   _newProduct = Product(
-                //     id: _newProduct.id,
-                //     name: _newProduct.name,
-                //     quantity: value!,
-                //     price: _newProduct.price,
-                //     description: _newProduct.description,
-                //   );
-                // },
+                onSaved: (value) {
+                  _newProduct = Product(
+                    id: _newProduct.id,
+                    name: _newProduct.name,
+                    quantity: value!,
+                    price: _newProduct.price,
+                    description: _newProduct.description,
+                  );
+                },
               ),
               SizedBox(height: 15),
               // Price
@@ -126,15 +206,15 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                   }
                   return null;
                 },
-                // onSaved: (value) {
-                //   _newProduct = Product(
-                //     id: _newProduct.id,
-                //     name: _newProduct.name,
-                //     quantity: _newProduct.quantity,
-                //     price: ,
-                //     description: _newProduct.description,
-                //   );
-                // },
+                onSaved: (value) {
+                  _newProduct = Product(
+                    id: _newProduct.id,
+                    name: _newProduct.name,
+                    quantity: _newProduct.quantity,
+                    price: double.parse(value!),
+                    description: _newProduct.description,
+                  );
+                },
               ),
               SizedBox(height: 15),
               // Description
@@ -155,15 +235,15 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                   // }
                   return null;
                 },
-                // onSaved: (value) {
-                //   _newProduct = Product(
-                //     id: _newProduct.id,
-                //     name: _newProduct.name,
-                //     quantity: _newProduct.quantity,
-                //     price: _newProduct.price,
-                //     description: value!,
-                //   );
-                // },
+                onSaved: (value) {
+                  _newProduct = Product(
+                    id: _newProduct.id,
+                    name: _newProduct.name,
+                    quantity: _newProduct.quantity,
+                    price: _newProduct.price,
+                    description: value!,
+                  );
+                },
               ),
               SizedBox(height: 10),
               ElevatedButton(
@@ -181,12 +261,33 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                     return ListTile(
                       title: Text(product.name.toString()),
                       subtitle: Text(
-                          '\$${product.price.toStringAsFixed(2)} - ${product.description} - Qty: ${product.quantity}'),
+                          '\$${product.price.toStringAsFixed(2)} - Qty: ${product.quantity} - ${product.description}'),
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
-                        onPressed: () {
-                          _removeProduct(index);
-                        },
+                        // _removeProduct(index);
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            backgroundColor: Colors.white,
+                            title: Text("Are you sure?"),
+                            content: Text('To delete this product'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('No'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  _removeProduct(index);
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Yes'),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   },
