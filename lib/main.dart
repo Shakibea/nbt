@@ -90,9 +90,9 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           dividerColor: Colors.transparent,
         ),
-        home: SplashScreen(),
+        // home: SplashScreen(),
         // home: MultiForm(),
-        // home: DynamicProductForm(),
+        home: DynamicProductForm(),
         // home: NewOrderPage(),
         routes: {
           MainDashboardScreen.routeName: (_) => MainDashboardScreen(),

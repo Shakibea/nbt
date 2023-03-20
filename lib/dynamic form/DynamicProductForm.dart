@@ -10,10 +10,9 @@ import '../providers/product.dart';
 
 class DynamicProductForm extends StatefulWidget {
   // final String id;
-  final Transaction1 transaction1;
+  final Transaction1? transaction1;
 
-  const DynamicProductForm({Key? key, required this.transaction1})
-      : super(key: key);
+  const DynamicProductForm({Key? key, this.transaction1}) : super(key: key);
 
   @override
   _DynamicProductFormState createState() => _DynamicProductFormState();
@@ -96,13 +95,13 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
 
     // order
     Provider.of<Transactions>(context, listen: false).createOrder(
-      widget.transaction1,
+      widget.transaction1!,
     );
 
     // product
     Provider.of<Transactions>(context, listen: false).createProduct(
       _newProduct,
-      widget.transaction1.id,
+      widget.transaction1!.id,
     );
     // Navigator.of(context).pop();
     // Navigator.of(context).push(
@@ -253,15 +252,45 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                 ),
                 child: Text('Add Product'),
               ),
+              SizedBox(height: 15),
               Expanded(
                 child: ListView.builder(
                   itemCount: _products.length,
                   itemBuilder: (BuildContext context, int index) {
                     final product = _products[index];
                     return ListTile(
-                      title: Text(product.name.toString()),
+                      // leading: ConstrainedBox(
+                      //   constraints: BoxConstraints(
+                      //     minWidth: 14,
+                      //     minHeight: 14,
+                      //     maxWidth: 24,
+                      //     maxHeight: 24,
+                      //   ),
+                      //   child: Center(child: Text('${index + 1}')),
+                      // ),
+                      leading: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.cyan,
+                        child: Center(
+                          child: Text(
+                            '${index + 1}',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        product.name.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       subtitle: Text(
-                          '\$${product.price.toStringAsFixed(2)} - Qty: ${product.quantity} - ${product.description}'),
+                        'Price: \$${product.price.toStringAsFixed(2)} - Qty: ${product.quantity} \n${product.description}',
+                        style: TextStyle(height: 1.2),
+                      ),
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
                         // _removeProduct(index);
