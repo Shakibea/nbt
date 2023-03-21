@@ -95,12 +95,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
         elevation: 0,
         title: const Text('CREATE NEW ORDER'),
         backgroundColor: const Color(0xff511C74),
-        actions: [
-          IconButton(
-            onPressed: _saveForm,
-            icon: const Icon(Icons.save),
-          )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
