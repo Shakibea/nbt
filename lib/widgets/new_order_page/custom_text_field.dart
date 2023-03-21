@@ -6,7 +6,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputAction textInputAction;
   final TextInputType? keyboardType;
   final bool enabled;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String? Function(String?)? validator;
   final Function(String?)? onSaved;
 
@@ -17,7 +17,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.textInputAction = TextInputAction.next,
     required this.enabled,
-    required this.controller,
+    this.controller,
     this.validator,
     this.onSaved,
   }) : super(key: key);
