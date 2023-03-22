@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_final_fields, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:nbt/providers/products.dart';
 import 'package:nbt/providers/transaction.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/transactions.dart';
+import '../screens/po_list_screen.dart';
 import '../widgets/new_order_page/custom_text_field.dart';
 import '../providers/product.dart';
 
@@ -91,7 +93,7 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
 
     print(_products);
 
-    _formKey.currentState?.save();
+    // _formKey.currentState?.save();
 
     // order
     Provider.of<Transactions>(context, listen: false).createOrder(
@@ -99,18 +101,16 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
     );
 
     // product
-    Provider.of<Transactions>(context, listen: false).createProduct(
-      _newProduct,
+    Provider.of<Products>(context, listen: false).createProduct(
+      _products,
       widget.transaction1!.id,
     );
     // Navigator.of(context).pop();
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (_) => DynamicProductForm(
-    //       transaction1: _newOrder,
-    //     ),
-    //   ),
-    // );
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (_) => POListScreen(),
+      ),
+    );
   }
 
   void _removeProduct(int index) {
@@ -210,7 +210,7 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                     id: _newProduct.id,
                     name: _newProduct.name,
                     quantity: _newProduct.quantity,
-                    price: double.parse(value!),
+                    price: value != null ? double.tryParse(value)! : 0,
                     description: _newProduct.description,
                   );
                 },

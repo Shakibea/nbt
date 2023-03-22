@@ -19,6 +19,7 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
+  var space = 15.0;
   final _form = GlobalKey<FormState>();
   // final _dateController = TextEditingController();
   // final _poNumController = TextEditingController();
@@ -157,6 +158,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Widget build(BuildContext context) {
     var transactionData = Provider.of<Transactions>(context);
     // final transaction = transactionData.poId;
+    var textFieldColor = const Color(0xff511C74);
 
     return Scaffold(
       // appBar: appBarForNewOrder('CREATE NEW ORDER'),
@@ -172,8 +174,23 @@ class _EditProductScreenState extends State<EditProductScreen> {
             children: [
               // Name
               TextFormField(
-                decoration:
-                    const InputDecoration(label: Text('Name of Product')),
+                cursorColor: textFieldColor,
+                decoration: InputDecoration(
+                  label: Text('Name of Product'),
+                  labelStyle: TextStyle(
+                    color: textFieldColor,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor,
+                    ),
+                  ),
+                ),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus();
@@ -195,9 +212,26 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   );
                 },
               ),
+              SizedBox(height: space),
               // Quantity
               TextFormField(
-                decoration: const InputDecoration(label: Text('Quantity')),
+                cursorColor: textFieldColor,
+                decoration: InputDecoration(
+                  label: Text('Quantity'),
+                  labelStyle: TextStyle(
+                    color: textFieldColor,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor,
+                    ),
+                  ),
+                ),
                 textInputAction: TextInputAction.next,
                 // onFieldSubmitted: (_) {
                 //   FocusScope.of(context).requestFocus();
@@ -220,9 +254,26 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   );
                 },
               ),
+              SizedBox(height: space),
               // Price
               TextFormField(
-                decoration: const InputDecoration(label: Text('Price')),
+                cursorColor: textFieldColor,
+                decoration: InputDecoration(
+                  label: Text('Price'),
+                  labelStyle: TextStyle(
+                    color: textFieldColor,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor,
+                    ),
+                  ),
+                ),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus();
@@ -244,9 +295,26 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   );
                 },
               ),
+              SizedBox(height: space),
               // Description
               TextFormField(
-                decoration: const InputDecoration(label: Text('Description')),
+                cursorColor: textFieldColor,
+                decoration: InputDecoration(
+                  label: Text('Description'),
+                  labelStyle: TextStyle(
+                    color: textFieldColor,
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: textFieldColor,
+                    ),
+                  ),
+                ),
                 maxLines: 5,
                 keyboardType: TextInputType.multiline,
                 // focusNode: _descriptionFocusNode,

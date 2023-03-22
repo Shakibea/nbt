@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_final_fields, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -30,6 +31,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
   final _partyNameController = TextEditingController();
   final _factoryNameController = TextEditingController();
   final _addressController = TextEditingController();
+  final _transportationController = TextEditingController();
 
   var _newOrder = Transaction1(
     id: '',
@@ -88,6 +90,18 @@ class _NewOrderPageState extends State<NewOrderPage> {
     );
   }
 
+  List<String> suggestion = [
+    "Apple",
+    "Armidillo",
+    "Actual",
+    "Actuary",
+    "America",
+    "Argentina",
+    "Australia",
+    "Antarctica",
+    "Blueberry",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,6 +158,94 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 },
               ),
               SizedBox(height: space),
+              // Autocomplete(optionsBuilder: optionsBuilder),
+              FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection('orders')
+                    .where(
+                      'partyName',
+                      isLessThanOrEqualTo: _partyNameController.text,
+                      // isGreaterThanOrEqualTo: _partyNameController.text,
+                    )
+                    .get(),
+                builder: (
+                  context,
+                  snapShot,
+                ) {
+                  if (snapShot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        backgroundColor: Colors.transparent,
+                      ),
+                    );
+                  }
+
+                  if (!snapShot.hasData) {
+                    return Center(
+                      child: Text('No result'),
+                    );
+                  }
+
+                  return RawAutocomplete(
+                    optionsBuilder: (TextEditingValue textEditingValue) {
+                      if (textEditingValue.text == '') {
+                        return const Iterable<String>.empty();
+                      } else {
+                        List<String> matches = <String>[];
+                        matches.addAll(suggestion);
+
+                        matches.retainWhere((s) {
+                          return s
+                              .toLowerCase()
+                              .contains(textEditingValue.text.toLowerCase());
+                        });
+                        return matches;
+                      }
+                    },
+                    onSelected: (String selection) {
+                      print('You just selected $selection');
+                    },
+                    fieldViewBuilder: (BuildContext context,
+                        TextEditingController textEditingController,
+                        FocusNode focusNode,
+                        VoidCallback onFieldSubmitted) {
+                      return TextField(
+                        decoration:
+                            InputDecoration(border: OutlineInputBorder()),
+                        controller: textEditingController,
+                        focusNode: focusNode,
+                        onSubmitted: (String value) {},
+                      );
+                    },
+                    optionsViewBuilder: (BuildContext context,
+                        void Function(String) onSelected,
+                        Iterable<String> options) {
+                      return Material(
+                          child: SizedBox(
+                              height: 200,
+                              child: SingleChildScrollView(
+                                  child: Column(
+                                children: options.map((opt) {
+                                  return InkWell(
+                                      onTap: () {
+                                        onSelected(opt);
+                                      },
+                                      child: Container(
+                                          padding: EdgeInsets.only(right: 60),
+                                          child: Card(
+                                              child: Container(
+                                            width: double.infinity,
+                                            padding: EdgeInsets.all(10),
+                                            child: Text(opt),
+                                          ))));
+                                }).toList(),
+                              ))));
+                    },
+                  );
+                },
+              ),
+
               CustomTextField(
                 labelText: 'Party Name',
                 keyboardType: TextInputType.text,
@@ -221,6 +323,34 @@ class _NewOrderPageState extends State<NewOrderPage> {
                     partyName: _newOrder.partyName,
                     factoryName: _newOrder.factoryName,
                     address: value!,
+                    quantity: _newOrder.quantity,
+                    productDetail: _newOrder.productDetail,
+                    date: _newOrder.date,
+                  );
+                },
+              ),
+              SizedBox(height: space),
+              // Transportation
+              CustomTextField(
+                labelText: 'Transportation',
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                enabled: true,
+                controller: _transportationController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter Transportation Name!';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _newOrder = Transaction1(
+                    id: _newOrder.id,
+                    productName: _newOrder.productName,
+                    partyName: _newOrder.partyName,
+                    factoryName: _newOrder.factoryName,
+                    transportation: value!,
+                    address: _newOrder.address,
                     quantity: _newOrder.quantity,
                     productDetail: _newOrder.productDetail,
                     date: _newOrder.date,

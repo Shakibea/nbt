@@ -12,12 +12,14 @@ class Transaction1 with ChangeNotifier {
   final String address;
   final String quantity;
   final String? price;
+  final String? transportation;
   final String productDetail;
   final DateTime date;
   Status status;
 
   Transaction1({
     this.price,
+    this.transportation,
     required this.id,
     required this.productName,
     required this.partyName,
@@ -37,6 +39,7 @@ class Transaction1 with ChangeNotifier {
         'address': address,
         'quantity': quantity,
         'price': price,
+        'transportation': transportation,
         'productDetail': productDetail,
         'date': date,
         'status': status.name
@@ -50,9 +53,12 @@ class Transaction1 with ChangeNotifier {
         address: json['address'],
         quantity: json['quantity'],
         price: json['price'],
+        transportation: json['transportation'],
         productDetail: json['productDetail'],
         date: (json['date'] as Timestamp).toDate(),
-        status: Status.values.byName(json['status']),
+        status: Status.values.byName(
+          json['status'],
+        ),
       );
 
   String get getStatus {

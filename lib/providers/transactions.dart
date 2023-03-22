@@ -126,15 +126,17 @@ class Transactions with ChangeNotifier {
     final docOrder =
         FirebaseFirestore.instance.collection('orders').doc(transaction.id);
     final newOrder = Transaction1(
-        id: docOrder.id,
-        productName: transaction.productName,
-        partyName: transaction.partyName,
-        factoryName: transaction.factoryName,
-        address: transaction.address,
-        quantity: transaction.quantity,
-        productDetail: transaction.productDetail,
-        date: transaction.date,
-        status: transaction.status);
+      id: docOrder.id,
+      productName: transaction.productName,
+      partyName: transaction.partyName,
+      factoryName: transaction.factoryName,
+      transportation: transaction.transportation,
+      address: transaction.address,
+      quantity: transaction.quantity,
+      productDetail: transaction.productDetail,
+      date: transaction.date,
+      status: transaction.status,
+    );
 
     final json = newOrder.toJson();
     await docOrder.set(json);
@@ -208,6 +210,7 @@ class Transactions with ChangeNotifier {
       productDetail: transaction.productDetail,
       date: transaction.date,
       status: Status.values.byName(status),
+      transportation: transaction.transportation,
     );
 
     final json = updateOrder.toJson();

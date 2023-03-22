@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, sized_box_for_whitespace, unused_local_variable, sort_child_properties_last
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -99,13 +99,23 @@ class OrderDetailsScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-
                     //ADDRESS
                     OrderDetailsTitle('Address'),
                     const SizedBox(
                       height: 10,
                     ),
                     OrderDetailsTextContent(title: order.address),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    // Transportation
+                    OrderDetailsTitle('Transportation'),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    OrderDetailsTextContent(
+                      title: order.transportation.toString(),
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -242,7 +252,8 @@ class OrderDetailsScreen extends StatelessWidget {
                     // OrderDetailsTextContent(title: order.productName),
                     // SizedBox(height: 10),
                     Container(
-                      height: 470,
+                      // height: MediaQuery.of(context).size.height * 0.6,
+                      height: 450,
                       width: double.infinity,
                       // child: ProductListView(),
                       child: ListView.builder(
@@ -253,15 +264,18 @@ class OrderDetailsScreen extends StatelessWidget {
                         itemBuilder: (context, index) => Card(
                           elevation: 2,
                           margin: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 15),
+                            vertical: 15,
+                            horizontal: 15,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.8,
                             width: MediaQuery.of(context).size.width * 0.78,
                             padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 15),
+                              vertical: 10,
+                              horizontal: 15,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(25),
@@ -386,13 +400,51 @@ class OrderDetailsScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     TextButton(
-                                      onPressed: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              EditProductScreen(),
-                                        ),
-                                      ),
+                                      onPressed: () async {
+                                        final user =
+                                            FirebaseAuth.instance.currentUser;
+                                        // final userRole;
+                                        // final pref = await SharedPreferences.getInstance();
+                                        // userRole = pref.getString('user_role');
+                                        userRole =
+                                            await userCheckFromSharedPref();
+                                        if (user == null) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar(context));
+                                          return;
+                                        } else if (userRole == 'member') {
+                                          final roleCheckMsg = SnackBar(
+                                            content: const Text(
+                                                'Oops! Admin not allowed to create?'),
+                                            action: SnackBarAction(
+                                              label: 'Sign In',
+                                              onPressed: () {
+                                                Navigator.pushReplacementNamed(
+                                                    context, MyLogin.routeName);
+                                              },
+                                            ),
+                                          );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(roleCheckMsg);
+                                          return;
+                                        }
+                                        showAlertDialog(context, () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditProductScreen(),
+                                            ),
+                                          );
+                                        });
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(
+                                        //     builder: (context) =>
+                                        //         EditProductScreen(),
+                                        //   ),
+                                        // );
+                                      },
                                       child: Text(
                                         'Edit',
                                         style: TextStyle(
@@ -404,30 +456,64 @@ class OrderDetailsScreen extends StatelessWidget {
                                     ),
                                     SizedBox(width: 10),
                                     TextButton(
-                                      onPressed: () => showDialog(
-                                        context: context,
-                                        builder: (_) => AlertDialog(
-                                          backgroundColor: Colors.white,
-                                          title: Text("Are you sure?"),
-                                          content:
-                                              Text('To delete this product'),
-                                          actions: [
-                                            TextButton(
+                                      onPressed: () async {
+                                        final user =
+                                            FirebaseAuth.instance.currentUser;
+// final userRole;
+// final pref = await SharedPreferences.getInstance();
+// userRole = pref.getString('user_role');
+                                        userRole =
+                                            await userCheckFromSharedPref();
+                                        if (user == null) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(snackBar(context));
+                                          return;
+                                        } else if (userRole == 'member') {
+                                          final roleCheckMsg = SnackBar(
+                                            content: const Text(
+                                                'Oops! Admin not allowed to create?'),
+                                            action: SnackBarAction(
+                                              label: 'Sign In',
                                               onPressed: () {
-                                                Navigator.pop(context);
+                                                Navigator.pushReplacementNamed(
+                                                    context, MyLogin.routeName);
                                               },
-                                              child: Text('No'),
                                             ),
-                                            TextButton(
-                                              onPressed: () {
-                                                // _removeProduct(index);
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('Yes'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                          );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(roleCheckMsg);
+                                          return;
+                                        }
+
+                                        showAlertDialog(context, () {
+                                          Navigator.pop(context);
+                                        });
+
+                                        // showDialog(
+                                        //   context: context,
+                                        //   builder: (_) => AlertDialog(
+                                        //     backgroundColor: Colors.white,
+                                        //     title: Text("Are you sure?"),
+                                        //     content:
+                                        //         Text('To delete this product'),
+                                        //     actions: [
+                                        //       TextButton(
+                                        //         onPressed: () {
+                                        //           Navigator.pop(context);
+                                        //         },
+                                        //         child: Text('No'),
+                                        //       ),
+                                        //       TextButton(
+                                        //         onPressed: () {
+                                        //           // _removeProduct(index);
+                                        //           Navigator.pop(context);
+                                        //         },
+                                        //         child: Text('Yes'),
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // );
+                                      },
                                       child: Text(
                                         'Delete',
                                         style: TextStyle(

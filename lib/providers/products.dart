@@ -5,25 +5,23 @@ import 'package:uuid/uuid.dart';
 import './product.dart';
 
 class Products with ChangeNotifier {
-  Future createProduct(Product product, String id) async {
-    String productId = const Uuid().v1();
+  Future<void> createProduct(List<Product> products, String id) async {
+    // random id generated
+    // String productId = const Uuid().v1();
     final docProduct = FirebaseFirestore.instance
         .collection('orders')
         .doc(id)
-        .collection('products')
-        .doc(productId);
+        .collection('products');
 
     // print(docProduct.id);
 
-    final newProduct = Product(
-      id: docProduct.id,
-      name: product.name,
-      quantity: product.quantity,
-      price: product.price,
-      description: product.description,
-    );
+    for (final product in products) {
+      final documentRef = await docProduct.add(product.toFirestore());
+      print('Added product with ID: ${documentRef.id}');
+    }
 
-    final json = newProduct.toJson();
-    await docProduct.set(json);
+    // final json = newProduct.toFirestore();
+    // await docProduct.add(json);
+    notifyListeners();
   }
 }
