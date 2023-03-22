@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Product {
@@ -11,6 +12,28 @@ class Product {
       required this.price,
       required this.details,
       required this.quantity});
+
+  factory Product.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return Product(
+      name: data?['name'],
+      price: data?['price'],
+      details: data?['details'],
+      quantity: data?['quantity'],
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      if (name != null) "name": name,
+      if (price != null) "price": price,
+      if (details != null) "details": details,
+      if (quantity != null) "quantity": quantity
+    };
+  }
 }
 
 class DynamicProductForm extends StatefulWidget {
@@ -22,6 +45,7 @@ class DynamicProductForm extends StatefulWidget {
 
 class _DynamicProductFormState extends State<DynamicProductForm> {
   List<Product> _products = [];
+  // List<Map<String, dynamic>> _products12 = [];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -29,6 +53,31 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
+
+  late CollectionReference collectionRef;
+
+  @override
+  void initState() {
+    final mainCollectionRef =
+        FirebaseFirestore.instance.collection('orders').doc('66666');
+
+    collectionRef = mainCollectionRef.collection('products');
+
+    super.initState();
+  }
+
+  //orders -> Model Class
+
+  //orderCollectionRef = collection('orders');
+  //setData = orderCollectionRef.add(orders.toFirestore());
+  //oCR = setData.id;
+
+  Future<void> setData(List<Product> products) async {
+    for (final product in products) {
+      final documentRef = await collectionRef.add(product.toFirestore());
+      print('Added product with ID: ${documentRef.id}');
+    }
+  }
 
   void _addProduct() {
     if (_formKey.currentState!.validate()) {
@@ -39,6 +88,12 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
           details: _detailsController.text,
           quantity: int.parse(_quantityController.text),
         );
+        // final product = {
+        //   'name' : _nameController.text,
+        //   'price' : double.parse(_priceController.text),
+        //   'details': _detailsController.text,
+        //   'quantity': int.parse(_quantityController.text)
+        // };
         _products.add(product);
         _nameController.clear();
         _priceController.clear();
@@ -59,6 +114,16 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Dynamic Form'),
+        actions: [
+          InkWell(
+            onTap: () async {
+              await setData(_products);
+            },
+            child: Text(
+              'submit',
+            ),
+          )
+        ],
       ),
       body: Form(
         key: _formKey,
