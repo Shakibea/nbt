@@ -170,12 +170,17 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
       appBar: AppBar(
         title: const Text('Edit Order Details'),
         backgroundColor: const Color(0xff511C74),
-        // actions: [
-        //   IconButton(
-        //     onPressed: _saveForm,
-        //     icon: const Icon(Icons.save),
-        //   )
-        // ],
+        actions: [
+          TextButton(
+            onPressed: () {
+              _saveForm();
+            },
+            child: Text(
+              'Save',
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -501,13 +506,13 @@ class _EditOrdersScreenState extends State<EditOrdersScreen> {
           ),
         ),
       ),
-      persistentFooterAlignment: AlignmentDirectional.center,
-      persistentFooterButtons: [
-        CustomButton(
-          text: 'Save',
-          onTap: _saveForm,
-        ),
-      ],
+      // persistentFooterAlignment: AlignmentDirectional.center,
+      // persistentFooterButtons: [
+      //   CustomButton(
+      //     text: 'Save',
+      //     onTap: _saveForm,
+      //   ),
+      // ],
     );
   }
 }

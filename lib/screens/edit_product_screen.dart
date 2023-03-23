@@ -2,15 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nbt/providers/product.dart';
 import 'package:nbt/providers/transaction.dart';
+import 'package:nbt/screens/order_details_screen.dart';
 import 'package:nbt/widgets/app_bar_functions.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/products.dart';
 import '../providers/transactions.dart';
 import '../widgets/new_order_page/custom_button.dart';
 
 class EditProductScreen extends StatefulWidget {
-  const EditProductScreen({Key? key}) : super(key: key);
+  final String productId;
+  final String orderId;
+  const EditProductScreen(
+      {Key? key, required this.productId, required this.orderId})
+      : super(key: key);
 
   // static const routeName = '/edit-orders';
 
@@ -38,7 +44,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   var _initLoad = false;
 
-  var _newOrder = Product(
+  var _newProduct = Product(
     id: '',
     name: '',
     quantity: '',
@@ -61,72 +67,77 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   @override
-  // void didChangeDependencies() {
-  //   // final args = ModalRoute.of(context)?.settings.arguments as String;
-  //
-  //   // var total = 100 + int.parse(args);
-  //   //
-  //   // _poNumController.text = total.toString();
-  //
-  //   // final orderId = ModalRoute.of(context)?.settings.arguments as String;
-  //   // final docRef = FirebaseFirestore.instance.collection("orders").doc(orderId);
-  //   // docRef.get().then(
-  //   //   (DocumentSnapshot doc) {
-  //   //     final data = doc.data() as Map<String, dynamic>;
-  //   //
-  //   //
-  //   //     _newOrder = Transaction1(
-  //   //       id: data['id'],
-  //   //       productName: data['productName'],
-  //   //       partyName: data['partyName'],
-  //   //       factoryName: data['factoryName'],
-  //   //       address: data['address'],
-  //   //       quantity: data['quantity'],
-  //   //       productDetail: data['productDetail'],
-  //   //       date: data['date'],
-  //   //     );
-  //   //   },
-  //   //   onError: (e) => print("Error getting document: $e"),
-  //   // );
-  //
-  //   if (!_initLoad) {
-  //     final orderId = ModalRoute.of(context)?.settings.arguments as String;
-  //     // final routeArgs = (ModalRoute.of(context)?.settings.arguments ??
-  //     //     <String, String>{}) as Map;
-  //     // orderId = routeArgs['id'];
-  //     // getColor = routeArgs['getColor'];
-  //
-  //     final docRef =
-  //         FirebaseFirestore.instance.collection("orders").doc(orderId);
-  //     docRef.get().then(
-  //       (DocumentSnapshot doc) {
-  //         final data = doc.data() as Map<String, dynamic>;
-  //         // _dateController.text = DateFormat.yMMMMd().format(data['date']);
-  //         id = data['id'];
-  //         // _poNumController.text = id;
-  //         // _dateController.text =
-  //         //     DateFormat.yMMMMd().format((data['date'] as Timestamp).toDate());
-  //         _poNameController.text = data['productName'];
-  //         // _partyNameController.text = data['partyName'];
-  //         // _factoryNameController.text = data['factoryName'];
-  //         // _addressController.text = data['address'];
-  //         _quantityController.text = data['quantity'];
-  //         _descriptionController.text = data['productDetail'];
-  //         _priceController.text = data['price'];
-  //
-  //         status = data['status'];
-  //
-  //         // print(
-  //         //     'productName from firestore: ${(data['date'] as Timestamp).toDate()}');
-  //       },
-  //       onError: (e) => print("Error getting document: $e"),
-  //     );
-  //
-  //     _initLoad = true;
-  //   }
-  //
-  //   super.didChangeDependencies();
-  // }
+  void didChangeDependencies() {
+    // final args = ModalRoute.of(context)?.settings.arguments as String;
+
+    // var total = 100 + int.parse(args);
+    //
+    // _poNumController.text = total.toString();
+
+    // final orderId = ModalRoute.of(context)?.settings.arguments as String;
+    // final docRef = FirebaseFirestore.instance.collection("orders").doc(orderId);
+    // docRef.get().then(
+    //   (DocumentSnapshot doc) {
+    //     final data = doc.data() as Map<String, dynamic>;
+    //
+    //
+    //     _newOrder = Transaction1(
+    //       id: data['id'],
+    //       productName: data['productName'],
+    //       partyName: data['partyName'],
+    //       factoryName: data['factoryName'],
+    //       address: data['address'],
+    //       quantity: data['quantity'],
+    //       productDetail: data['productDetail'],
+    //       date: data['date'],
+    //     );
+    //   },
+    //   onError: (e) => print("Error getting document: $e"),
+    // );
+
+    if (!_initLoad) {
+      // final orderId = ModalRoute.of(context)?.settings.arguments as String;
+      // final routeArgs = (ModalRoute.of(context)?.settings.arguments ??
+      //     <String, String>{}) as Map;
+      // orderId = routeArgs['id'];
+      // getColor = routeArgs['getColor'];
+
+      final docRef = FirebaseFirestore.instance
+          .collection("orders")
+          .doc(widget.orderId)
+          .collection('products')
+          .doc(widget.productId);
+      docRef.get().then(
+        (DocumentSnapshot doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          // _dateController.text = DateFormat.yMMMMd().format(data['date']);
+          print(data['name'].toString());
+          print(data['price'].toString());
+          id = data['id'].toString();
+          // _poNumController.text = id;
+          // _dateController.text =
+          //     DateFormat.yMMMMd().format((data['date'] as Timestamp).toDate());
+          _poNameController.text = data['name'].toString();
+          // _partyNameController.text = data['partyName'];
+          // _factoryNameController.text = data['factoryName'];
+          // _addressController.text = data['address'];
+          _quantityController.text = data['quantity'].toString();
+          _descriptionController.text = data['description'].toString();
+          _priceController.text = data['price'].toString();
+
+          // status = data['status'];
+
+          // print(
+          //     'productName from firestore: ${(data['date'] as Timestamp).toDate()}');
+        },
+        onError: (e) => print("Error getting document: $e"),
+      );
+
+      _initLoad = true;
+    }
+
+    super.didChangeDependencies();
+  }
 
   @override
   void dispose() {
@@ -141,7 +152,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     super.dispose();
   }
 
-  void _saveForm() {
+  void _saveForm() async {
     var valid = _form.currentState?.validate();
     if (!valid!) {
       return; // not valid
@@ -149,9 +160,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _form.currentState?.save();
 
     // Provider.of<Transactions>(context, listen: false).addProduct(_newOrder);
-    // Provider.of<Transactions>(context, listen: false)
-    //     .updateOrders(_newOrder, id, status);
-    Navigator.of(context).pop();
+    Provider.of<Products>(context, listen: false).updateProducts(
+      _newProduct,
+      widget.orderId,
+      widget.productId,
+    );
+
+    // Navigator.of(context).pushReplacement(
+    //   MaterialPageRoute(
+    //     builder: (_) => OrderDetailsScreen(),
+    //   ),
+    // );
   }
 
   @override
@@ -165,6 +184,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
       appBar: AppBar(
         title: const Text('Edit Product'),
         backgroundColor: const Color(0xff511C74),
+        actions: [
+          TextButton(
+            onPressed: () {
+              _saveForm();
+            },
+            child: Text(
+              'Save',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -203,12 +233,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 },
                 controller: _poNameController,
                 onSaved: (value) {
-                  _newOrder = Product(
-                    id: _newOrder.id,
+                  _newProduct = Product(
+                    id: _newProduct.id,
                     name: value!,
-                    quantity: _newOrder.quantity,
-                    price: _newOrder.price,
-                    description: _newOrder.description,
+                    quantity: _newProduct.quantity,
+                    price: _newProduct.price,
+                    description: _newProduct.description,
                   );
                 },
               ),
@@ -245,12 +275,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 controller: _quantityController,
 
                 onSaved: (value) {
-                  _newOrder = Product(
-                    id: _newOrder.id,
-                    name: _newOrder.name,
+                  _newProduct = Product(
+                    id: _newProduct.id,
+                    name: _newProduct.name,
                     quantity: value!,
-                    price: _newOrder.price,
-                    description: _newOrder.description,
+                    price: _newProduct.price,
+                    description: _newProduct.description,
                   );
                 },
               ),
@@ -284,14 +314,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   }
                   return null;
                 },
-                controller: _poNameController,
+                controller: _priceController,
                 onSaved: (value) {
-                  _newOrder = Product(
-                    id: _newOrder.id,
-                    name: value!,
-                    quantity: _newOrder.quantity,
-                    price: double.parse(value),
-                    description: _newOrder.description,
+                  _newProduct = Product(
+                    id: _newProduct.id,
+                    name: _newProduct.name,
+                    quantity: _newProduct.quantity,
+                    price: double.parse(value!),
+                    description: _newProduct.description,
                   );
                 },
               ),
@@ -330,11 +360,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 controller: _descriptionController,
 
                 onSaved: (value) {
-                  _newOrder = Product(
-                    id: _newOrder.id,
-                    name: _newOrder.name,
-                    quantity: _newOrder.quantity,
-                    price: _newOrder.price,
+                  _newProduct = Product(
+                    id: _newProduct.id,
+                    name: _newProduct.name,
+                    quantity: _newProduct.quantity,
+                    price: _newProduct.price,
                     description: value!,
                   );
                 },
@@ -343,10 +373,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
           ),
         ),
       ),
-      persistentFooterAlignment: AlignmentDirectional.center,
-      persistentFooterButtons: [
-        CustomButton(text: 'Save'),
-      ],
+      // persistentFooterAlignment: AlignmentDirectional.center,
+      // persistentFooterButtons: [
+      //   CustomButton(
+      //     text: 'Save',
+      //     onTap: _saveForm,
+      //   ),
+      // ],
     );
   }
 }

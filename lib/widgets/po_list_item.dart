@@ -132,10 +132,11 @@ class _POListItemState extends State<POListItem> {
                 ),
                 radius: 30),
             title: Text(
-              '${widget.product.productName} (${widget.product.quantity})',
-              // style: Theme.of(context).textTheme.headline6,
+              '${widget.product.partyName}',
+              style: TextStyle(fontWeight: FontWeight.w500),
+              // style: Theme.of(context).textTheme.headline6, (${widget.product.quantity})
             ),
-            subtitle: Text(widget.product.partyName),
+            subtitle: Text(widget.product.factoryName),
             trailing:
                 // Row(
                 //   children: [
@@ -175,8 +176,10 @@ class _POListItemState extends State<POListItem> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     ),
+                    // ${widget.product.factoryName} -
                     Text(
-                        '${widget.product.factoryName} - ${DateFormat.yMMMMd().format(widget.product.date)}'),
+                      '${DateFormat.yMMMMd().format(widget.product.date)}',
+                    ),
                   ],
                 ),
               ]),

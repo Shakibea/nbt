@@ -23,14 +23,14 @@ class Product {
         'description': description,
       };
 
-  // factory Product.fromJson(Map<String, dynamic> json) => Product(
-  //       id: json['id'],
-  //       name: json['name'],
-  //       quantity: json['quantity'],
-  //       price: json['price'],
-  //       description: json['description'],
-  //     );
-  //
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+        id: json['id'],
+        name: json['name'],
+        quantity: json['quantity'],
+        price: json['price'],
+        description: json['description'],
+      );
+
   // static Product fromSnap(DocumentSnapshot snap) {
   //   var snapshot = snap.data() as Map<String, dynamic>;
   //
@@ -57,7 +57,7 @@ class Product {
     );
   }
 
-  Map<String, dynamic> toFirestore() {
+  Map<String, dynamic> toFirestore(String id) {
     return {
       if (id != null) "id": id,
       if (name != null) "name": name,

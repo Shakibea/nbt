@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
+  final String? initialValue;
   final String labelText;
   final int? maxLines;
   final TextInputAction textInputAction;
@@ -20,12 +21,14 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.validator,
     this.onSaved,
+    this.initialValue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var textFieldColor = const Color(0xff511C74);
     return TextFormField(
+      initialValue: initialValue,
       cursorColor: textFieldColor,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.only(left: 4),

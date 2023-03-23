@@ -109,6 +109,17 @@ class _NewOrderPageState extends State<NewOrderPage> {
         elevation: 0,
         title: const Text('CREATE NEW ORDER'),
         backgroundColor: const Color(0xff511C74),
+        actions: [
+          TextButton(
+            onPressed: () {
+              _saveForm();
+            },
+            child: Text(
+              'Next',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -159,92 +170,92 @@ class _NewOrderPageState extends State<NewOrderPage> {
               ),
               SizedBox(height: space),
               // Autocomplete(optionsBuilder: optionsBuilder),
-              FutureBuilder(
-                future: FirebaseFirestore.instance
-                    .collection('orders')
-                    .where(
-                      'partyName',
-                      isLessThanOrEqualTo: _partyNameController.text,
-                      // isGreaterThanOrEqualTo: _partyNameController.text,
-                    )
-                    .get(),
-                builder: (
-                  context,
-                  snapShot,
-                ) {
-                  if (snapShot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        backgroundColor: Colors.transparent,
-                      ),
-                    );
-                  }
-
-                  if (!snapShot.hasData) {
-                    return Center(
-                      child: Text('No result'),
-                    );
-                  }
-
-                  return RawAutocomplete(
-                    optionsBuilder: (TextEditingValue textEditingValue) {
-                      if (textEditingValue.text == '') {
-                        return const Iterable<String>.empty();
-                      } else {
-                        List<String> matches = <String>[];
-                        matches.addAll(suggestion);
-
-                        matches.retainWhere((s) {
-                          return s
-                              .toLowerCase()
-                              .contains(textEditingValue.text.toLowerCase());
-                        });
-                        return matches;
-                      }
-                    },
-                    onSelected: (String selection) {
-                      print('You just selected $selection');
-                    },
-                    fieldViewBuilder: (BuildContext context,
-                        TextEditingController textEditingController,
-                        FocusNode focusNode,
-                        VoidCallback onFieldSubmitted) {
-                      return TextField(
-                        decoration:
-                            InputDecoration(border: OutlineInputBorder()),
-                        controller: textEditingController,
-                        focusNode: focusNode,
-                        onSubmitted: (String value) {},
-                      );
-                    },
-                    optionsViewBuilder: (BuildContext context,
-                        void Function(String) onSelected,
-                        Iterable<String> options) {
-                      return Material(
-                          child: SizedBox(
-                              height: 200,
-                              child: SingleChildScrollView(
-                                  child: Column(
-                                children: options.map((opt) {
-                                  return InkWell(
-                                      onTap: () {
-                                        onSelected(opt);
-                                      },
-                                      child: Container(
-                                          padding: EdgeInsets.only(right: 60),
-                                          child: Card(
-                                              child: Container(
-                                            width: double.infinity,
-                                            padding: EdgeInsets.all(10),
-                                            child: Text(opt),
-                                          ))));
-                                }).toList(),
-                              ))));
-                    },
-                  );
-                },
-              ),
+              // FutureBuilder(
+              //   future: FirebaseFirestore.instance
+              //       .collection('orders')
+              //       .where(
+              //         'partyName',
+              //         isLessThanOrEqualTo: _partyNameController.text,
+              //         // isGreaterThanOrEqualTo: _partyNameController.text,
+              //       )
+              //       .get(),
+              //   builder: (
+              //     context,
+              //     snapShot,
+              //   ) {
+              //     if (snapShot.connectionState == ConnectionState.waiting) {
+              //       return Center(
+              //         child: CircularProgressIndicator(
+              //           color: Colors.white,
+              //           backgroundColor: Colors.transparent,
+              //         ),
+              //       );
+              //     }
+              //
+              //     if (!snapShot.hasData) {
+              //       return Center(
+              //         child: Text('No result'),
+              //       );
+              //     }
+              //
+              //     return RawAutocomplete(
+              //       optionsBuilder: (TextEditingValue textEditingValue) {
+              //         if (textEditingValue.text == '') {
+              //           return const Iterable<String>.empty();
+              //         } else {
+              //           List<String> matches = <String>[];
+              //           matches.addAll(suggestion);
+              //
+              //           matches.retainWhere((s) {
+              //             return s
+              //                 .toLowerCase()
+              //                 .contains(textEditingValue.text.toLowerCase());
+              //           });
+              //           return matches;
+              //         }
+              //       },
+              //       onSelected: (String selection) {
+              //         print('You just selected $selection');
+              //       },
+              //       fieldViewBuilder: (BuildContext context,
+              //           TextEditingController textEditingController,
+              //           FocusNode focusNode,
+              //           VoidCallback onFieldSubmitted) {
+              //         return TextField(
+              //           decoration:
+              //               InputDecoration(border: OutlineInputBorder()),
+              //           controller: textEditingController,
+              //           focusNode: focusNode,
+              //           onSubmitted: (String value) {},
+              //         );
+              //       },
+              //       optionsViewBuilder: (BuildContext context,
+              //           void Function(String) onSelected,
+              //           Iterable<String> options) {
+              //         return Material(
+              //             child: SizedBox(
+              //                 height: 200,
+              //                 child: SingleChildScrollView(
+              //                     child: Column(
+              //                   children: options.map((opt) {
+              //                     return InkWell(
+              //                         onTap: () {
+              //                           onSelected(opt);
+              //                         },
+              //                         child: Container(
+              //                             padding: EdgeInsets.only(right: 60),
+              //                             child: Card(
+              //                                 child: Container(
+              //                               width: double.infinity,
+              //                               padding: EdgeInsets.all(10),
+              //                               child: Text(opt),
+              //                             ))));
+              //                   }).toList(),
+              //                 ))));
+              //       },
+              //     );
+              //   },
+              // ),
 
               CustomTextField(
                 labelText: 'Party Name',
@@ -366,23 +377,23 @@ class _NewOrderPageState extends State<NewOrderPage> {
       // extendBody: true,
 
       // drawerScrimColor: Colors.white,
-      persistentFooterAlignment: AlignmentDirectional.center,
-      persistentFooterButtons: [
-        CustomButton(
-          onTap: _saveForm,
-          // onTap: () {
-          //   Navigator.of(context).push(
-          //     MaterialPageRoute(
-          //       builder: (_) => DynamicProductForm(
-          //         id: _newOrder.id,
-          //       ),
-          //     ),
-          //   );
-          //   createOrder();
-          // },
-          text: 'Next',
-        ),
-      ],
+      // persistentFooterAlignment: AlignmentDirectional.center,
+      // persistentFooterButtons: [
+      //   CustomButton(
+      //     onTap: _saveForm,
+      //     // onTap: () {
+      //     //   Navigator.of(context).push(
+      //     //     MaterialPageRoute(
+      //     //       builder: (_) => DynamicProductForm(
+      //     //         id: _newOrder.id,
+      //     //       ),
+      //     //     ),
+      //     //   );
+      //     //   createOrder();
+      //     // },
+      //     text: 'Next',
+      //   ),
+      // ],
     );
   }
 }

@@ -57,6 +57,10 @@ class POListScreen extends StatelessWidget {
         .collection('orders')
         .orderBy('date', descending: true);
 
+    // final Query product = FirebaseFirestore.instance.collectionGroup('products')
+    //     .collection('orders')
+    //     .orderBy('date', descending: true);
+
     Stream<List<Transaction1>> readOrders() => FirebaseFirestore.instance
         .collection('orders')
         .snapshots()
