@@ -47,6 +47,10 @@ class _NewOrderPageState extends State<NewOrderPage> {
   @override
   void initState() {
     _dateController.text = DateFormat.yMMMMd().format(DateTime.now());
+    Future.delayed(Duration(seconds: 1)).then(
+      (value) =>
+          Provider.of<Transactions>(context, listen: false).isPartyName(),
+    );
     super.initState();
   }
 
@@ -90,20 +94,10 @@ class _NewOrderPageState extends State<NewOrderPage> {
     );
   }
 
-  List<String> suggestion = [
-    "Apple",
-    "Armidillo",
-    "Actual",
-    "Actuary",
-    "America",
-    "Argentina",
-    "Australia",
-    "Antarctica",
-    "Blueberry",
-  ];
-
   @override
   Widget build(BuildContext context) {
+    List<String> suggestion =
+        Provider.of<Transactions>(context, listen: false).partyNames.toList();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -170,92 +164,62 @@ class _NewOrderPageState extends State<NewOrderPage> {
               ),
               SizedBox(height: space),
               // Autocomplete(optionsBuilder: optionsBuilder),
-              // FutureBuilder(
-              //   future: FirebaseFirestore.instance
-              //       .collection('orders')
-              //       .where(
-              //         'partyName',
-              //         isLessThanOrEqualTo: _partyNameController.text,
-              //         // isGreaterThanOrEqualTo: _partyNameController.text,
-              //       )
-              //       .get(),
-              //   builder: (
-              //     context,
-              //     snapShot,
-              //   ) {
-              //     if (snapShot.connectionState == ConnectionState.waiting) {
-              //       return Center(
-              //         child: CircularProgressIndicator(
-              //           color: Colors.white,
-              //           backgroundColor: Colors.transparent,
-              //         ),
-              //       );
-              //     }
-              //
-              //     if (!snapShot.hasData) {
-              //       return Center(
-              //         child: Text('No result'),
-              //       );
-              //     }
-              //
-              //     return RawAutocomplete(
-              //       optionsBuilder: (TextEditingValue textEditingValue) {
-              //         if (textEditingValue.text == '') {
-              //           return const Iterable<String>.empty();
-              //         } else {
-              //           List<String> matches = <String>[];
-              //           matches.addAll(suggestion);
-              //
-              //           matches.retainWhere((s) {
-              //             return s
-              //                 .toLowerCase()
-              //                 .contains(textEditingValue.text.toLowerCase());
-              //           });
-              //           return matches;
-              //         }
-              //       },
-              //       onSelected: (String selection) {
-              //         print('You just selected $selection');
-              //       },
-              //       fieldViewBuilder: (BuildContext context,
-              //           TextEditingController textEditingController,
-              //           FocusNode focusNode,
-              //           VoidCallback onFieldSubmitted) {
-              //         return TextField(
-              //           decoration:
-              //               InputDecoration(border: OutlineInputBorder()),
-              //           controller: textEditingController,
-              //           focusNode: focusNode,
-              //           onSubmitted: (String value) {},
-              //         );
-              //       },
-              //       optionsViewBuilder: (BuildContext context,
-              //           void Function(String) onSelected,
-              //           Iterable<String> options) {
-              //         return Material(
-              //             child: SizedBox(
-              //                 height: 200,
-              //                 child: SingleChildScrollView(
-              //                     child: Column(
-              //                   children: options.map((opt) {
-              //                     return InkWell(
-              //                         onTap: () {
-              //                           onSelected(opt);
-              //                         },
-              //                         child: Container(
-              //                             padding: EdgeInsets.only(right: 60),
-              //                             child: Card(
-              //                                 child: Container(
-              //                               width: double.infinity,
-              //                               padding: EdgeInsets.all(10),
-              //                               child: Text(opt),
-              //                             ))));
-              //                   }).toList(),
-              //                 ))));
-              //       },
-              //     );
-              //   },
-              // ),
+              RawAutocomplete(
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  if (textEditingValue.text == '') {
+                    return const Iterable<String>.empty();
+                  } else {
+                    List<String> matches = <String>[];
+                    matches.addAll(suggestion.toList());
+                    print(matches.length);
+
+                    matches.retainWhere((s) {
+                      return s
+                          .toLowerCase()
+                          .contains(textEditingValue.text.toLowerCase());
+                    });
+                    return matches;
+                  }
+                },
+                onSelected: (String selection) {
+                  print('You just selected $selection');
+                },
+                fieldViewBuilder: (BuildContext context,
+                    TextEditingController textEditingController,
+                    FocusNode focusNode,
+                    VoidCallback onFieldSubmitted) {
+                  return TextField(
+                    decoration: InputDecoration(border: OutlineInputBorder()),
+                    controller: textEditingController,
+                    focusNode: focusNode,
+                    onSubmitted: (String value) {},
+                  );
+                },
+                optionsViewBuilder: (BuildContext context,
+                    void Function(String) onSelected,
+                    Iterable<String> options) {
+                  return Material(
+                      child: SizedBox(
+                          height: 200,
+                          child: SingleChildScrollView(
+                              child: Column(
+                            children: options.map((opt) {
+                              return InkWell(
+                                  onTap: () {
+                                    onSelected(opt);
+                                  },
+                                  child: Container(
+                                      padding: EdgeInsets.only(right: 60),
+                                      child: Card(
+                                          child: Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.all(10),
+                                        child: Text(opt),
+                                      ))));
+                            }).toList(),
+                          ))));
+                },
+              ),
 
               CustomTextField(
                 labelText: 'Party Name',

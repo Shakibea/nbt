@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'dart:convert';
 import 'dart:math';
 
@@ -38,6 +40,29 @@ class Transactions with ChangeNotifier {
 
   List<Transaction1> get transactions {
     return [...transactions1];
+  }
+
+  List<String> _partyNames = [];
+  List<String> _factoryNames = [];
+
+  List<String> get partyNames => [..._partyNames];
+  List<String> get factoryNames => [..._factoryNames];
+
+  Future<void> isPartyName() async {
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('orders')
+        .where('partyName')
+        .get();
+    print(query.docs);
+    _partyNames.add(query.docs.toString());
+  }
+
+  Future<void> isFactoryName() async {
+    QuerySnapshot query = await FirebaseFirestore.instance
+        .collection('orders')
+        .where('factoryName')
+        .get();
+    _factoryNames.add(query.toString());
   }
 
   Transaction1 findById(String id) {
