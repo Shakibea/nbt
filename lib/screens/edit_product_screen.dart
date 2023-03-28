@@ -188,6 +188,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           TextButton(
             onPressed: () {
               _saveForm();
+              Navigator.pop(context);
             },
             child: Text(
               'Save',
@@ -348,15 +349,15 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 maxLines: 5,
                 keyboardType: TextInputType.multiline,
                 // focusNode: _descriptionFocusNode,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter anything';
-                  }
-                  // if (value.length <= 10) {
-                  //   return 'above 10';
-                  // }
-                  return null;
-                },
+                // validator: (value) {
+                //   if (value!.isEmpty) {
+                //     return 'Please enter anything';
+                //   }
+                //   // if (value.length <= 10) {
+                //   //   return 'above 10';
+                //   // }
+                //   return null;
+                // },
                 controller: _descriptionController,
 
                 onSaved: (value) {

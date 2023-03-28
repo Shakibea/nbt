@@ -87,8 +87,11 @@ class _POListItemState extends State<POListItem> {
         children: [
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, OrderDetailsScreen.routeName,
-                  arguments: widget.product.id);
+              Navigator.pushNamed(
+                context,
+                OrderDetailsScreen.routeName,
+                arguments: widget.product.id,
+              );
             },
             onLongPress: () {
               // final Map<String, dynamic> dd = {
@@ -136,7 +139,7 @@ class _POListItemState extends State<POListItem> {
               style: TextStyle(fontWeight: FontWeight.w500),
               // style: Theme.of(context).textTheme.headline6, (${widget.product.quantity})
             ),
-            subtitle: Text(widget.product.factoryName),
+            subtitle: Text(widget.product.factoryName.toString()),
             trailing:
                 // Row(
                 //   children: [

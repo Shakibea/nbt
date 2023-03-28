@@ -8,8 +8,8 @@ class Transaction1 with ChangeNotifier {
   final String id;
   final String productName;
   final String partyName;
-  final String factoryName;
-  final String address;
+  final String? factoryName;
+  final String? address;
   final String quantity;
   final String? price;
   final String? transportation;
@@ -23,8 +23,8 @@ class Transaction1 with ChangeNotifier {
     required this.id,
     required this.productName,
     required this.partyName,
-    required this.factoryName,
-    required this.address,
+    this.factoryName,
+    this.address,
     required this.quantity,
     required this.productDetail,
     required this.date,

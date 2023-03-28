@@ -149,6 +149,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 textInputAction: TextInputAction.next,
                 enabled: true,
                 controller: _poNumController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter PO Number!';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _newOrder = Transaction1(
                     id: value!,
@@ -254,12 +260,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 textInputAction: TextInputAction.next,
                 enabled: true,
                 controller: _factoryNameController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Product Name!';
-                  }
-                  return null;
-                },
+                // validator: (value) {
+                //   if (value!.isEmpty) {
+                //     return 'Please enter Factory Name!';
+                //   }
+                //   return null;
+                // },
                 onSaved: (value) {
                   _newOrder = Transaction1(
                     id: _newOrder.id,
@@ -282,15 +288,15 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 textInputAction: TextInputAction.done,
                 enabled: true,
                 controller: _addressController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter anything';
-                  }
-                  // if (value.length <= 10) {
-                  //   return 'above 10';
-                  // }
-                  return null;
-                },
+                // validator: (value) {
+                //   if (value!.isEmpty) {
+                //     return 'Please enter anything';
+                //   }
+                //   // if (value.length <= 10) {
+                //   //   return 'above 10';
+                //   // }
+                //   return null;
+                // },
                 onSaved: (value) {
                   _newOrder = Transaction1(
                     id: _newOrder.id,
@@ -312,12 +318,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
                 textInputAction: TextInputAction.next,
                 enabled: true,
                 controller: _transportationController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Transportation Name!';
-                  }
-                  return null;
-                },
+                // validator: (value) {
+                //   if (value!.isEmpty) {
+                //     return 'Please enter Transportation Name!';
+                //   }
+                //   return null;
+                // },
                 onSaved: (value) {
                   _newOrder = Transaction1(
                     id: _newOrder.id,

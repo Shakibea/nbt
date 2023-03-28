@@ -219,21 +219,21 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
               // Description
               CustomTextField(
                 labelText: 'Description',
-                textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.newline,
                 enabled: true,
                 controller: _detailsController,
                 maxLines: 4,
                 keyboardType: TextInputType.multiline,
                 // focusNode: _descriptionFocusNode,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter anything';
-                  }
-                  // if (value.length <= 10) {
-                  //   return 'above 10';
-                  // }
-                  return null;
-                },
+                // validator: (value) {
+                //   if (value!.isEmpty) {
+                //     return 'Please enter anything';
+                //   }
+                //   // if (value.length <= 10) {
+                //   //   return 'above 10';
+                //   // }
+                //   return null;
+                // },
                 onSaved: (value) {
                   _newProduct = Product(
                     id: _newProduct.id,
@@ -252,7 +252,7 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                 ),
                 child: Text('Add Product'),
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 25),
               Expanded(
                 child: ListView.builder(
                   itemCount: _products.length,
@@ -270,7 +270,7 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                       // ),
                       leading: CircleAvatar(
                         radius: 20,
-                        backgroundColor: Colors.cyan,
+                        backgroundColor: Color(0xff511C74),
                         child: Center(
                           child: Text(
                             '${index + 1}',
@@ -285,11 +285,15 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
                         product.name.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 15,
                         ),
                       ),
                       subtitle: Text(
-                        'Price: \$${product.price.toStringAsFixed(2)} - Qty: ${product.quantity} \n${product.description}',
-                        style: TextStyle(height: 1.2),
+                        'Price: ৳ ${product.price.toStringAsFixed(2)} - Qty: ${product.quantity} Kg \n${product.description}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
