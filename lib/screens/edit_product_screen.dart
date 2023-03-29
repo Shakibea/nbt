@@ -190,7 +190,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               _saveForm();
               Navigator.pop(context);
             },
-            child: Text(
+            child: const Text(
               'Save',
               style: TextStyle(color: Colors.white),
             ),
@@ -207,7 +207,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               TextFormField(
                 cursorColor: textFieldColor,
                 decoration: InputDecoration(
-                  label: Text('Name of Product'),
+                  label: const Text('Name of Product'),
                   labelStyle: TextStyle(
                     color: textFieldColor,
                   ),
@@ -248,7 +248,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               TextFormField(
                 cursorColor: textFieldColor,
                 decoration: InputDecoration(
-                  label: Text('Quantity'),
+                  label: const Text('Quantity (KG)'),
                   labelStyle: TextStyle(
                     color: textFieldColor,
                   ),
@@ -290,7 +290,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               TextFormField(
                 cursorColor: textFieldColor,
                 decoration: InputDecoration(
-                  label: Text('Price'),
+                  label: const Text('Price'),
                   labelStyle: TextStyle(
                     color: textFieldColor,
                   ),
@@ -331,7 +331,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
               TextFormField(
                 cursorColor: textFieldColor,
                 decoration: InputDecoration(
-                  label: Text('Description'),
+                  label: const Text('Description'),
                   labelStyle: TextStyle(
                     color: textFieldColor,
                   ),

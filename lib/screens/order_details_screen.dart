@@ -90,63 +90,48 @@ class OrderDetailsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     OrderDetailsTitle('Date'),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     OrderDetailsTextContent(
-                        title: DateFormat.yMMMMd().format(order!.date)),
-                    const SizedBox(
-                      height: 20,
+                      title: DateFormat.yMMMMd().format(order!.date),
                     ),
+                    const SizedBox(height: 20),
                     OrderDetailsTitle('PO Number'),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     OrderDetailsTextContent(title: order.id),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
 
                     //PARTY NAME
                     OrderDetailsTitle('Party Name'),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     OrderDetailsTextContent(title: order.partyName),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
 
                     //FACTORY NAME
                     OrderDetailsTitle('Factory Name'),
-                    const SizedBox(
-                      height: 10,
+                    const SizedBox(height: 10),
+                    OrderDetailsTextContent(
+                      title: order.factoryName!.isEmpty
+                          ? 'None'
+                          : order.factoryName,
                     ),
-                    OrderDetailsTextContent(title: order.factoryName ?? 'None'),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     //ADDRESS
                     OrderDetailsTitle('Address'),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     OrderDetailsTextContent(
-                        title: order.address ?? 'No Address'),
-                    const SizedBox(
-                      height: 20,
+                      title:
+                          order.address!.isEmpty ? 'No Address' : order.address,
                     ),
+                    const SizedBox(height: 20),
                     // Transportation
                     OrderDetailsTitle('Transportation'),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    const SizedBox(height: 10),
                     OrderDetailsTextContent(
-                      title: order.transportation ?? 'No Transportation',
+                      title: order.transportation!.isEmpty
+                          ? 'No Transportation'
+                          : order.transportation,
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     // FutureBuilder(
                     //     future: userCheckFromSharedPref(),
                     //     builder: (context, snapshot) {
@@ -269,87 +254,83 @@ class OrderDetailsScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    OrderDetailsTitle('Product Summary'),
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    const SizedBox(height: 30),
+                    // OrderDetailsTitle('Product Summary'),
+                    // const SizedBox(height: 15),
                     // OrderDetailsTextContent(title: order.productName),
                     // SizedBox(height: 10),
-                    StreamBuilder(
-                      stream: product.snapshots(),
-                      builder:
-                          (context, AsyncSnapshot<QuerySnapshot> snapShot) {
-                        if (snapShot.hasData) {
-                          final snap = snapShot.data!.docs;
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              controller: _scrollController,
-                              // padding: EdgeInsets.symmetric(vertical: 20),
-                              itemCount: snap.length,
-                              itemBuilder: (context, index) {
-                                final document = snap
-                                    .map((e) => Product.fromJson(
-                                        e.data() as Map<String, dynamic>))
-                                    .toList();
-
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
-                                  child: ListTile(
-                                    // leading: ConstrainedBox(
-                                    //   constraints: BoxConstraints(
-                                    //     minWidth: 14,
-                                    //     minHeight: 14,
-                                    //     maxWidth: 24,
-                                    //     maxHeight: 24,
-                                    //   ),
-                                    //   child: Center(child: Text('${index + 1}')),
-                                    // ),
-                                    leading: CircleAvatar(
-                                      radius: 20,
-                                      backgroundColor: Color(0xff511C74),
-                                      child: Center(
-                                        child: Text(
-                                          '${index + 1}',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    title: Text(
-                                      document[index].name.toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      'Price: ৳ ${document[index].price.toStringAsFixed(2)} \nQty: ${document[index].quantity} Kg',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              });
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    ),
+                    // StreamBuilder(
+                    //   stream: product.snapshots(),
+                    //   builder:
+                    //       (context, AsyncSnapshot<QuerySnapshot> snapShot) {
+                    //     if (snapShot.hasData) {
+                    //       final snap = snapShot.data!.docs;
+                    //       return ListView.builder(
+                    //           shrinkWrap: true,
+                    //           scrollDirection: Axis.horizontal,
+                    //           controller: _scrollController,
+                    //           // padding: EdgeInsets.symmetric(vertical: 20),
+                    //           itemCount: snap.length,
+                    //           itemBuilder: (context, index) {
+                    //             final document = snap
+                    //                 .map((e) => Product.fromJson(
+                    //                     e.data() as Map<String, dynamic>))
+                    //                 .toList();
+                    //
+                    //             return Padding(
+                    //               padding: const EdgeInsets.symmetric(
+                    //                   vertical: 10.0),
+                    //               child: ListTile(
+                    //                 // leading: ConstrainedBox(
+                    //                 //   constraints: BoxConstraints(
+                    //                 //     minWidth: 14,
+                    //                 //     minHeight: 14,
+                    //                 //     maxWidth: 24,
+                    //                 //     maxHeight: 24,
+                    //                 //   ),
+                    //                 //   child: Center(child: Text('${index + 1}')),
+                    //                 // ),
+                    //                 leading: CircleAvatar(
+                    //                   radius: 20,
+                    //                   backgroundColor: Color(0xff511C74),
+                    //                   child: Center(
+                    //                     child: Text(
+                    //                       '${index + 1}',
+                    //                       style: TextStyle(
+                    //                         fontSize: 18,
+                    //                         color: Colors.white,
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 title: Text(
+                    //                   document[index].name.toString(),
+                    //                   style: TextStyle(
+                    //                     fontWeight: FontWeight.bold,
+                    //                     fontSize: 17,
+                    //                   ),
+                    //                 ),
+                    //                 subtitle: Text(
+                    //                   'Price: ৳ ${document[index].price.toStringAsFixed(2)} \nQty: ${document[index].quantity} Kg',
+                    //                   style: TextStyle(
+                    //                     fontSize: 15,
+                    //                     fontWeight: FontWeight.w700,
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           });
+                    //     }
+                    //     return const Center(
+                    //       child: CircularProgressIndicator(),
+                    //     );
+                    //   },
+                    // ),
                     //NAME OF PRODUCT
-                    OrderDetailsTitle('Product Table'),
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    // OrderDetailsTitle('Product Table'),
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
                     // OrderDetailsTextContent(title: order.productName),
                     // SizedBox(height: 10),
                     StreamBuilder(
@@ -358,164 +339,92 @@ class OrderDetailsScreen extends StatelessWidget {
                           (context, AsyncSnapshot<QuerySnapshot> snapShot) {
                         if (snapShot.hasData) {
                           final snap = snapShot.data!.docs;
-                          return Container(
-                            height: 500,
-                            width: double.infinity,
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                controller: _scrollController,
-                                // padding: EdgeInsets.symmetric(vertical: 20),
-                                itemCount: snap.length,
-                                itemBuilder: (context, index) {
-                                  final document = snap
-                                      .map((e) => Product.fromJson(
-                                          e.data() as Map<String, dynamic>))
-                                      .toList();
+                          return Column(
+                            children: [
+                              OrderDetailsTitle(
+                                  'Total Product: ${snap.length}'),
+                              const SizedBox(height: 15),
+                              OrderDetailsTitle('Product Summary'),
+                              const SizedBox(height: 15),
+                              Container(
+                                height: snap.isEmpty ? 10 : 250,
+                                width: double.infinity,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    // scrollDirection: Axis.horizontal,
+                                    controller: _scrollController,
+                                    // padding: EdgeInsets.symmetric(vertical: 20),
+                                    itemCount: snap.length,
+                                    itemBuilder: (context, index) {
+                                      final document = snap
+                                          .map((e) => Product.fromJson(
+                                              e.data() as Map<String, dynamic>))
+                                          .toList();
 
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 0.0),
-                                    // child: ListTile(
-                                    //   // leading: ConstrainedBox(
-                                    //   //   constraints: BoxConstraints(
-                                    //   //     minWidth: 14,
-                                    //   //     minHeight: 14,
-                                    //   //     maxWidth: 24,
-                                    //   //     maxHeight: 24,
-                                    //   //   ),
-                                    //   //   child: Center(child: Text('${index + 1}')),
-                                    //   // ),
-                                    //   leading: CircleAvatar(
-                                    //     radius: 20,
-                                    //     backgroundColor: Color(0xff511C74),
-                                    //     child: Center(
-                                    //       child: Text(
-                                    //         '${index + 1}',
-                                    //         style: TextStyle(
-                                    //           fontSize: 18,
-                                    //           color: Colors.white,
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    //   title: Text(
-                                    //     document[index].name.toString(),
-                                    //     style: TextStyle(
-                                    //       fontWeight: FontWeight.bold,
-                                    //       fontSize: 17,
-                                    //     ),
-                                    //   ),
-                                    //   subtitle: Text(
-                                    //     'Price: ৳ ${document[index].price.toStringAsFixed(2)} \nQty: ${document[index].quantity} Kg',
-                                    //     style: TextStyle(
-                                    //       fontSize: 15,
-                                    //       fontWeight: FontWeight.w700,
-                                    //     ),
-                                    //   ),
-                                    //   trailing: Row(
-                                    //     mainAxisSize: MainAxisSize.min,
-                                    //     children: [
-                                    //       IconButton(
-                                    //         onPressed: () async {
-                                    //           final user = FirebaseAuth
-                                    //               .instance.currentUser;
-                                    //           // final userRole;
-                                    //           // final pref = await SharedPreferences.getInstance();
-                                    //           // userRole = pref.getString('user_role');
-                                    //           userRole =
-                                    //               await userCheckFromSharedPref();
-                                    //           if (user == null) {
-                                    //             ScaffoldMessenger.of(context)
-                                    //                 .showSnackBar(
-                                    //                     snackBar(context));
-                                    //             return;
-                                    //           } else if (userRole == 'member') {
-                                    //             final roleCheckMsg = SnackBar(
-                                    //               content: const Text(
-                                    //                   'Oops! Admin not allowed to create?'),
-                                    //               action: SnackBarAction(
-                                    //                 label: 'Sign In',
-                                    //                 onPressed: () {
-                                    //                   Navigator
-                                    //                       .pushReplacementNamed(
-                                    //                           context,
-                                    //                           MyLogin.routeName);
-                                    //                 },
-                                    //               ),
-                                    //             );
-                                    //             ScaffoldMessenger.of(context)
-                                    //                 .showSnackBar(roleCheckMsg);
-                                    //             return;
-                                    //           }
-                                    //           showAlertDialog(context, () {
-                                    //             Navigator.pushReplacement(
-                                    //               context,
-                                    //               MaterialPageRoute(
-                                    //                 builder: (context) =>
-                                    //                     EditProductScreen(
-                                    //                   productId:
-                                    //                       document[index].id,
-                                    //                   orderId: orderId,
-                                    //                 ),
-                                    //               ),
-                                    //             );
-                                    //             print(document[index].id);
-                                    //           });
-                                    //         },
-                                    //         icon: Icon(Icons.edit),
-                                    //       ),
-                                    //       IconButton(
-                                    //           icon: Icon(
-                                    //             Icons.delete,
-                                    //             color: Colors.red,
-                                    //           ),
-                                    //           // _removeProduct(index);
-                                    //           onPressed: () async {
-                                    //             final user = FirebaseAuth
-                                    //                 .instance.currentUser;
-                                    //             // final userRole;
-                                    //             // final pref = await SharedPreferences.getInstance();
-                                    //             // userRole = pref.getString('user_role');
-                                    //             userRole =
-                                    //                 await userCheckFromSharedPref();
-                                    //             if (user == null) {
-                                    //               ScaffoldMessenger.of(context)
-                                    //                   .showSnackBar(
-                                    //                       snackBar(context));
-                                    //               return;
-                                    //             } else if (userRole == 'member') {
-                                    //               final roleCheckMsg = SnackBar(
-                                    //                 content: const Text(
-                                    //                     'Oops! Admin not allowed to create?'),
-                                    //                 action: SnackBarAction(
-                                    //                   label: 'Sign In',
-                                    //                   onPressed: () {
-                                    //                     Navigator
-                                    //                         .pushReplacementNamed(
-                                    //                             context,
-                                    //                             MyLogin
-                                    //                                 .routeName);
-                                    //                   },
-                                    //                 ),
-                                    //               );
-                                    //               ScaffoldMessenger.of(context)
-                                    //                   .showSnackBar(roleCheckMsg);
-                                    //               return;
-                                    //             }
-                                    //
-                                    //             showAlertDialog(
-                                    //               context,
-                                    //               () {
-                                    //                 deleteProduct(
-                                    //                     document[index].id);
-                                    //               },
-                                    //             );
-                                    //           }),
-                                    //     ],
-                                    //   ),
-                                    // ),
-                                    child: Card(
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0),
+                                        child: ListTile(
+                                          // leading: ConstrainedBox(
+                                          //   constraints: BoxConstraints(
+                                          //     minWidth: 14,
+                                          //     minHeight: 14,
+                                          //     maxWidth: 24,
+                                          //     maxHeight: 24,
+                                          //   ),
+                                          //   child: Center(child: Text('${index + 1}')),
+                                          // ),
+                                          leading: CircleAvatar(
+                                            radius: 25,
+                                            backgroundColor: Color(0xff511C74),
+                                            child: Center(
+                                              child: Text(
+                                                '${index + 1}',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          title: Text(
+                                            document[index].name.toString(),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                          subtitle: Text(
+                                            'Qty: ${document[index].quantity} Kg \nPrice: ৳ ${document[index].price.toStringAsFixed(2)}',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),
+                                          // trailing:
+                                        ),
+                                      );
+                                    }),
+                              ),
+                              SizedBox(height: 20),
+                              OrderDetailsTitle('Product Table'),
+                              SizedBox(height: 20),
+                              Container(
+                                height: snap.isEmpty ? 10 : 500,
+                                width: double.infinity,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  controller: _scrollController,
+                                  // padding: EdgeInsets.symmetric(vertical: 20),
+                                  itemCount: snap.length,
+                                  itemBuilder: (context, index) {
+                                    final document = snap
+                                        .map((e) => Product.fromJson(
+                                            e.data() as Map<String, dynamic>))
+                                        .toList();
+
+                                    return Card(
                                       elevation: 2,
                                       margin: EdgeInsets.symmetric(
                                         vertical: 15,
@@ -552,9 +461,11 @@ class OrderDetailsScreen extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(height: 10),
+                                            SizedBox(height: 20),
                                             // Product Name
                                             CustomTextField(
+                                              textFieldKey:
+                                                  document[index].name,
                                               initialValue:
                                                   document[index].name,
                                               labelText: 'Name of Product',
@@ -566,6 +477,8 @@ class OrderDetailsScreen extends StatelessWidget {
                                             SizedBox(height: 15),
                                             // Quantity
                                             CustomTextField(
+                                              textFieldKey:
+                                                  document[index].quantity,
                                               initialValue:
                                                   document[index].quantity,
                                               labelText: 'Quantity (KG)',
@@ -578,6 +491,9 @@ class OrderDetailsScreen extends StatelessWidget {
                                             SizedBox(height: 15),
                                             // Price
                                             CustomTextField(
+                                              textFieldKey: document[index]
+                                                  .price
+                                                  .toString(),
                                               initialValue: document[index]
                                                   .price
                                                   .toString(),
@@ -591,6 +507,8 @@ class OrderDetailsScreen extends StatelessWidget {
                                             SizedBox(height: 15),
                                             // Description
                                             CustomTextField(
+                                              textFieldKey:
+                                                  document[index].description,
                                               initialValue:
                                                   document[index].description,
                                               labelText: 'Description',
@@ -598,7 +516,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                                   TextInputAction.done,
                                               enabled: false,
                                               // controller: _descriptionController,
-                                              maxLines: 4,
+                                              maxLines: 6,
                                               keyboardType:
                                                   TextInputType.multiline,
                                             ),
@@ -744,9 +662,11 @@ class OrderDetailsScreen extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                    ),
-                                  );
-                                }),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           );
                         }
                         return const Center(
@@ -754,10 +674,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         );
                       },
                     ),
-
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               );
