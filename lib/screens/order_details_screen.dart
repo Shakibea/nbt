@@ -339,7 +339,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           (context, AsyncSnapshot<QuerySnapshot> snapShot) {
                         if (snapShot.hasData) {
                           final snap = snapShot.data!.docs;
-                          return Column(
+                          return Row(
                             children: [
                               OrderDetailsTitle(
                                   'Total Product: ${snap.length}'),
@@ -348,7 +348,7 @@ class OrderDetailsScreen extends StatelessWidget {
                               const SizedBox(height: 15),
                               Container(
                                 height: snap.isEmpty ? 10 : 250,
-                                width: double.infinity,
+                                width: snap.isEmpty ? 10 : 250,
                                 child: ListView.builder(
                                     shrinkWrap: true,
                                     // scrollDirection: Axis.horizontal,
@@ -394,13 +394,13 @@ class OrderDetailsScreen extends StatelessWidget {
                                               fontSize: 17,
                                             ),
                                           ),
-                                          subtitle: Text(
+                                          /*subtitle: Text(
                                             'Qty: ${document[index].quantity} Kg \nPrice: ৳ ${document[index].price.toStringAsFixed(2)}',
                                             style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w700,
                                             ),
-                                          ),
+                                          ),*/
                                           // trailing:
                                         ),
                                       );

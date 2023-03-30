@@ -42,10 +42,13 @@ class Transactions with ChangeNotifier {
     return [...transactions1];
   }
 
-  List<String> _partyNames = [];
+  List<Transaction1> _partyNames = [];
   List<String> _factoryNames = [];
 
-  List<String> get partyNames => [..._partyNames];
+  var _partyNamess = [];
+
+  // List<String> get partyNames => [..._partyNames.map((e) => e.partyName)];
+  List<String> get partyNames => [..._partyNamess];
   List<String> get factoryNames => [..._factoryNames];
 
   Future<void> isPartyName() async {
@@ -53,8 +56,13 @@ class Transactions with ChangeNotifier {
         .collection('orders')
         .where('partyName')
         .get();
-    print(query.docs);
-    _partyNames.add(query.docs.toString());
+    print('hello searching: ${query.docs.map((e) => e.data()).toList()}');
+    // _partyNames.add(query.docs.toString());
+    // _partyNames.add();
+    _partyNamess = query.docs.map((e) => e.data()).toList();
+    for (var i = 0; i < _partyNamess.length; i++) {
+      print('hello filtering: ${_partyNamess[i]['partyName']}');
+    }
   }
 
   Future<void> isFactoryName() async {
