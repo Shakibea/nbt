@@ -339,16 +339,18 @@ class OrderDetailsScreen extends StatelessWidget {
                           (context, AsyncSnapshot<QuerySnapshot> snapShot) {
                         if (snapShot.hasData) {
                           final snap = snapShot.data!.docs;
-                          return Row(
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               OrderDetailsTitle(
-                                  'Total Product: ${snap.length}'),
+                                'Total Product: ${snap.length}',
+                              ),
                               const SizedBox(height: 15),
                               OrderDetailsTitle('Product Summary'),
                               const SizedBox(height: 15),
                               Container(
-                                height: snap.isEmpty ? 10 : 250,
-                                width: snap.isEmpty ? 10 : 250,
+                                // height: snap.isEmpty ? 10 : 250,
+                                width: double.infinity,
                                 child: ListView.builder(
                                     shrinkWrap: true,
                                     // scrollDirection: Axis.horizontal,
@@ -362,8 +364,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                           .toList();
 
                                       return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10.0),
+                                        padding: const EdgeInsets.all(0.0),
                                         child: ListTile(
                                           // leading: ConstrainedBox(
                                           //   constraints: BoxConstraints(
@@ -375,20 +376,20 @@ class OrderDetailsScreen extends StatelessWidget {
                                           //   child: Center(child: Text('${index + 1}')),
                                           // ),
                                           leading: CircleAvatar(
-                                            radius: 25,
+                                            radius: 20,
                                             backgroundColor: Color(0xff511C74),
                                             child: Center(
                                               child: Text(
                                                 '${index + 1}',
                                                 style: TextStyle(
-                                                  fontSize: 18,
+                                                  fontSize: 17,
                                                   color: Colors.white,
                                                 ),
                                               ),
                                             ),
                                           ),
                                           title: Text(
-                                            document[index].name.toString(),
+                                            '${document[index].name.toString()}: ${document[index].quantity} Kg',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 17,
@@ -420,8 +421,10 @@ class OrderDetailsScreen extends StatelessWidget {
                                   itemCount: snap.length,
                                   itemBuilder: (context, index) {
                                     final document = snap
-                                        .map((e) => Product.fromJson(
-                                            e.data() as Map<String, dynamic>))
+                                        .map(
+                                          (e) => Product.fromJson(
+                                              e.data() as Map<String, dynamic>),
+                                        )
                                         .toList();
 
                                     return Card(
