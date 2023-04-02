@@ -347,7 +347,7 @@ class OrderDetailsScreen extends StatelessWidget {
                               OrderDetailsTitle('Product Summary'),
                               const SizedBox(height: 15),
                               Container(
-                                height: snap.isEmpty ? 10 : 250,
+                                // height: snap.isEmpty ? 10 : 250,
                                 width: double.infinity,
                                 child: ListView.builder(
                                     shrinkWrap: true,
@@ -363,7 +363,8 @@ class OrderDetailsScreen extends StatelessWidget {
 
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            vertical: 10.0),
+                                          vertical: 0.0,
+                                        ),
                                         child: ListTile(
                                           // leading: ConstrainedBox(
                                           //   constraints: BoxConstraints(
@@ -375,32 +376,32 @@ class OrderDetailsScreen extends StatelessWidget {
                                           //   child: Center(child: Text('${index + 1}')),
                                           // ),
                                           leading: CircleAvatar(
-                                            radius: 25,
+                                            radius: 20,
                                             backgroundColor: Color(0xff511C74),
                                             child: Center(
                                               child: Text(
                                                 '${index + 1}',
                                                 style: TextStyle(
-                                                  fontSize: 18,
+                                                  fontSize: 16,
                                                   color: Colors.white,
                                                 ),
                                               ),
                                             ),
                                           ),
                                           title: Text(
-                                            document[index].name.toString(),
+                                            '${document[index].name.toString()}: ${document[index].quantity} Kg',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 17,
                                             ),
                                           ),
-                                          subtitle: Text(
-                                            'Qty: ${document[index].quantity} Kg \nPrice: ৳ ${document[index].price.toStringAsFixed(2)}',
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
+                                          // subtitle: Text(
+                                          //   'Qty: ${document[index].quantity} Kg \nPrice: ৳ ${document[index].price.toStringAsFixed(2)}',
+                                          //   style: TextStyle(
+                                          //     fontSize: 15,
+                                          //     fontWeight: FontWeight.w700,
+                                          //   ),
+                                          // ),
                                           // trailing:
                                         ),
                                       );
