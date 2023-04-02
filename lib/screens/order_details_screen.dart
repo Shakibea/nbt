@@ -103,7 +103,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     //PARTY NAME
                     OrderDetailsTitle('Party Name'),
                     const SizedBox(height: 10),
-                    OrderDetailsTextContent(title: order.partyName),
+                    OrderDetailsTextContent(title: order.partyName.toString()),
                     const SizedBox(height: 20),
 
                     //FACTORY NAME
@@ -112,7 +112,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     OrderDetailsTextContent(
                       title: order.factoryName!.isEmpty
                           ? 'None'
-                          : order.factoryName,
+                          : order.factoryName.toString(),
                     ),
                     const SizedBox(height: 20),
                     //ADDRESS
@@ -129,7 +129,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     OrderDetailsTextContent(
                       title: order.transportation!.isEmpty
                           ? 'No Transportation'
-                          : order.transportation,
+                          : order.transportation.toString(),
                     ),
                     const SizedBox(height: 20),
                     // FutureBuilder(
@@ -340,9 +340,11 @@ class OrderDetailsScreen extends StatelessWidget {
                         if (snapShot.hasData) {
                           final snap = snapShot.data!.docs;
                           return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               OrderDetailsTitle(
-                                  'Total Product: ${snap.length}'),
+                                'Total Product: ${snap.length}',
+                              ),
                               const SizedBox(height: 15),
                               OrderDetailsTitle('Product Summary'),
                               const SizedBox(height: 15),
@@ -362,9 +364,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                           .toList();
 
                                       return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 0.0,
-                                        ),
+                                        padding: const EdgeInsets.all(0.0),
                                         child: ListTile(
                                           // leading: ConstrainedBox(
                                           //   constraints: BoxConstraints(
@@ -382,7 +382,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                               child: Text(
                                                 '${index + 1}',
                                                 style: TextStyle(
-                                                  fontSize: 16,
+                                                  fontSize: 17,
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -395,13 +395,13 @@ class OrderDetailsScreen extends StatelessWidget {
                                               fontSize: 17,
                                             ),
                                           ),
-                                          // subtitle: Text(
-                                          //   'Qty: ${document[index].quantity} Kg \nPrice: ৳ ${document[index].price.toStringAsFixed(2)}',
-                                          //   style: TextStyle(
-                                          //     fontSize: 15,
-                                          //     fontWeight: FontWeight.w700,
-                                          //   ),
-                                          // ),
+                                          /*subtitle: Text(
+                                            'Qty: ${document[index].quantity} Kg \nPrice: ৳ ${document[index].price.toStringAsFixed(2)}',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          ),*/
                                           // trailing:
                                         ),
                                       );
@@ -421,8 +421,10 @@ class OrderDetailsScreen extends StatelessWidget {
                                   itemCount: snap.length,
                                   itemBuilder: (context, index) {
                                     final document = snap
-                                        .map((e) => Product.fromJson(
-                                            e.data() as Map<String, dynamic>))
+                                        .map(
+                                          (e) => Product.fromJson(
+                                              e.data() as Map<String, dynamic>),
+                                        )
                                         .toList();
 
                                     return Card(

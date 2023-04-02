@@ -11,6 +11,7 @@ import 'package:nbt/screens/edit_order_screen.dart';
 import 'package:nbt/screens/edit_requisition_screen.dart';
 import 'package:nbt/screens/login_screen.dart';
 import 'package:nbt/screens/new_order_page.dart';
+import 'package:nbt/suggestion_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:nbt/providers/inventories.dart';
@@ -97,7 +98,8 @@ class MyApp extends StatelessWidget {
         home: SplashScreen(),
         // home: MultiForm(),
         // home: DynamicProductForm(),
-        // home: NewOrderPage(),
+        // home: POListScreen(),
+        // home: SuggestionPage(),
         routes: {
           MainDashboardScreen.routeName: (_) => MainDashboardScreen(),
           NewOrdersScreen.routeName: (_) => NewOrdersScreen(),

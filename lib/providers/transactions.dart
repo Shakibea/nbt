@@ -42,19 +42,22 @@ class Transactions with ChangeNotifier {
     return [...transactions1];
   }
 
-  List<String> _partyNames = [];
+  List<Transaction1> _partyNames = [];
   List<String> _factoryNames = [];
 
-  List<String> get partyNames => [..._partyNames];
+  var _partyNamess = [];
+
+  // List<String> get partyNames => [..._partyNames.map((e) => e.partyName)];
+  List<String> get partyNames => [..._partyNamess];
   List<String> get factoryNames => [..._factoryNames];
 
   Future<void> isPartyName() async {
-    QuerySnapshot query = await FirebaseFirestore.instance
-        .collection('orders')
-        .where('partyName')
-        .get();
-    print(query.docs);
-    _partyNames.add(query.docs.toString());
+    var query = await FirebaseFirestore.instance.collection('orders').get();
+
+    final snap =
+        query.docs.map((e) => Transaction1.fromJson(e.data())).toList();
+
+    partyNames.addAll(snap.map((e) => e.partyName).toList());
   }
 
   Future<void> isFactoryName() async {
