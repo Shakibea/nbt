@@ -12,7 +12,7 @@ class OrderDetailsTitle extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Color(0xff662D91),
           ),

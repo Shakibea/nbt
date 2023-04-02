@@ -90,48 +90,48 @@ class OrderDetailsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     OrderDetailsTitle('Date'),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 2),
                     OrderDetailsTextContent(
                       title: DateFormat.yMMMMd().format(order!.date),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 8),
                     OrderDetailsTitle('PO Number'),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 2),
                     OrderDetailsTextContent(title: order.id),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 8),
 
                     //PARTY NAME
                     OrderDetailsTitle('Party Name'),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 2),
                     OrderDetailsTextContent(title: order.partyName.toString()),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 8),
 
                     //FACTORY NAME
                     OrderDetailsTitle('Factory Name'),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 2),
                     OrderDetailsTextContent(
                       title: order.factoryName!.isEmpty
                           ? 'None'
                           : order.factoryName.toString(),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 8),
                     //ADDRESS
                     OrderDetailsTitle('Address'),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 2),
                     OrderDetailsTextContent(
                       title:
                           order.address!.isEmpty ? 'No Address' : order.address,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 8),
                     // Transportation
                     OrderDetailsTitle('Transportation'),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 2),
                     OrderDetailsTextContent(
                       title: order.transportation!.isEmpty
                           ? 'No Transportation'
                           : order.transportation.toString(),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 8),
                     // FutureBuilder(
                     //     future: userCheckFromSharedPref(),
                     //     builder: (context, snapshot) {
@@ -254,7 +254,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         )
                       ],
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 15),
                     // OrderDetailsTitle('Product Summary'),
                     // const SizedBox(height: 15),
                     // OrderDetailsTextContent(title: order.productName),
@@ -345,9 +345,9 @@ class OrderDetailsScreen extends StatelessWidget {
                               OrderDetailsTitle(
                                 'Total Product: ${snap.length}',
                               ),
-                              const SizedBox(height: 15),
+                              const SizedBox(height: 8),
                               OrderDetailsTitle('Product Summary'),
-                              const SizedBox(height: 15),
+                              const SizedBox(height: 2),
                               Container(
                                 // height: snap.isEmpty ? 10 : 250,
                                 width: double.infinity,
@@ -363,9 +363,14 @@ class OrderDetailsScreen extends StatelessWidget {
                                               e.data() as Map<String, dynamic>))
                                           .toList();
 
-                                      return Padding(
-                                        padding: const EdgeInsets.all(0.0),
+                                      return SizedBox(
+                                        height: 40,
                                         child: ListTile(
+                                          contentPadding: EdgeInsets.zero,
+                                          minLeadingWidth: 30,
+                                          minVerticalPadding: 5,
+                                          horizontalTitleGap: 5,
+
                                           // leading: ConstrainedBox(
                                           //   constraints: BoxConstraints(
                                           //     minWidth: 14,
@@ -376,13 +381,13 @@ class OrderDetailsScreen extends StatelessWidget {
                                           //   child: Center(child: Text('${index + 1}')),
                                           // ),
                                           leading: CircleAvatar(
-                                            radius: 20,
+                                            radius: 15,
                                             backgroundColor: Color(0xff511C74),
                                             child: Center(
                                               child: Text(
                                                 '${index + 1}',
                                                 style: TextStyle(
-                                                  fontSize: 17,
+                                                  fontSize: 14,
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -392,7 +397,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                             '${document[index].name.toString()}: ${document[index].quantity} Kg',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 17,
+                                              fontSize: 16,
                                             ),
                                           ),
                                           /*subtitle: Text(

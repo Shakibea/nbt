@@ -115,11 +115,16 @@ class POListScreen extends StatelessWidget {
                     //   context,
                     //   NewOrdersScreen.routeName,
                     // );
-                    Navigator.push(
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => NewOrderPage(),
+                    //   ),
+                    // );
+
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => NewOrderPage(),
-                      ),
+                      NewOrderPage.routeName,
                     );
                   },
                   // Navigator.pushNamed(context, NewOrdersScreen.routeName),
