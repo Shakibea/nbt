@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool enabled;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final String? Function(String?)? validator;
   final Function(String?)? onSaved;
 
@@ -24,6 +25,7 @@ class CustomTextField extends StatelessWidget {
     this.onSaved,
     this.initialValue,
     this.textFieldKey,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,7 @@ class CustomTextField extends StatelessWidget {
       textInputAction: textInputAction,
       enabled: enabled,
       controller: controller,
+      focusNode: focusNode,
       validator: validator,
       onSaved: onSaved,
     );

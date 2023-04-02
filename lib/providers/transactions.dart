@@ -52,17 +52,8 @@ class Transactions with ChangeNotifier {
   List<String> get factoryNames => [..._factoryNames];
 
   Future<void> isPartyName() async {
-    QuerySnapshot query = await FirebaseFirestore.instance
-        .collection('orders')
-        .where('partyName')
-        .get();
-    print('hello searching: ${query.docs.map((e) => e.data()).toList()}');
-    // _partyNames.add(query.docs.toString());
-    // _partyNames.add();
-    _partyNamess = query.docs.map((e) => e.data()).toList();
-    for (var i = 0; i < _partyNamess.length; i++) {
-      print('hello filtering: ${_partyNamess[i]['partyName']}');
-    }
+    var query =
+        await FirebaseFirestore.instance.collection('orders').snapshots();
   }
 
   Future<void> isFactoryName() async {

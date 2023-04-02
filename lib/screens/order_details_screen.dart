@@ -103,7 +103,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     //PARTY NAME
                     OrderDetailsTitle('Party Name'),
                     const SizedBox(height: 10),
-                    OrderDetailsTextContent(title: order.partyName),
+                    OrderDetailsTextContent(title: order.partyName.toString()),
                     const SizedBox(height: 20),
 
                     //FACTORY NAME
@@ -112,7 +112,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     OrderDetailsTextContent(
                       title: order.factoryName!.isEmpty
                           ? 'None'
-                          : order.factoryName,
+                          : order.factoryName.toString(),
                     ),
                     const SizedBox(height: 20),
                     //ADDRESS
@@ -129,7 +129,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     OrderDetailsTextContent(
                       title: order.transportation!.isEmpty
                           ? 'No Transportation'
-                          : order.transportation,
+                          : order.transportation.toString(),
                     ),
                     const SizedBox(height: 20),
                     // FutureBuilder(
