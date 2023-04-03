@@ -42,32 +42,6 @@ class Transactions with ChangeNotifier {
     return [...transactions1];
   }
 
-  List<Transaction1> _partyNames = [];
-  List<String> _factoryNames = [];
-
-  var _partyNamess = [];
-
-  // List<String> get partyNames => [..._partyNames.map((e) => e.partyName)];
-  List<String> get partyNames => [..._partyNamess];
-  List<String> get factoryNames => [..._factoryNames];
-
-  Future<void> isPartyName() async {
-    var query = await FirebaseFirestore.instance.collection('orders').get();
-
-    final snap =
-        query.docs.map((e) => Transaction1.fromJson(e.data())).toList();
-
-    partyNames.addAll(snap.map((e) => e.partyName).toList());
-  }
-
-  Future<void> isFactoryName() async {
-    QuerySnapshot query = await FirebaseFirestore.instance
-        .collection('orders')
-        .where('factoryName')
-        .get();
-    _factoryNames.add(query.toString());
-  }
-
   Transaction1 findById(String id) {
     return transactions1.firstWhere((element) => element.id == id);
   }
@@ -171,29 +145,6 @@ class Transactions with ChangeNotifier {
   }
 
   // Products
-  Future createProduct(Product product, String id) async {
-    String productId = const Uuid().v1();
-    final docProduct = FirebaseFirestore.instance
-        .collection('orders')
-        .doc(id)
-        .collection('products')
-        .doc(productId);
-
-    // print(docProduct.id);
-
-    final newProduct = Product(
-      id: docProduct.id,
-      name: product.name,
-      quantity: product.quantity,
-      price: product.price,
-      description: product.description,
-    );
-
-    final json = newProduct.toJson();
-    await docProduct.set(json);
-  }
-
-  // Products
   Future<Transaction1?> readSingleProduct(String id, String productId) async {
     final docOrder = FirebaseFirestore.instance
         .collection('orders')
@@ -206,16 +157,6 @@ class Transactions with ChangeNotifier {
       return Transaction1.fromJson(snapShot.data()!);
     }
     return null;
-  }
-
-  //Products
-  Future deleteProduct(String id, String productId) async {
-    final docOrder = FirebaseFirestore.instance
-        .collection('orders')
-        .doc(id)
-        .collection('products')
-        .doc(productId);
-    await docOrder.delete();
   }
 
   Future updateOrder(String id, String status) async {
@@ -252,6 +193,16 @@ class Transactions with ChangeNotifier {
   Future deleteOrder(String id) async {
     final docOrder = FirebaseFirestore.instance.collection('orders').doc(id);
     await docOrder.delete();
+
+    final docProduct = FirebaseFirestore.instance
+        .collection('orders')
+        .doc(id)
+        .collection('products');
+
+    var snapshot = await docProduct.get();
+    for (var product in snapshot.docs) {
+      await product.reference.delete();
+    }
   }
 
   Future<Transaction1?> readSingleOrder(String id) async {

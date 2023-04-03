@@ -428,7 +428,8 @@ class OrderDetailsScreen extends StatelessWidget {
                                     final document = snap
                                         .map(
                                           (e) => Product.fromJson(
-                                              e.data() as Map<String, dynamic>),
+                                            e.data() as Map<String, dynamic>,
+                                          ),
                                         )
                                         .toList();
 

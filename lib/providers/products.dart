@@ -6,7 +6,6 @@ import './product.dart';
 
 class Products with ChangeNotifier {
   Future<void> createProduct(List<Product> products, String id) async {
-    // random id generated
     final docProduct = FirebaseFirestore.instance
         .collection('orders')
         .doc(id)
@@ -15,6 +14,7 @@ class Products with ChangeNotifier {
     // print(docProduct.id);
 
     for (final product in products) {
+      // random id generated
       String productId = Uuid().v1();
       // final documentRef =
       await docProduct.doc(productId).set(product.toFirestore(productId));
@@ -51,11 +51,11 @@ class Products with ChangeNotifier {
   }
 
   Future deleteProduct(String id, String productId) async {
-    final docOrder = FirebaseFirestore.instance
+    final docProduct = FirebaseFirestore.instance
         .collection('orders')
         .doc(id)
         .collection('products')
         .doc(productId);
-    await docOrder.delete();
+    await docProduct.delete();
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_final_fields, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_final_fields, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -250,32 +250,32 @@ class _NewOrderPageState extends State<NewOrderPage> {
               //   ),
               // ),
 
-              CustomTextField(
-                labelText: 'Party Name',
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                enabled: true,
-                controller: _partyNameController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Product Name!';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                    id: _newOrder.id,
-                    productName: _newOrder.productName,
-                    partyName: value!,
-                    factoryName: _newOrder.factoryName,
-                    address: _newOrder.address,
-                    quantity: _newOrder.quantity,
-                    productDetail: _newOrder.productDetail,
-                    date: _newOrder.date,
-                    transportation: _newOrder.transportation,
-                  );
-                },
-              ),
+              // CustomTextField(
+              //   labelText: 'Party Name',
+              //   keyboardType: TextInputType.text,
+              //   textInputAction: TextInputAction.next,
+              //   enabled: true,
+              //   controller: _partyNameController,
+              //   validator: (value) {
+              //     if (value!.isEmpty) {
+              //       return 'Please enter Product Name!';
+              //     }
+              //     return null;
+              //   },
+              //   onSaved: (value) {
+              //     _newOrder = Transaction1(
+              //       id: _newOrder.id,
+              //       productName: _newOrder.productName,
+              //       partyName: value!,
+              //       factoryName: _newOrder.factoryName,
+              //       address: _newOrder.address,
+              //       quantity: _newOrder.quantity,
+              //       productDetail: _newOrder.productDetail,
+              //       date: _newOrder.date,
+              //       transportation: _newOrder.transportation,
+              //     );
+              //   },
+              // ),
 
               //////////////////////
               // StreamBuilder<QuerySnapshot>(
@@ -385,256 +385,425 @@ class _NewOrderPageState extends State<NewOrderPage> {
               //   },
               // ),
 
-              //Suggestions
-              // StreamBuilder<QuerySnapshot>(
-              //   stream:
-              //       FirebaseFirestore.instance.collection('orders').snapshots(),
-              //   builder: (context, snapshots) {
-              //     return (snapshots.connectionState == ConnectionState.waiting)
-              //         ? Center(
-              //             child: CircularProgressIndicator(),
-              //           )
-              //         : Container(
-              //             height: 202,
-              //             width: double.infinity,
-              //             // color: Colors.red,
-              //             child: ListView.builder(
-              //               // physics: NeverScrollableScrollPhysics(),
-              //               itemCount: snapshots.data!.docs.length,
-              //               itemBuilder: (context, index) {
-              //                 final snap = snapshots.data!.docs
-              //                     .map((e) => Transaction1.fromJson(
-              //                         e.data() as Map<String, dynamic>))
-              //                     .toList();
-              //
-              //                 // print(snap[index].partyName);
-              //                 // print('factory name');
-              //                 // print(snap[index].factoryName);
-              //
-              //                 // partyNames.addAll(
-              //                 //     snap.map((e) => e.partyName).toList());
-              //
-              //                 return Column(
-              //                   children: [
-              //                     RawAutocomplete(
-              //                       optionsBuilder:
-              //                           (TextEditingValue textEditingValue) {
-              //                         if (textEditingValue.text == '') {
-              //                           return const Iterable<String>.empty();
-              //                         } else {
-              //                           List<String> matches = <String>[];
-              //
-              //                           // matches.addAll(partyNames);
-              //                           matches.addAll(snap
-              //                               .map((e) => e.partyName)
-              //                               .toList());
-              //
-              //                           print(matches.length);
-              //
-              //                           matches.retainWhere((s) {
-              //                             return s.toLowerCase().contains(
-              //                                 textEditingValue.text
-              //                                     .toLowerCase());
-              //                           });
-              //                           return matches;
-              //                         }
-              //                       },
-              //                       onSelected: (String selection) {
-              //                         print('You just selected $selection');
-              //                       },
-              //                       fieldViewBuilder: (BuildContext context,
-              //                           TextEditingController
-              //                               textEditingController,
-              //                           FocusNode focusNode,
-              //                           VoidCallback onFieldSubmitted) {
-              //                         return CustomTextField(
-              //                           labelText: 'Party Name',
-              //                           keyboardType: TextInputType.text,
-              //                           textInputAction: TextInputAction.next,
-              //                           enabled: true,
-              //                           controller: textEditingController,
-              //                           focusNode: focusNode,
-              //                           // controller: _partyNameController,
-              //                           validator: (value) {
-              //                             if (value!.isEmpty) {
-              //                               return 'Please enter Product Name!';
-              //                             }
-              //                             return null;
-              //                           },
-              //                           onSaved: (value) {
-              //                             _newOrder = Transaction1(
-              //                               id: _newOrder.id,
-              //                               productName: _newOrder.productName,
-              //                               partyName: value!,
-              //                               factoryName: _newOrder.factoryName,
-              //                               address: _newOrder.address,
-              //                               quantity: _newOrder.quantity,
-              //                               productDetail:
-              //                                   _newOrder.productDetail,
-              //                               date: _newOrder.date,
-              //                               transportation:
-              //                                   _newOrder.transportation,
-              //                             );
-              //                           },
-              //                         );
-              //                       },
-              //                       optionsViewBuilder: (BuildContext context,
-              //                           void Function(String) onSelected,
-              //                           Iterable<String> options) {
-              //                         return Material(
-              //                             child: SizedBox(
-              //                                 height: 200,
-              //                                 child: SingleChildScrollView(
-              //                                     child: Column(
-              //                                   children: options.map((opt) {
-              //                                     return InkWell(
-              //                                         onTap: () {
-              //                                           onSelected(opt);
-              //                                         },
-              //                                         child: Container(
-              //                                             padding:
-              //                                                 EdgeInsets.only(
-              //                                                     right: 60),
-              //                                             child: Card(
-              //                                                 child: Container(
-              //                                               width:
-              //                                                   double.infinity,
-              //                                               padding:
-              //                                                   EdgeInsets.all(
-              //                                                       10),
-              //                                               child: Text(opt),
-              //                                             ))));
-              //                                   }).toList(),
-              //                                 ))));
-              //                       },
-              //                     ),
-              //                     SizedBox(height: space),
-              //                     RawAutocomplete(
-              //                       optionsBuilder:
-              //                           (TextEditingValue textEditingValue) {
-              //                         if (textEditingValue.text == '') {
-              //                           return const Iterable<String>.empty();
-              //                         } else {
-              //                           List<String> matchesF = [];
-              //                           matchesF.addAll(snap
-              //                               .map(
-              //                                   (e) => e.factoryName.toString())
-              //                               .toList());
-              //                           // matches.addAll(FirebaseFirestore.instance.collection('orders'));
-              //                           print(matchesF.length);
-              //
-              //                           matchesF.retainWhere((s) {
-              //                             return s.toLowerCase().contains(
-              //                                 textEditingValue.text
-              //                                     .toLowerCase());
-              //                           });
-              //                           return matchesF;
-              //                         }
-              //                       },
-              //                       onSelected: (String selection) {
-              //                         print('You just selected $selection');
-              //                       },
-              //                       fieldViewBuilder: (BuildContext context,
-              //                           TextEditingController
-              //                               textEditingController,
-              //                           FocusNode focusNode,
-              //                           VoidCallback onFieldSubmitted) {
-              //                         return CustomTextField(
-              //                           labelText: 'Factory Name',
-              //                           keyboardType: TextInputType.text,
-              //                           textInputAction: TextInputAction.next,
-              //                           enabled: true,
-              //                           controller: textEditingController,
-              //                           focusNode: focusNode,
-              //                           // validator: (value) {
-              //                           //   if (value!.isEmpty) {
-              //                           //     return 'Please enter Factory Name!';
-              //                           //   }
-              //                           //   return null;
-              //                           // },
-              //                           onSaved: (value) {
-              //                             _newOrder = Transaction1(
-              //                               id: _newOrder.id,
-              //                               productName: _newOrder.productName,
-              //                               partyName: _newOrder.partyName,
-              //                               factoryName: value!,
-              //                               address: _newOrder.address,
-              //                               quantity: _newOrder.quantity,
-              //                               productDetail:
-              //                                   _newOrder.productDetail,
-              //                               date: _newOrder.date,
-              //                               transportation:
-              //                                   _newOrder.transportation,
-              //                             );
-              //                           },
-              //                         );
-              //                       },
-              //                       optionsViewBuilder: (BuildContext context,
-              //                           void Function(String) onSelected,
-              //                           Iterable<String> options) {
-              //                         return Material(
-              //                             child: SizedBox(
-              //                                 height: 200,
-              //                                 child: SingleChildScrollView(
-              //                                     child: Column(
-              //                                   children: options.map((opt) {
-              //                                     return InkWell(
-              //                                         onTap: () {
-              //                                           onSelected(opt);
-              //                                         },
-              //                                         child: Container(
-              //                                             padding:
-              //                                                 EdgeInsets.only(
-              //                                                     right: 60),
-              //                                             child: Card(
-              //                                                 child: Container(
-              //                                               width:
-              //                                                   double.infinity,
-              //                                               padding:
-              //                                                   EdgeInsets.all(
-              //                                                       10),
-              //                                               child: Text(opt),
-              //                                             ))));
-              //                                   }).toList(),
-              //                                 ))));
-              //                       },
-              //                     ),
-              //                   ],
-              //                 );
-              //               },
-              //             ),
-              //           );
-              //   },
-              // ),
+              ////Suggestions
+              StreamBuilder<QuerySnapshot>(
+                stream:
+                    FirebaseFirestore.instance.collection('orders').snapshots(),
+                builder: (context, snapshots) {
+                  if (snapshots.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-              SizedBox(height: space),
-              // Factory Name
-              CustomTextField(
-                labelText: 'Factory Name',
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                enabled: true,
-                controller: _factoryNameController,
-                // validator: (value) {
-                //   if (value!.isEmpty) {
-                //     return 'Please enter Factory Name!';
-                //   }
-                //   return null;
-                // },
-                onSaved: (value) {
-                  _newOrder = Transaction1(
-                    id: _newOrder.id,
-                    productName: _newOrder.productName,
-                    partyName: _newOrder.partyName,
-                    factoryName: value!,
-                    address: _newOrder.address,
-                    quantity: _newOrder.quantity,
-                    productDetail: _newOrder.productDetail,
-                    date: _newOrder.date,
-                    transportation: _newOrder.transportation,
+                  if (snapshots.connectionState == ConnectionState.active) {
+                    if (snapshots.hasData) {
+                      for (int i = 0; i < snapshots.data!.docs.length; i++) {
+                        partyNames.add(snapshots.data!.docs[i]['partyName']);
+                      }
+
+                      for (int i = 0; i < snapshots.data!.docs.length; i++) {
+                        factoryNames
+                            .add(snapshots.data!.docs[i]['factoryName']);
+                      }
+                      return SizedBox(
+                        height: 135,
+                        width: double.infinity,
+                        // color: Colors.red,
+                        child: Column(
+                          children: [
+                            RawAutocomplete(
+                              optionsBuilder:
+                                  (TextEditingValue textEditingValue) {
+                                if (textEditingValue.text == '') {
+                                  return const Iterable<String>.empty();
+                                } else {
+                                  List<String> matches = <String>[];
+
+                                  matches.addAll(partyNames);
+                                  // matches.addAll(snap
+                                  //     .map((e) => e.partyName)
+                                  //     .toList());
+
+                                  print(matches.length);
+
+                                  matches.retainWhere((s) {
+                                    return s.toLowerCase().contains(
+                                        textEditingValue.text.toLowerCase());
+                                  });
+                                  return matches;
+                                }
+                              },
+                              onSelected: (String selection) {
+                                print('You just selected $selection');
+                              },
+                              fieldViewBuilder: (BuildContext context,
+                                  TextEditingController textEditingController,
+                                  FocusNode focusNode,
+                                  VoidCallback onFieldSubmitted) {
+                                return CustomTextField(
+                                  labelText: 'Party Name',
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.next,
+                                  enabled: true,
+                                  controller: textEditingController,
+                                  focusNode: focusNode,
+                                  // controller: _partyNameController,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter Product Name!';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    _newOrder = Transaction1(
+                                      id: _newOrder.id,
+                                      productName: _newOrder.productName,
+                                      partyName: value!,
+                                      factoryName: _newOrder.factoryName,
+                                      address: _newOrder.address,
+                                      quantity: _newOrder.quantity,
+                                      productDetail: _newOrder.productDetail,
+                                      date: _newOrder.date,
+                                      transportation: _newOrder.transportation,
+                                    );
+                                  },
+                                );
+                              },
+                              optionsViewBuilder: (BuildContext context,
+                                  void Function(String) onSelected,
+                                  Iterable<String> options) {
+                                return Material(
+                                    child: SizedBox(
+                                        height: 200,
+                                        child: SingleChildScrollView(
+                                            child: Column(
+                                          children: options.map((opt) {
+                                            return InkWell(
+                                                onTap: () {
+                                                  onSelected(opt);
+                                                },
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        right: 60),
+                                                    child: Card(
+                                                        child: Container(
+                                                      width: double.infinity,
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      child: Text(opt),
+                                                    ))));
+                                          }).toList(),
+                                        ))));
+                              },
+                            ),
+                            SizedBox(height: space),
+                            RawAutocomplete(
+                              optionsBuilder:
+                                  (TextEditingValue textEditingValue) {
+                                if (textEditingValue.text == '') {
+                                  return const Iterable<String>.empty();
+                                } else {
+                                  List<String> matchesF = [];
+
+                                  matchesF.addAll(factoryNames);
+
+                                  // matchesF.addAll(snap
+                                  //     .map(
+                                  //         (e) => e.factoryName.toString())
+                                  //     .toList());
+                                  // matches.addAll(FirebaseFirestore.instance.collection('orders'));
+
+                                  print(matchesF.length);
+
+                                  matchesF.retainWhere((s) {
+                                    return s.toLowerCase().contains(
+                                        textEditingValue.text.toLowerCase());
+                                  });
+                                  return matchesF;
+                                }
+                              },
+                              onSelected: (String selection) {
+                                print('You just selected $selection');
+                              },
+                              fieldViewBuilder: (BuildContext context,
+                                  TextEditingController textEditingController,
+                                  FocusNode focusNode,
+                                  VoidCallback onFieldSubmitted) {
+                                return CustomTextField(
+                                  labelText: 'Factory Name',
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.next,
+                                  enabled: true,
+                                  controller: textEditingController,
+                                  focusNode: focusNode,
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'Please enter Factory Name!';
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  onSaved: (value) {
+                                    _newOrder = Transaction1(
+                                      id: _newOrder.id,
+                                      productName: _newOrder.productName,
+                                      partyName: _newOrder.partyName,
+                                      factoryName: value!,
+                                      address: _newOrder.address,
+                                      quantity: _newOrder.quantity,
+                                      productDetail: _newOrder.productDetail,
+                                      date: _newOrder.date,
+                                      transportation: _newOrder.transportation,
+                                    );
+                                  },
+                                );
+                              },
+                              optionsViewBuilder: (BuildContext context,
+                                  void Function(String) onSelected,
+                                  Iterable<String> options) {
+                                return Material(
+                                    child: SizedBox(
+                                        height: 200,
+                                        child: SingleChildScrollView(
+                                            child: Column(
+                                          children: options.map((opt) {
+                                            return InkWell(
+                                                onTap: () {
+                                                  onSelected(opt);
+                                                },
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        right: 60),
+                                                    child: Card(
+                                                        child: Container(
+                                                      width: double.infinity,
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      child: Text(opt),
+                                                    ))));
+                                          }).toList(),
+                                        ))));
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    } else if (snapshots.hasError) {
+                      return Center(
+                        child: Text(snapshots.error.toString()),
+                      );
+                    }
+                  }
+
+                  return Container(
+                    height: 202,
+                    width: double.infinity,
+                    // color: Colors.red,
+                    child: Column(
+                      children: [
+                        RawAutocomplete(
+                          optionsBuilder: (TextEditingValue textEditingValue) {
+                            if (textEditingValue.text == '') {
+                              return const Iterable<String>.empty();
+                            } else {
+                              List<String> matches = <String>[];
+
+                              matches.addAll(partyNames);
+                              // matches.addAll(snap
+                              //     .map((e) => e.partyName)
+                              //     .toList());
+
+                              print(matches.length);
+
+                              matches.retainWhere((s) {
+                                return s.toLowerCase().contains(
+                                    textEditingValue.text.toLowerCase());
+                              });
+                              return matches;
+                            }
+                          },
+                          onSelected: (String selection) {
+                            print('You just selected $selection');
+                          },
+                          fieldViewBuilder: (BuildContext context,
+                              TextEditingController textEditingController,
+                              FocusNode focusNode,
+                              VoidCallback onFieldSubmitted) {
+                            return CustomTextField(
+                              labelText: 'Party Name',
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.next,
+                              enabled: true,
+                              controller: textEditingController,
+                              focusNode: focusNode,
+                              // controller: _partyNameController,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter Product Name!';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _newOrder = Transaction1(
+                                  id: _newOrder.id,
+                                  productName: _newOrder.productName,
+                                  partyName: value!,
+                                  factoryName: _newOrder.factoryName,
+                                  address: _newOrder.address,
+                                  quantity: _newOrder.quantity,
+                                  productDetail: _newOrder.productDetail,
+                                  date: _newOrder.date,
+                                  transportation: _newOrder.transportation,
+                                );
+                              },
+                            );
+                          },
+                          optionsViewBuilder: (BuildContext context,
+                              void Function(String) onSelected,
+                              Iterable<String> options) {
+                            return Material(
+                                child: SizedBox(
+                                    height: 200,
+                                    child: SingleChildScrollView(
+                                        child: Column(
+                                      children: options.map((opt) {
+                                        return InkWell(
+                                            onTap: () {
+                                              onSelected(opt);
+                                            },
+                                            child: Container(
+                                                padding:
+                                                    EdgeInsets.only(right: 60),
+                                                child: Card(
+                                                    child: Container(
+                                                  width: double.infinity,
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Text(opt),
+                                                ))));
+                                      }).toList(),
+                                    ))));
+                          },
+                        ),
+                        SizedBox(height: space),
+                        RawAutocomplete(
+                          optionsBuilder: (TextEditingValue textEditingValue) {
+                            if (textEditingValue.text == '') {
+                              return const Iterable<String>.empty();
+                            } else {
+                              List<String> matchesF = [];
+
+                              matchesF.addAll(factoryNames);
+
+                              // matchesF.addAll(snap
+                              //     .map(
+                              //         (e) => e.factoryName.toString())
+                              //     .toList());
+                              // matches.addAll(FirebaseFirestore.instance.collection('orders'));
+
+                              print(matchesF.length);
+
+                              matchesF.retainWhere((s) {
+                                return s.toLowerCase().contains(
+                                    textEditingValue.text.toLowerCase());
+                              });
+                              return matchesF;
+                            }
+                          },
+                          onSelected: (String selection) {
+                            print('You just selected $selection');
+                          },
+                          fieldViewBuilder: (BuildContext context,
+                              TextEditingController textEditingController,
+                              FocusNode focusNode,
+                              VoidCallback onFieldSubmitted) {
+                            return CustomTextField(
+                              labelText: 'Factory Name',
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.next,
+                              enabled: true,
+                              controller: textEditingController,
+                              focusNode: focusNode,
+                              // validator: (value) {
+                              //   if (value!.isEmpty) {
+                              //     return 'Please enter Factory Name!';
+                              //   }
+                              //   return null;
+                              // },
+                              onSaved: (value) {
+                                _newOrder = Transaction1(
+                                  id: _newOrder.id,
+                                  productName: _newOrder.productName,
+                                  partyName: _newOrder.partyName,
+                                  factoryName: value!,
+                                  address: _newOrder.address,
+                                  quantity: _newOrder.quantity,
+                                  productDetail: _newOrder.productDetail,
+                                  date: _newOrder.date,
+                                  transportation: _newOrder.transportation,
+                                );
+                              },
+                            );
+                          },
+                          optionsViewBuilder: (BuildContext context,
+                              void Function(String) onSelected,
+                              Iterable<String> options) {
+                            return Material(
+                                child: SizedBox(
+                                    height: 200,
+                                    child: SingleChildScrollView(
+                                        child: Column(
+                                      children: options.map((opt) {
+                                        return InkWell(
+                                            onTap: () {
+                                              onSelected(opt);
+                                            },
+                                            child: Container(
+                                                padding:
+                                                    EdgeInsets.only(right: 60),
+                                                child: Card(
+                                                    child: Container(
+                                                  width: double.infinity,
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Text(opt),
+                                                ))));
+                                      }).toList(),
+                                    ))));
+                          },
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
+
+              // SizedBox(height: space),
+              // Factory Name
+              // CustomTextField(
+              //   labelText: 'Factory Name',
+              //   keyboardType: TextInputType.text,
+              //   textInputAction: TextInputAction.next,
+              //   enabled: true,
+              //   controller: _factoryNameController,
+              //   // validator: (value) {
+              //   //   if (value!.isEmpty) {
+              //   //     return 'Please enter Factory Name!';
+              //   //   }
+              //   //   return null;
+              //   // },
+              //   onSaved: (value) {
+              //     _newOrder = Transaction1(
+              //       id: _newOrder.id,
+              //       productName: _newOrder.productName,
+              //       partyName: _newOrder.partyName,
+              //       factoryName: value!,
+              //       address: _newOrder.address,
+              //       quantity: _newOrder.quantity,
+              //       productDetail: _newOrder.productDetail,
+              //       date: _newOrder.date,
+              //       transportation: _newOrder.transportation,
+              //     );
+              //   },
+              // ),
               SizedBox(height: space),
               // Address
               CustomTextField(
