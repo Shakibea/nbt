@@ -69,6 +69,26 @@ class Inventories with ChangeNotifier {
     if (snapShot.exists) {
       return Inventory.fromJson(snapShot.data()!);
     }
+    notifyListeners();
+  }
+
+  Future<void> updateProducts(Inventory inventory, String inventoryId) async {
+    final docOrder =
+        FirebaseFirestore.instance.collection("inventories").doc(inventoryId);
+    final updateInventory = Inventory(
+      id: inventory.id,
+      productName: inventory.productName,
+      initStock: inventory.initStock,
+      date: inventory.date,
+      remarks: inventory.remarks,
+    );
+
+    final json = updateInventory.toJson();
+    await docOrder.update(json);
+
+    notifyListeners();
+
+    // await docOrder.update(updateOrder as Map<String, dynamic>);
   }
 
   Future deleteOrder(String id) async {

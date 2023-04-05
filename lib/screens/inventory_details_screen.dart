@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../providers/inventories.dart';
 import '../providers/inventory.dart';
 import '../widgets/inventory_list_item.dart';
+import 'inventory_screen.dart';
 
 class InventoryDetailsScreen extends StatefulWidget {
   const InventoryDetailsScreen({Key? key}) : super(key: key);
@@ -22,11 +25,15 @@ class InventoryDetailsScreen extends StatefulWidget {
 class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
   final _beingUsedController = TextEditingController();
   final _newStockController = TextEditingController();
+  final _stockController = TextEditingController();
+
+  String totalScore = '';
 
   @override
   void dispose() {
     _beingUsedController.dispose();
     _newStockController.dispose();
+    _stockController.dispose();
     super.dispose();
   }
 
@@ -37,8 +44,11 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
     // var inventoryDataWithId = inventory.findById(inventoryId);
     // var inventoryData = inventory.inventories;
 
-    var inventory =
-        Provider.of<Inventories>(context).readSingleOrder(inventoryId);
+    final Query inventories =
+        FirebaseFirestore.instance.collection('inventors');
+
+    var inventory = Provider.of<Inventories>(context, listen: false)
+        .readSingleOrder(inventoryId);
 
     return Scaffold(
       // appBar: AppBar(
@@ -46,10 +56,20 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
       //   backgroundColor: const Color(0xff0057A5),
       // ),
       body: FutureBuilder<Inventory?>(
+          // StreamBuilder<QuerySnapshot>(
+
           future: inventory,
+
+          // stream: FirebaseFirestore.instance
+          //     .collection('inventories').snapshots(),
+
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var inventoryData = snapshot.data!;
+              // var inventoryData = snapshot.data!.docs;
+              totalScore = inventoryData.initStock;
+              // _stockController.text = inventoryData.initStock;
+              print(totalScore);
               return SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
@@ -100,15 +120,42 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                         ],
                       ),
                     ),
+                    // StreamBuilder(
+                    //   stream: inventoryData,
+                    //   builder:
+                    //       (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    //     if (snapshot.hasData) {
+                    //       final snap = snapshot.data!.docs;
+                    //     }
+                    //     return Container();
+                    //   },
+                    // ),
+
+                    // TextFormField(
+                    //   key: Key(_stockController.text),
+                    //   controller: _stockController,
+                    //   decoration: InputDecoration(
+                    //     border: InputBorder.none,
+                    //   ),
+                    //   enabled: false,
+                    //   style: TextStyle(
+                    //     color: colors['inventory'],
+                    //     fontSize: 19,
+                    //     fontWeight: FontWeight.w700,
+                    //   ),
+                    //   textAlign: TextAlign.center,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(17),
                       child: Text(
-                        inventoryData.initStock,
+                        totalScore,
+                        key: Key(totalScore),
                         style: GoogleFonts.openSans(
                           textStyle: TextStyle(
-                              color: colors['inventory'],
-                              fontSize: 19,
-                              fontWeight: FontWeight.w700),
+                            color: colors['inventory'],
+                            fontSize: 19,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
@@ -137,6 +184,10 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                               decoration: const InputDecoration(
                                   label: Text('Quantity (KGs)'),
                                   border: OutlineInputBorder()),
+                              onChanged: (value) {
+                                totalScore =
+                                    '${int.parse(totalScore) - int.parse(value)}';
+                              },
                             ),
                           ),
                         ],
@@ -167,26 +218,27 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              //calling initStore from database to store initstock
-                              void initStore(int total) =>
-                                  FirebaseFirestore.instance
-                                      .collection('inventories')
-                                      .where('uid',
-                                          isEqualTo: inventoryData.uid)
-                                      .get()
-                                      .then((snapshot) async {
-                                    for (DocumentSnapshot ds in snapshot.docs) {
-                                      await ds.reference.update({
-                                        'initStock': total.toString(),
-                                        'beingUsed':
-                                            _beingUsedController.text.trim(),
-                                        'newStock':
-                                            _newStockController.text.trim()
-                                      });
-                                    }
-                                  });
+                              //calling initStore from database to store init-stock
+                              void initStore(int total) async {
+                                await FirebaseFirestore.instance
+                                    .collection('inventories')
+                                    .where('uid', isEqualTo: inventoryData.uid)
+                                    .get()
+                                    .then((snapshot) async {
+                                  for (DocumentSnapshot ds in snapshot.docs) {
+                                    await ds.reference.update({
+                                      'initStock': total.toString(),
+                                      'beingUsed':
+                                          _beingUsedController.text.trim(),
+                                      'newStock':
+                                          _newStockController.text.trim()
+                                    });
+                                  }
+                                });
+                              }
+
                               //pop navigation
-                              void previousPage() => Navigator.pop(context);
+                              // void previousPage() => Navigator.pop(context);
 
                               final beingUsed =
                                   _beingUsedController.text.trim();
@@ -194,26 +246,52 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                               final initStock =
                                   int.parse(inventoryData.initStock.trim());
                               int totalUsed;
+
                               showAlertDialog(context, () {
                                 //calculation beingUsed
                                 if (beingUsed.isNotEmpty) {
                                   totalUsed = initStock - int.parse(beingUsed);
                                   initStore(totalUsed);
-                                  previousPage();
+                                  // Navigator.pushReplacementNamed(
+                                  //   context,
+                                  //   InventoryScreen.routeName,
+                                  // );
+
+                                  // setState(() {
+                                  //   totalScore = totalUsed.toString();
+                                  //   _stockController.text = totalScore;
+                                  //   print('used: $totalScore');
+                                  // });
+
+                                  Navigator.pop(context);
                                 }
                                 //calculation newStock
                                 else if (newStock.isNotEmpty) {
                                   totalUsed = initStock + int.parse(newStock);
                                   initStore(totalUsed);
-                                  previousPage();
+
+                                  // Navigator.pushNamedAndRemoveUntil(
+                                  //   context,
+                                  //   InventoryScreen.routeName,
+                                  //   (Route<dynamic> route) => true,
+                                  // );
+
+                                  // setState(() {
+                                  //   setState(() {
+                                  //     totalScore = totalUsed.toString();
+                                  //     print('saved: $totalScore');
+                                  //   });
+                                  // });
+
+                                  Navigator.pop(context);
                                 }
                               });
                             },
-                            child: const Text('Save Changes'),
                             style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.green),
                             ),
+                            child: const Text('Save Changes'),
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -223,11 +301,11 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                               });
                               // Navigator.pop(context);
                             },
-                            child: const Text('Delete'),
                             style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.red),
                             ),
+                            child: const Text('Delete'),
                           )
                         ],
                       ),

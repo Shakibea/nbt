@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nbt/utils/colors.dart';
@@ -55,6 +56,9 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
     Navigator.of(context).pop();
   }
 
+  List<String> partyNames = [];
+  List<String> factoryNames = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,34 +100,378 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _partyNameController,
-                decoration: const InputDecoration(label: Text('Party Name')),
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus();
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Party Name!';
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('returns')
+                    .snapshots(),
+                builder: (context, snapshots) {
+                  if (snapshots.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
-                  return null;
+
+                  if (snapshots.connectionState == ConnectionState.active) {
+                    if (snapshots.hasData) {
+                      for (int i = 0; i < snapshots.data!.docs.length; i++) {
+                        partyNames.add(snapshots.data!.docs[i]['partyName']);
+                      }
+
+                      for (int i = 0; i < snapshots.data!.docs.length; i++) {
+                        factoryNames
+                            .add(snapshots.data!.docs[i]['factoryName']);
+                      }
+                      return SizedBox(
+                        height: 135,
+                        width: double.infinity,
+                        // color: Colors.red,
+                        child: Column(
+                          children: [
+                            RawAutocomplete(
+                              optionsBuilder:
+                                  (TextEditingValue textEditingValue) {
+                                if (textEditingValue.text == '') {
+                                  return const Iterable<String>.empty();
+                                } else {
+                                  List<String> matches = <String>[];
+
+                                  matches.addAll(partyNames);
+                                  // matches.addAll(snap
+                                  //     .map((e) => e.partyName)
+                                  //     .toList());
+
+                                  print(matches.length);
+
+                                  matches.retainWhere((s) {
+                                    return s.toLowerCase().contains(
+                                        textEditingValue.text.toLowerCase());
+                                  });
+                                  return matches;
+                                }
+                              },
+                              onSelected: (String selection) {
+                                print('You just selected $selection');
+                              },
+                              fieldViewBuilder: (BuildContext context,
+                                  TextEditingController textEditingController,
+                                  FocusNode focusNode,
+                                  VoidCallback onFieldSubmitted) {
+                                return TextFormField(
+                                  controller: textEditingController,
+                                  decoration: const InputDecoration(
+                                      label: Text('Party Name')),
+                                  textInputAction: TextInputAction.next,
+                                  // onFieldSubmitted: (_) {
+                                  //   FocusScope.of(context).requestFocus();
+                                  // },
+                                  focusNode: focusNode,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter Party Name!';
+                                    }
+                                    return null;
+                                  },
+                                );
+                              },
+                              optionsViewBuilder: (BuildContext context,
+                                  void Function(String) onSelected,
+                                  Iterable<String> options) {
+                                return Material(
+                                    child: SizedBox(
+                                        height: 200,
+                                        child: SingleChildScrollView(
+                                            child: Column(
+                                          children: options.map((opt) {
+                                            return InkWell(
+                                                onTap: () {
+                                                  onSelected(opt);
+                                                },
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        right: 60),
+                                                    child: Card(
+                                                        child: Container(
+                                                      width: double.infinity,
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      child: Text(opt),
+                                                    ))));
+                                          }).toList(),
+                                        ))));
+                              },
+                            ),
+                            SizedBox(height: 15),
+                            RawAutocomplete(
+                              optionsBuilder:
+                                  (TextEditingValue textEditingValue) {
+                                if (textEditingValue.text == '') {
+                                  return const Iterable<String>.empty();
+                                } else {
+                                  List<String> matchesF = [];
+
+                                  matchesF.addAll(factoryNames);
+
+                                  // matchesF.addAll(snap
+                                  //     .map(
+                                  //         (e) => e.factoryName.toString())
+                                  //     .toList());
+                                  // matches.addAll(FirebaseFirestore.instance.collection('orders'));
+
+                                  print(matchesF.length);
+
+                                  matchesF.retainWhere((s) {
+                                    return s.toLowerCase().contains(
+                                        textEditingValue.text.toLowerCase());
+                                  });
+                                  return matchesF;
+                                }
+                              },
+                              onSelected: (String selection) {
+                                print('You just selected $selection');
+                              },
+                              fieldViewBuilder: (BuildContext context,
+                                  TextEditingController textEditingController,
+                                  FocusNode focusNode,
+                                  VoidCallback onFieldSubmitted) {
+                                return TextFormField(
+                                  controller: textEditingController,
+                                  decoration: const InputDecoration(
+                                      label: Text('Factory Name')),
+                                  textInputAction: TextInputAction.next,
+                                  // onFieldSubmitted: (_) {
+                                  //   FocusScope.of(context).requestFocus();
+                                  // },
+                                  focusNode: focusNode,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter Factory Name!';
+                                    }
+                                    return null;
+                                  },
+                                );
+                              },
+                              optionsViewBuilder: (BuildContext context,
+                                  void Function(String) onSelected,
+                                  Iterable<String> options) {
+                                return Material(
+                                    child: SizedBox(
+                                        height: 200,
+                                        child: SingleChildScrollView(
+                                            child: Column(
+                                          children: options.map((opt) {
+                                            return InkWell(
+                                                onTap: () {
+                                                  onSelected(opt);
+                                                },
+                                                child: Container(
+                                                    padding: EdgeInsets.only(
+                                                        right: 60),
+                                                    child: Card(
+                                                        child: Container(
+                                                      width: double.infinity,
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      child: Text(opt),
+                                                    ))));
+                                          }).toList(),
+                                        ))));
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    } else if (snapshots.hasError) {
+                      return Center(
+                        child: Text(snapshots.error.toString()),
+                      );
+                    }
+                  }
+
+                  return Container(
+                    height: 202,
+                    width: double.infinity,
+                    // color: Colors.red,
+                    child: Column(
+                      children: [
+                        RawAutocomplete(
+                          optionsBuilder: (TextEditingValue textEditingValue) {
+                            if (textEditingValue.text == '') {
+                              return const Iterable<String>.empty();
+                            } else {
+                              List<String> matches = <String>[];
+
+                              matches.addAll(partyNames);
+                              // matches.addAll(snap
+                              //     .map((e) => e.partyName)
+                              //     .toList());
+
+                              print(matches.length);
+
+                              matches.retainWhere((s) {
+                                return s.toLowerCase().contains(
+                                    textEditingValue.text.toLowerCase());
+                              });
+                              return matches;
+                            }
+                          },
+                          onSelected: (String selection) {
+                            print('You just selected $selection');
+                          },
+                          fieldViewBuilder: (BuildContext context,
+                              TextEditingController textEditingController,
+                              FocusNode focusNode,
+                              VoidCallback onFieldSubmitted) {
+                            return TextFormField(
+                              controller: textEditingController,
+                              decoration: const InputDecoration(
+                                  label: Text('Party Name')),
+                              textInputAction: TextInputAction.next,
+                              // onFieldSubmitted: (_) {
+                              //   FocusScope.of(context).requestFocus();
+                              // },
+                              focusNode: focusNode,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter Party Name!';
+                                }
+                                return null;
+                              },
+                            );
+                          },
+                          optionsViewBuilder: (BuildContext context,
+                              void Function(String) onSelected,
+                              Iterable<String> options) {
+                            return Material(
+                                child: SizedBox(
+                                    height: 200,
+                                    child: SingleChildScrollView(
+                                        child: Column(
+                                      children: options.map((opt) {
+                                        return InkWell(
+                                            onTap: () {
+                                              onSelected(opt);
+                                            },
+                                            child: Container(
+                                                padding:
+                                                    EdgeInsets.only(right: 60),
+                                                child: Card(
+                                                    child: Container(
+                                                  width: double.infinity,
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Text(opt),
+                                                ))));
+                                      }).toList(),
+                                    ))));
+                          },
+                        ),
+                        SizedBox(height: 15),
+                        RawAutocomplete(
+                          optionsBuilder: (TextEditingValue textEditingValue) {
+                            if (textEditingValue.text == '') {
+                              return const Iterable<String>.empty();
+                            } else {
+                              List<String> matchesF = [];
+
+                              matchesF.addAll(factoryNames);
+
+                              // matchesF.addAll(snap
+                              //     .map(
+                              //         (e) => e.factoryName.toString())
+                              //     .toList());
+                              // matches.addAll(FirebaseFirestore.instance.collection('orders'));
+
+                              print(matchesF.length);
+
+                              matchesF.retainWhere((s) {
+                                return s.toLowerCase().contains(
+                                    textEditingValue.text.toLowerCase());
+                              });
+                              return matchesF;
+                            }
+                          },
+                          onSelected: (String selection) {
+                            print('You just selected $selection');
+                          },
+                          fieldViewBuilder: (BuildContext context,
+                              TextEditingController textEditingController,
+                              FocusNode focusNode,
+                              VoidCallback onFieldSubmitted) {
+                            return TextFormField(
+                              controller: textEditingController,
+                              decoration: const InputDecoration(
+                                  label: Text('Factory Name')),
+                              textInputAction: TextInputAction.next,
+                              // onFieldSubmitted: (_) {
+                              //   FocusScope.of(context).requestFocus();
+                              // },
+                              focusNode: focusNode,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter Factory Name!';
+                                }
+                                return null;
+                              },
+                            );
+                          },
+                          optionsViewBuilder: (BuildContext context,
+                              void Function(String) onSelected,
+                              Iterable<String> options) {
+                            return Material(
+                                child: SizedBox(
+                                    height: 200,
+                                    child: SingleChildScrollView(
+                                        child: Column(
+                                      children: options.map((opt) {
+                                        return InkWell(
+                                            onTap: () {
+                                              onSelected(opt);
+                                            },
+                                            child: Container(
+                                                padding:
+                                                    EdgeInsets.only(right: 60),
+                                                child: Card(
+                                                    child: Container(
+                                                  width: double.infinity,
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Text(opt),
+                                                ))));
+                                      }).toList(),
+                                    ))));
+                          },
+                        ),
+                      ],
+                    ),
+                  );
                 },
               ),
-              TextFormField(
-                controller: _factoryNameController,
-                decoration: const InputDecoration(label: Text('Factory Name')),
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  FocusScope.of(context).requestFocus();
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter Factory Name!';
-                  }
-                  return null;
-                },
-              ),
+              // TextFormField(
+              //   controller: _partyNameController,
+              //   decoration: const InputDecoration(label: Text('Party Name')),
+              //   textInputAction: TextInputAction.next,
+              //   onFieldSubmitted: (_) {
+              //     FocusScope.of(context).requestFocus();
+              //   },
+              //   validator: (value) {
+              //     if (value!.isEmpty) {
+              //       return 'Please enter Party Name!';
+              //     }
+              //     return null;
+              //   },
+              // ),
+              // TextFormField(
+              //   controller: _factoryNameController,
+              //   decoration: const InputDecoration(label: Text('Factory Name')),
+              //   textInputAction: TextInputAction.next,
+              //   onFieldSubmitted: (_) {
+              //     FocusScope.of(context).requestFocus();
+              //   },
+              //   validator: (value) {
+              //     if (value!.isEmpty) {
+              //       return 'Please enter Factory Name!';
+              //     }
+              //     return null;
+              //   },
+              // ),
               TextFormField(
                 controller: _requestedQuantityController,
                 decoration:
