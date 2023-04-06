@@ -12,6 +12,7 @@ import '../providers/inventories.dart';
 import '../providers/inventory.dart';
 import '../widgets/inventory_list_item.dart';
 import 'inventory_screen.dart';
+import 'main_dashboard_screen.dart';
 
 class InventoryDetailsScreen extends StatefulWidget {
   const InventoryDetailsScreen({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
   final _newStockController = TextEditingController();
   final _stockController = TextEditingController();
 
-  String totalScore = '';
+  late String totalScore;
 
   @override
   void dispose() {
@@ -44,8 +45,8 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
     // var inventoryDataWithId = inventory.findById(inventoryId);
     // var inventoryData = inventory.inventories;
 
-    final Query inventories =
-        FirebaseFirestore.instance.collection('inventors');
+    // final Query inventories =
+    //     FirebaseFirestore.instance.collection('inventors');
 
     var inventory = Provider.of<Inventories>(context, listen: false)
         .readSingleOrder(inventoryId);
@@ -66,10 +67,82 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var inventoryData = snapshot.data!;
-              // var inventoryData = snapshot.data!.docs;
               totalScore = inventoryData.initStock;
-              // _stockController.text = inventoryData.initStock;
               print(totalScore);
+
+              // var inventoryData = snapshot.data!.docs;
+              // _stockController.text = inventoryData.initStock;
+              //pop navigation
+              // void previousPage() => Navigator.pop(context);
+
+              // void initStore(int total) async {
+              //   await FirebaseFirestore.instance
+              //       .collection('inventories')
+              //       .where('uid', isEqualTo: inventoryData.uid)
+              //       .get()
+              //       .then((snapshot) async {
+              //     for (DocumentSnapshot ds in snapshot.docs) {
+              //       await ds.reference.update({
+              //         'initStock': total.toString(),
+              //         'beingUsed':
+              //         _beingUsedController.text.trim(),
+              //         'newStock':
+              //         _newStockController.text.trim()
+              //       });
+              //     }
+              //   });
+              //
+              //
+              // }
+              //
+              //
+              // final beingUsed =
+              // _beingUsedController.text.trim();
+              // final newStock = _newStockController.text.trim();
+              // final initStock =
+              // int.parse(inventoryData.initStock.trim());
+              // int totalUsed;
+              //
+              // showAlertDialog(context, () {
+              //   //calculation beingUsed
+              //   if (beingUsed.isNotEmpty) {
+              //     totalUsed = initStock - int.parse(beingUsed);
+              //     initStore(totalUsed);
+              //     Navigator.pushReplacementNamed(
+              //       context,
+              //       InventoryScreen.routeName,
+              //     );
+              //
+              //     setState(() {
+              //       totalScore = totalUsed.toString();
+              //       _stockController.text = totalScore;
+              //       print('used: $totalScore');
+              //     });
+              //
+              //     // Navigator.pop(context);
+              //   }
+              //   //calculation newStock
+              //   else if (newStock.isNotEmpty) {
+              //     totalUsed = initStock + int.parse(newStock);
+              //     initStore(totalUsed);
+              //
+              //     Navigator.pushNamedAndRemoveUntil(
+              //       context,
+              //       InventoryScreen.routeName,
+              //           (Route<dynamic> route) => false,
+              //     );
+              //
+              //     // setState(() {
+              //     //   setState(() {
+              //     //     totalScore = totalUsed.toString();
+              //     //     print('saved: $totalScore');
+              //     //   });
+              //     // });
+              //
+              //     // Navigator.pop(context);
+              //   }
+              // });
+
               return SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
@@ -252,10 +325,10 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                                 if (beingUsed.isNotEmpty) {
                                   totalUsed = initStock - int.parse(beingUsed);
                                   initStore(totalUsed);
-                                  // Navigator.pushReplacementNamed(
-                                  //   context,
-                                  //   InventoryScreen.routeName,
-                                  // );
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    InventoryScreen.routeName,
+                                  );
 
                                   // setState(() {
                                   //   totalScore = totalUsed.toString();
@@ -263,18 +336,21 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                                   //   print('used: $totalScore');
                                   // });
 
-                                  Navigator.pop(context);
+                                  // Navigator.pop(context);
                                 }
                                 //calculation newStock
-                                else if (newStock.isNotEmpty) {
+                                if (newStock.isNotEmpty) {
                                   totalUsed = initStock + int.parse(newStock);
                                   initStore(totalUsed);
 
-                                  // Navigator.pushNamedAndRemoveUntil(
-                                  //   context,
-                                  //   InventoryScreen.routeName,
-                                  //   (Route<dynamic> route) => true,
-                                  // );
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    InventoryScreen.routeName,
+                                    // (Route<dynamic> route) => false,
+                                    ModalRoute.withName(
+                                      MainDashboardScreen.routeName,
+                                    ),
+                                  );
 
                                   // setState(() {
                                   //   setState(() {
@@ -283,7 +359,7 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                                   //   });
                                   // });
 
-                                  Navigator.pop(context);
+                                  // Navigator.pop(context);
                                 }
                               });
                             },
