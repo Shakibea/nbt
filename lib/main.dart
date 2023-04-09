@@ -11,6 +11,7 @@ import 'package:nbt/screens/edit_order_screen.dart';
 import 'package:nbt/screens/edit_requisition_screen.dart';
 import 'package:nbt/screens/login_screen.dart';
 import 'package:nbt/screens/new_order_page.dart';
+import 'package:nbt/screens/o_order_list_item_screen.dart';
 import 'package:nbt/suggestion_page.dart';
 import 'package:provider/provider.dart';
 
@@ -122,6 +123,7 @@ class MyApp extends StatelessWidget {
           MyLogin.routeName: (_) => MyLogin(),
           ChangePIN.routeName: (_) => ChangePIN(),
           NewOrderPage.routeName: (context) => NewOrderPage(),
+          OOrderListItemScreen.routeName: (_) => OOrderListItemScreen([]),
         },
       ),
     );
