@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,7 @@ class _MyLoginState extends State<MyLogin> {
   final _passwordController = TextEditingController();
 
   String role = 'user';
+  bool _isLoading = false;
 
   Future<void> setUserRole(String roleP) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
@@ -64,6 +67,9 @@ class _MyLoginState extends State<MyLogin> {
     //     builder: (context) => const Center(
     //           child: CircularProgressIndicator(),
     //         ));
+    setState(() {
+      _isLoading = true;
+    });
     try {
       // await FirebaseAuth.instance.signInWithEmailAndPassword(
       //     email: _emailController.text.trim(),
@@ -77,6 +83,9 @@ class _MyLoginState extends State<MyLogin> {
         Navigator.pop(context);
         // Navigator.pushReplacementNamed(context, ReturnsScreen.routeName);
       }
+      setState(() {
+        _isLoading = false;
+      });
     } on FirebaseAuthException catch (e) {
       if (kDebugMode) {
         print(e);
@@ -154,17 +163,26 @@ class _MyLoginState extends State<MyLogin> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: const Color(0xff4c505b),
-                      child: IconButton(
-                        color: Colors.white,
-                        onPressed: () {
-                          singIn();
-                        },
-                        icon: const Icon(Icons.arrow_forward),
-                      ),
-                    ),
+                    _isLoading
+                        ? Transform.scale(
+                            scale: 1,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.transparent,
+                              color: Color.fromRGBO(58, 67, 77, 1),
+                              // strokeWidth: 2,
+                            ),
+                          )
+                        : CircleAvatar(
+                            radius: 30,
+                            backgroundColor: const Color(0xff4c505b),
+                            child: IconButton(
+                              color: Colors.white,
+                              onPressed: () {
+                                singIn();
+                              },
+                              icon: const Icon(Icons.arrow_forward),
+                            ),
+                          ),
                   ],
                 ),
                 const SizedBox(
