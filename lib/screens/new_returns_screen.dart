@@ -73,18 +73,25 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
           child: ListView(
             children: [
               TextFormField(
-                decoration:
-                    const InputDecoration(label: Text('Returns Number')),
-                textInputAction: TextInputAction.next,
-                // enabled: false,
-                controller: _returnNumController,
-              ),
-              TextFormField(
                 decoration: const InputDecoration(label: Text('Date')),
                 textInputAction: TextInputAction.next,
                 enabled: false,
                 controller: _dateController,
               ),
+              TextFormField(
+                decoration:
+                    const InputDecoration(label: Text('Returns Number')),
+                textInputAction: TextInputAction.next,
+                // enabled: false,
+                controller: _returnNumController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter Returns Number!';
+                  }
+                  return null;
+                },
+              ),
+
               TextFormField(
                 controller: _nameOfProductController,
                 decoration:
@@ -101,9 +108,8 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                 },
               ),
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('returns')
-                    .snapshots(),
+                stream:
+                    FirebaseFirestore.instance.collection('orders').snapshots(),
                 builder: (context, snapshots) {
                   if (snapshots.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -122,7 +128,7 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                             .add(snapshots.data!.docs[i]['factoryName']);
                       }
                       return SizedBox(
-                        height: 135,
+                        height: 160,
                         width: double.infinity,
                         // color: Colors.red,
                         child: Column(
@@ -153,11 +159,11 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                 print('You just selected $selection');
                               },
                               fieldViewBuilder: (BuildContext context,
-                                  TextEditingController textEditingController,
+                                  _partyNameController,
                                   FocusNode focusNode,
                                   VoidCallback onFieldSubmitted) {
                                 return TextFormField(
-                                  controller: textEditingController,
+                                  controller: _partyNameController,
                                   decoration: const InputDecoration(
                                       label: Text('Party Name')),
                                   textInputAction: TextInputAction.next,
@@ -230,11 +236,11 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                 print('You just selected $selection');
                               },
                               fieldViewBuilder: (BuildContext context,
-                                  TextEditingController textEditingController,
+                                  _factoryNameController,
                                   FocusNode focusNode,
                                   VoidCallback onFieldSubmitted) {
                                 return TextFormField(
-                                  controller: textEditingController,
+                                  controller: _factoryNameController,
                                   decoration: const InputDecoration(
                                       label: Text('Factory Name')),
                                   textInputAction: TextInputAction.next,
@@ -242,12 +248,12 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                   //   FocusScope.of(context).requestFocus();
                                   // },
                                   focusNode: focusNode,
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter Factory Name!';
-                                    }
-                                    return null;
-                                  },
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'Please enter Factory Name!';
+                                  //   }
+                                  //   return null;
+                                  // },
                                 );
                               },
                               optionsViewBuilder: (BuildContext context,
@@ -510,6 +516,8 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                           quantity: _requestedQuantityController.text,
                           remarks: _remarksController.text);
                       _saveForm(newReturns);
+                      print(_partyNameController.text);
+                      print(_factoryNameController.text);
                     },
                     child: const Text('Save'),
                     style: ButtonStyle(
