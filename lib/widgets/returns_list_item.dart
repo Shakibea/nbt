@@ -84,6 +84,7 @@ class ReturnsListItem extends StatelessWidget {
                             ? showAlertDialog(context, () {
                                 Provider.of<Returns>(context, listen: false)
                                     .deleteRequisition(returns.id);
+                                Navigator.pop(context);
                               })
                             : ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar(context));
