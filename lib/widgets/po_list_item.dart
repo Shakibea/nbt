@@ -118,6 +118,7 @@ class _POListItemState extends State<POListItem> {
             },
             leading: CircleAvatar(
                 backgroundColor: widget.product.getColor,
+                radius: 30,
                 child: Padding(
                   padding: const EdgeInsets.all(5),
                   child: FittedBox(
@@ -132,27 +133,14 @@ class _POListItemState extends State<POListItem> {
                       ),
                     ),
                   ),
-                ),
-                radius: 30),
+                )),
             title: Text(
-              '${widget.product.partyName}',
-              style: TextStyle(fontWeight: FontWeight.w500),
+              widget.product.partyName,
+              style: const TextStyle(fontWeight: FontWeight.w500),
               // style: Theme.of(context).textTheme.headline6, (${widget.product.quantity})
             ),
             subtitle: Text(widget.product.factoryName.toString()),
-            trailing:
-                // Row(
-                //   children: [
-                //     Text(
-                //       product.getStatus,
-                //       style: TextStyle(
-                //           color: product.getColor,
-                //           fontSize: 16,
-                //           fontWeight: FontWeight.bold),
-                //     ),
-                //   ],
-                // ),
-                GestureDetector(
+            trailing: GestureDetector(
               onTap: () {
                 setState(() {
                   _expanded = !_expanded;
@@ -181,7 +169,7 @@ class _POListItemState extends State<POListItem> {
                     ),
                     // ${widget.product.factoryName} -
                     Text(
-                      '${DateFormat.yMMMMd().format(widget.product.date)}',
+                      DateFormat.yMMMMd().format(widget.product.date),
                     ),
                   ],
                 ),

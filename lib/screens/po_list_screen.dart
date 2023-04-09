@@ -55,7 +55,7 @@ class POListScreen extends StatelessWidget {
 
     final Query products = FirebaseFirestore.instance
         .collection('orders')
-        .orderBy('date', descending: true);
+        .where('status', isNotEqualTo: "Delivered");
 
     // final Query product = FirebaseFirestore.instance.collectionGroup('products')
     //     .collection('orders')

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nbt/screens/o_order_list_item_screen.dart';
 import 'package:nbt/widgets/old_order_list_item.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,7 @@ class _OOrderScreenState extends State<OOrderScreen> {
   }
 
   var initLoad = false;
+  var _expanded = false; // Drop SubList PartyName
 
   @override
   void didChangeDependencies() {
@@ -85,18 +87,19 @@ class _OOrderScreenState extends State<OOrderScreen> {
             return const CircularProgressIndicator();
           }
           final data = snapshot.data!.docs;
-          // Here you can group the data by a specific field using the groupBy() function.
           final groupedData = groupBy(data, (doc) => doc['partyName']);
           return ListView.builder(
             itemCount: groupedData.length,
             itemBuilder: (BuildContext context, int index) {
               final groupName = groupedData.keys.toList()[index];
               final groupData = groupedData[groupName];
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              return ExpansionTile(
+                leading: Text("${index + 1}",
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(groupName,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                trailing: const Icon(Icons.expand_more),
                 children: [
-                  Text(groupName,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -104,8 +107,29 @@ class _OOrderScreenState extends State<OOrderScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       final doc = groupData != null ? groupData[index] : 0;
                       return ListTile(
-                        leading: Text(doc['id']),
-                        title: Text(doc['partyName']),
+                        leading: CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            radius: 30,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: FittedBox(
+                                child: Text(
+                                  doc['id'],
+                                  style: GoogleFonts.openSans(
+                                    textStyle: const TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )),
+                        title: Text(
+                          doc['partyName'],
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                          // style: Theme.of(context).textTheme.headline6, (${widget.product.quantity})
+                        ),
                         subtitle: Text(doc['factoryName']),
                       );
                     },
