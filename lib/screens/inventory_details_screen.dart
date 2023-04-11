@@ -374,6 +374,8 @@ class _InventoryDetailsScreenState extends State<InventoryDetailsScreen> {
                               showAlertDialog(context, () {
                                 Provider.of<Inventories>(context, listen: false)
                                     .deleteOrder(inventoryId);
+                                Navigator.pushReplacementNamed(
+                                    context, InventoryScreen.routeName);
                               });
                               // Navigator.pop(context);
                             },
