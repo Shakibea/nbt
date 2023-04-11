@@ -11,6 +11,7 @@ import '../providers/transaction.dart';
 import '../providers/transactions.dart';
 import '../widgets/app_bar_functions.dart';
 import '../widgets/app_drawer.dart';
+import 'order_details_screen.dart';
 
 class OOrderScreen extends StatefulWidget {
   const OOrderScreen({Key? key}) : super(key: key);
@@ -107,6 +108,10 @@ class _OOrderScreenState extends State<OOrderScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       final doc = groupData != null ? groupData[index] : 0;
                       return ListTile(
+                        onTap: () => Navigator.of(context).pushNamed(
+                          OrderDetailsScreen.routeName,
+                          arguments: doc['id'],
+                        ),
                         leading: CircleAvatar(
                             backgroundColor: Colors.blue,
                             radius: 30,
