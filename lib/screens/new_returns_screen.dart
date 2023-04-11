@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +29,17 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
   final _requestedQuantityController = TextEditingController();
   final _remarksController = TextEditingController();
 
+  var _newReturns = Return(
+    id: '',
+    uid: '',
+    productName: '',
+    partyName: '',
+    factoryName: '',
+    remarks: '',
+    quantity: '',
+    date: DateTime.now(),
+  );
+
   @override
   void initState() {
     _dateController.text = DateFormat.yMMMMd().format(DateTime.now());
@@ -45,14 +58,14 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
     super.dispose();
   }
 
-  void _saveForm(Return returns) {
+  void _saveForm() {
     var valid = _form.currentState?.validate();
     if (!valid!) {
       return; // not valid
     }
     _form.currentState?.save();
 
-    Provider.of<Returns>(context, listen: false).createOrder(returns);
+    Provider.of<Returns>(context, listen: false).createOrder(_newReturns);
     Navigator.of(context).pop();
   }
 
@@ -77,6 +90,18 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                 textInputAction: TextInputAction.next,
                 enabled: false,
                 controller: _dateController,
+                onSaved: (value) {
+                  _newReturns = Return(
+                    id: _newReturns.id,
+                    uid: _newReturns.uid,
+                    productName: _newReturns.productName,
+                    partyName: _newReturns.partyName,
+                    factoryName: _newReturns.factoryName,
+                    remarks: _newReturns.remarks,
+                    quantity: _newReturns.quantity,
+                    date: DateTime.now(),
+                  );
+                },
               ),
               TextFormField(
                 decoration:
@@ -89,6 +114,18 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                     return 'Please enter Returns Number!';
                   }
                   return null;
+                },
+                onSaved: (value) {
+                  _newReturns = Return(
+                    id: value!,
+                    uid: _newReturns.uid,
+                    productName: _newReturns.productName,
+                    partyName: _newReturns.partyName,
+                    factoryName: _newReturns.factoryName,
+                    remarks: _newReturns.remarks,
+                    quantity: _newReturns.quantity,
+                    date: _newReturns.date,
+                  );
                 },
               ),
 
@@ -105,6 +142,18 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                     return 'Please enter Product Name!';
                   }
                   return null;
+                },
+                onSaved: (value) {
+                  _newReturns = Return(
+                    id: _newReturns.id,
+                    uid: _newReturns.uid,
+                    productName: value!,
+                    partyName: _newReturns.partyName,
+                    factoryName: _newReturns.factoryName,
+                    remarks: _newReturns.remarks,
+                    quantity: _newReturns.quantity,
+                    date: _newReturns.date,
+                  );
                 },
               ),
               StreamBuilder<QuerySnapshot>(
@@ -176,6 +225,18 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                       return 'Please enter Party Name!';
                                     }
                                     return null;
+                                  },
+                                  onSaved: (value) {
+                                    _newReturns = Return(
+                                      id: _newReturns.id,
+                                      uid: _newReturns.uid,
+                                      productName: _newReturns.productName,
+                                      partyName: value!,
+                                      factoryName: _newReturns.factoryName,
+                                      remarks: _newReturns.remarks,
+                                      quantity: _newReturns.quantity,
+                                      date: _newReturns.date,
+                                    );
                                   },
                                 );
                               },
@@ -254,6 +315,18 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                   //   }
                                   //   return null;
                                   // },
+                                  onSaved: (value) {
+                                    _newReturns = Return(
+                                      id: _newReturns.id,
+                                      uid: _newReturns.uid,
+                                      productName: _newReturns.productName,
+                                      partyName: _newReturns.partyName,
+                                      factoryName: value!,
+                                      remarks: _newReturns.remarks,
+                                      quantity: _newReturns.quantity,
+                                      date: _newReturns.date,
+                                    );
+                                  },
                                 );
                               },
                               optionsViewBuilder: (BuildContext context,
@@ -342,6 +415,18 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                 }
                                 return null;
                               },
+                              onSaved: (value) {
+                                _newReturns = Return(
+                                  id: _newReturns.id,
+                                  uid: _newReturns.uid,
+                                  productName: _newReturns.productName,
+                                  partyName: value!,
+                                  factoryName: _newReturns.factoryName,
+                                  remarks: _newReturns.remarks,
+                                  quantity: _newReturns.quantity,
+                                  date: _newReturns.date,
+                                );
+                              },
                             );
                           },
                           optionsViewBuilder: (BuildContext context,
@@ -416,6 +501,18 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                   return 'Please enter Factory Name!';
                                 }
                                 return null;
+                              },
+                              onSaved: (value) {
+                                _newReturns = Return(
+                                  id: _newReturns.id,
+                                  uid: _newReturns.uid,
+                                  productName: _newReturns.productName,
+                                  partyName: _newReturns.partyName,
+                                  factoryName: value!,
+                                  remarks: _newReturns.remarks,
+                                  quantity: _newReturns.quantity,
+                                  date: _newReturns.date,
+                                );
                               },
                             );
                           },
@@ -492,12 +589,36 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                   }
                   return null;
                 },
+                onSaved: (value) {
+                  _newReturns = Return(
+                    id: _newReturns.id,
+                    uid: _newReturns.uid,
+                    productName: _newReturns.productName,
+                    partyName: _newReturns.partyName,
+                    factoryName: _newReturns.factoryName,
+                    remarks: _newReturns.remarks,
+                    quantity: value!,
+                    date: _newReturns.date,
+                  );
+                },
               ),
               TextFormField(
                 controller: _remarksController,
                 decoration: const InputDecoration(label: Text('Remarks')),
                 maxLines: 5,
                 keyboardType: TextInputType.multiline,
+                onSaved: (value) {
+                  _newReturns = Return(
+                    id: _newReturns.id,
+                    uid: _newReturns.uid,
+                    productName: _newReturns.productName,
+                    partyName: _newReturns.partyName,
+                    factoryName: _newReturns.factoryName,
+                    remarks: value!,
+                    quantity: _newReturns.quantity,
+                    date: _newReturns.date,
+                  );
+                },
               ),
               const SizedBox(
                 height: 30,
@@ -506,19 +627,7 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      var newReturns = Return(
-                          id: _returnNumController.text,
-                          date: DateTime.now(),
-                          productName: _nameOfProductController.text,
-                          partyName: _partyNameController.text,
-                          factoryName: _factoryNameController.text,
-                          quantity: _requestedQuantityController.text,
-                          remarks: _remarksController.text);
-                      _saveForm(newReturns);
-                      print(_partyNameController.text);
-                      print(_factoryNameController.text);
-                    },
+                    onPressed: _saveForm,
                     child: const Text('Save'),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
