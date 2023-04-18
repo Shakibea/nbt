@@ -175,8 +175,12 @@ class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
                   _saveForm(newReq);
 
                   // Navigator.pop(context);
-                  Navigator.pushReplacementNamed(
-                      context, RequisitionScreen.routeName);
+                  // Navigator.pushReplacementNamed(
+                  //     context, RequisitionScreen.routeName);
+                  Navigator.popUntil(
+                    context,
+                    ModalRoute.withName(RequisitionScreen.routeName),
+                  );
                 },
                 child: const Text(
                   'Request Sent',
