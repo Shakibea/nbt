@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/transaction.dart';
 import '../providers/transactions.dart';
+import '../utils/colors.dart';
 import '../widgets/app_bar_functions.dart';
 import '../widgets/app_drawer.dart';
 import 'order_details_screen.dart';
@@ -76,8 +77,13 @@ class _OOrderScreenState extends State<OOrderScreen> {
     }
 
     return Scaffold(
-      appBar: appBarForNewOrder('Old Order List'),
-      drawer: const AppDrawer(),
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: Text('Old Order List'),
+        backgroundColor: colors['order'],
+      ),
+
+      // drawer: const AppDrawer(),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('orders')
