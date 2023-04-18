@@ -96,21 +96,23 @@ class _DynamicProductFormState extends State<DynamicProductForm> {
     // _formKey.currentState?.save();
 
     // order
-    Provider.of<Transactions>(context, listen: false).createOrder(
-      widget.transaction1!,
-    );
+    if (_products.isNotEmpty) {
+      Provider.of<Transactions>(context, listen: false).createOrder(
+        widget.transaction1!,
+      );
 
-    // product
-    Provider.of<Products>(context, listen: false).createProduct(
-      _products,
-      widget.transaction1!.id,
-    );
-    // Navigator.of(context).pop();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) => POListScreen(),
-      ),
-    );
+      // product
+      Provider.of<Products>(context, listen: false).createProduct(
+        _products,
+        widget.transaction1!.id,
+      );
+      // Navigator.of(context).pop();
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => POListScreen(),
+        ),
+      );
+    }
   }
 
   void _removeProduct(int index) {
