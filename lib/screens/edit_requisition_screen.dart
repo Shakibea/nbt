@@ -94,7 +94,7 @@ class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('CREATE NEW REQUISITION'),
+        title: const Text('EDIT REQUISITION'),
         backgroundColor: colors['requisition'],
       ),
       body: Padding(
@@ -134,7 +134,8 @@ class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
               TextFormField(
                 decoration: const InputDecoration(
                     label: Text('Requested Quantity (KG)')),
-                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
                 controller: _reqQuantityController,
                 // onFieldSubmitted: (_) {
                 //   FocusScope.of(context).requestFocus();
@@ -162,6 +163,7 @@ class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
                 //   return null;
                 // },
               ),
+              const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
                   var newReq = Requisition(

@@ -220,8 +220,11 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                                 Provider.of<Requisitions>(context,
                                         listen: false)
                                     .deleteRequisition(requisitionId);
-                                Navigator.pushReplacementNamed(
-                                    context, RequisitionScreen.routeName);
+                                Navigator.popUntil(
+                                  context,
+                                  ModalRoute.withName(
+                                      RequisitionScreen.routeName),
+                                );
                               });
                             },
                             child: const Text('Delete'),
@@ -286,11 +289,16 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                                 initialDate: dateTime!,
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100));
+                            //     .then((value) {
+                            //   setState(() {
+                            //     dateTime = value;
+                            //   });
+                            // });
 
                             if (newDate == null) return;
-                            setState(() {
-                              dateTime = newDate;
-                            });
+                            // setState(() {
+                            //   dateTime = newDate;
+                            // });
                           },
                           child: const Text('Choose Date!')),
                       // const SizedBox(
