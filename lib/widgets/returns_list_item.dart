@@ -49,6 +49,7 @@ class ReturnsListItem extends StatelessWidget {
                 radius: 30),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              // mainAxisSize: MainAxisSize.min,
               children: [
                 Text(DateFormat.yMMMMd().format(returns.date)),
                 Text(
@@ -60,43 +61,41 @@ class ReturnsListItem extends StatelessWidget {
             ),
             subtitle: Text('${returns.partyName} (${returns.factoryName})',
                 softWrap: true),
-            trailing: SizedBox(
-              width: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                // crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    returns.quantity,
-                    softWrap: true,
-                    style: TextStyle(
-                        color: colors['returns'],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
-                  // Text(
-                  //   returns.quantity,
-                  //   style: const TextStyle(fontWeight: FontWeight.bold),
-                  // ),
-                  IconButton(
-                      onPressed: () {
-                        FirebaseAuth.instance.currentUser != null
-                            ? showAlertDialog(context, () {
-                                Provider.of<Returns>(context, listen: false)
-                                    .deleteRequisition(returns.id);
-                                Navigator.pop(context);
-                              })
-                            : ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar(context));
+            trailing: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              // crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  returns.quantity,
+                  softWrap: true,
+                  style: TextStyle(
+                      color: colors['returns'],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
+                // Text(
+                //   returns.quantity,
+                //   style: const TextStyle(fontWeight: FontWeight.bold),
+                // ),
+                IconButton(
+                    onPressed: () {
+                      FirebaseAuth.instance.currentUser != null
+                          ? showAlertDialog(context, () {
+                              Provider.of<Returns>(context, listen: false)
+                                  .deleteRequisition(returns.id);
+                              Navigator.pop(context);
+                            })
+                          : ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar(context));
 
-                        // Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.remove_circle_outline,
-                        color: Colors.red,
-                      ))
-                ],
-              ),
+                      // Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      Icons.remove_circle_outline,
+                      color: Colors.red,
+                    ))
+              ],
             ),
           ),
         ],

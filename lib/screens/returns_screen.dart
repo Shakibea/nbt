@@ -45,10 +45,10 @@ class ReturnsScreen extends StatelessWidget {
       drawer: const AppDrawer(),
       body: SizedBox(
         width: double.infinity,
-        height: (MediaQuery.of(context).size.height -
-                AppBar().preferredSize.height -
-                MediaQuery.of(context).padding.top) *
-            0.7,
+        // height: (MediaQuery.of(context).size.height -
+        //         AppBar().preferredSize.height -
+        //         MediaQuery.of(context).padding.top) *
+        //     0.7,
         child: StreamBuilder(
           stream: returns.snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
