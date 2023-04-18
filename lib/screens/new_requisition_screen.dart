@@ -65,17 +65,17 @@ class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
           child: ListView(
             children: [
               TextFormField(
+                decoration: const InputDecoration(label: Text('Date')),
+                textInputAction: TextInputAction.next,
+                enabled: false,
+                controller: _dateController,
+              ),
+              TextFormField(
                 decoration:
                     const InputDecoration(label: Text('Requisition Number')),
                 textInputAction: TextInputAction.next,
                 // enabled: false,
                 controller: _requisitionNumController,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(label: Text('Date')),
-                textInputAction: TextInputAction.next,
-                enabled: false,
-                controller: _dateController,
               ),
               TextFormField(
                 decoration:
@@ -95,7 +95,8 @@ class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
               TextFormField(
                 decoration: const InputDecoration(
                     label: Text('Requested Quantity (KG)')),
-                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
                 controller: _reqQuantityController,
                 // onFieldSubmitted: (_) {
                 //   FocusScope.of(context).requestFocus();
@@ -123,6 +124,7 @@ class _NewRequisitionScreenState extends State<NewRequisitionScreen> {
                 //   return null;
                 // },
               ),
+              const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
                   var newReq = Requisition(

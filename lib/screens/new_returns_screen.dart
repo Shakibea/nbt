@@ -579,7 +579,8 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                 controller: _requestedQuantityController,
                 decoration:
                     const InputDecoration(label: Text('Requested Quantity')),
-                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
                 // onFieldSubmitted: (_) {
                 //   FocusScope.of(context).requestFocus();
                 // },

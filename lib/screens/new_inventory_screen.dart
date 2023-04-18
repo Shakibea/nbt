@@ -105,6 +105,7 @@ class _NewInventoryScreenState extends State<NewInventoryScreen> {
                   margin: const EdgeInsets.only(top: 8, bottom: 8),
                   child: TextFormField(
                     controller: _initStockController,
+                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                         label: Text('Initial Stock (KGs)'),
                         border: OutlineInputBorder()),
