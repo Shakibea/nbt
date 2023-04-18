@@ -21,6 +21,7 @@ import '../widgets/app_bar_functions.dart';
 import '../widgets/new_order_page/custom_text_field.dart';
 import 'edit_product_screen.dart';
 import 'login_screen.dart';
+import 'main_dashboard_screen.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   OrderDetailsScreen({Key? key}) : super(key: key);
@@ -47,7 +48,15 @@ class OrderDetailsScreen extends StatelessWidget {
 
     void deleteOrder() {
       Provider.of<Transactions>(context, listen: false).deleteOrder(orderId);
-      Navigator.pushReplacementNamed(context, POListScreen.routeName);
+      Navigator.popUntil(
+        context,
+        // POListScreen.routeName,
+        ModalRoute.withName(POListScreen.routeName),
+        // ModalRoute.withName(
+        //   MainDashboardScreen.routeName,
+        // ),
+      );
+      // Navigator.of(context).pop();
     }
 
     void deleteProduct(String productId) {
