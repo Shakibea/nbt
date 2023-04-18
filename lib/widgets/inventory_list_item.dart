@@ -27,6 +27,12 @@ class InventoryListItem extends StatelessWidget {
           ListTile(
             onTap: () {
               FirebaseAuth.instance.currentUser != null
+                  // ? Navigator.of(context).push(
+                  //     MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           InventoryDetailsScreen(inventory: inventory),
+                  //     ),
+                  //   )
                   ? Navigator.pushNamed(
                       context, InventoryDetailsScreen.routeName,
                       arguments: inventory.uid)
