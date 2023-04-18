@@ -19,6 +19,7 @@ class InventoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('inventory screen');
     var inventoryData = Provider.of<Inventories>(context);
     var inventory = inventoryData.inventories;
 
