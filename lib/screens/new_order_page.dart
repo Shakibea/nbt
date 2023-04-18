@@ -101,6 +101,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
   // String partyName = '';
   List<String> partyNames = [];
   List<String> factoryNames = [];
+  // List<String> addressAll = [];
 
   @override
   Widget build(BuildContext context) {
@@ -400,12 +401,14 @@ class _NewOrderPageState extends State<NewOrderPage> {
                     if (snapshots.hasData) {
                       for (int i = 0; i < snapshots.data!.docs.length; i++) {
                         partyNames.add(snapshots.data!.docs[i]['partyName']);
-                      }
-
-                      for (int i = 0; i < snapshots.data!.docs.length; i++) {
+                        // addressAll.add(snapshots.data!.docs[i]['partyName']);
                         factoryNames
                             .add(snapshots.data!.docs[i]['factoryName']);
                       }
+
+                      // for (int i = 0; i < snapshots.data!.docs.length; i++) {
+
+                      // }
                       return SizedBox(
                         height: 135,
                         width: double.infinity,
@@ -435,7 +438,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                 }
                               },
                               onSelected: (String selection) {
-                                print('You just selected $selection');
+                                print('You just selected ${selection}');
                               },
                               fieldViewBuilder: (BuildContext context,
                                   TextEditingController textEditingController,
