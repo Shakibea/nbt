@@ -28,17 +28,21 @@ void showAlertDialog(BuildContext context, VoidCallback navigatorFun) async {
       Navigator.pop(context);
     },
   );
-  Widget continueButton = TextButton(
-    child: const Text("Continue"),
-    onPressed: () {
-      if (pinController.text == pin) {
-        navigatorFun();
 
-        pinController.text = '';
-      } else {
-        Navigator.pop(context);
-      }
-    },
+  void function() {
+    if (pinController.text == pin) {
+      navigatorFun();
+
+      pinController.text = '';
+    }
+    // else {
+    //   Navigator.pop(context);
+    // }
+  }
+
+  Widget continueButton = TextButton(
+    onPressed: function,
+    child: const Text("Continue"),
   );
 
   // set up the AlertDialog
