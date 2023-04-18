@@ -28,7 +28,7 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.dashboard),
             title: const Text('Dashboard'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/main-dashboard');
+              Navigator.popAndPushNamed(context, '/main-dashboard');
             },
           ),
           const Divider(),
