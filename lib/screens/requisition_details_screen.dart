@@ -64,6 +64,9 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final requisition = snapshot.data;
+                // dateTime =
+                //     DateTime.tryParse(requisition!.tentativeETA.toString()) ??
+                //         DateTime.now();
                 return Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
@@ -252,9 +255,16 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                           ),
                           // requisition.tentativeETA != ''
                           //     ?
-                          requisition.tentativeETA != null
+                          // Text(DateFormat.yMMMd().format(dateTime!)),
+
+                          requisition.tentativeETA!.isNotEmpty
                               ? Text(requisition.tentativeETA!)
-                              : Text(DateFormat.yMMMd().format(dateTime!))
+                              : Text(DateFormat.yMMMd().format(dateTime!)),
+
+                          // requisition.tentativeETA == null
+                          //     ? Text(DateFormat.yMMMd().format(dateTime!))
+                          //     : Text(requisition.tentativeETA.toString())
+
                           //     : Text(''),
                         ],
                       ),
@@ -285,15 +295,16 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                       ElevatedButton(
                           onPressed: () async {
                             DateTime? newDate = await showDatePicker(
-                                context: context,
-                                initialDate: dateTime!,
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100));
-                            //     .then((value) {
-                            //   setState(() {
-                            //     dateTime = value;
-                            //   });
-                            // });
+                                    context: context,
+                                    initialDate: dateTime!,
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2100))
+                                .then((value) {
+                              setState(() {
+                                dateTime = value;
+                              });
+                              return null;
+                            });
 
                             if (newDate == null) return;
                             // setState(() {
@@ -325,7 +336,8 @@ class _RequisitionDetailsScreenState extends State<RequisitionDetailsScreen> {
                                 await ds.reference.update({
                                   'status': Status.OrderPlaced.name,
                                   'tentativeETA':
-                                      DateFormat.yMMMd().format(dateTime!)
+                                      DateFormat.yMMMd().format(dateTime!),
+                                  // dateTime!.toIso8601String(),
                                 });
                               }
                             });
