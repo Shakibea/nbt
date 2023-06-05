@@ -68,6 +68,7 @@ class _NewInventoryScreenState extends State<NewInventoryScreen> {
                   margin: const EdgeInsets.only(top: 8, bottom: 8),
                   child: TextFormField(
                     controller: _idController,
+                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                         label: Text('Id'), border: OutlineInputBorder()),
                     validator: (value) {
@@ -133,7 +134,7 @@ class _NewInventoryScreenState extends State<NewInventoryScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       final newReq = Inventory(
-                          id: _idController.text,
+                          id: int.parse(_idController.text),
                           uid: '',
                           date: DateTime.now(),
                           productName: _nameOfProductController.text,

@@ -49,6 +49,7 @@ void showAlertDialog(BuildContext context, VoidCallback navigatorFun) async {
   AlertDialog alert = AlertDialog(
     title: Text("AlertDialog"),
     content: TextField(
+      keyboardType: TextInputType.number,
       decoration: const InputDecoration(label: Text('PIN')),
       controller: pinController,
     ),

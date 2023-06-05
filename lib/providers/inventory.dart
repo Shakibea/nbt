@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Inventory with ChangeNotifier {
-  final String id;
+  final int id;
   String? uid;
   final String productName;
   final String initStock;
@@ -11,15 +11,16 @@ class Inventory with ChangeNotifier {
   String? beingUsed;
   String? newStock;
 
-  Inventory(
-      {required this.id,
-      this.uid = '',
-      required this.productName,
-      required this.initStock,
-      required this.date,
-      required this.remarks,
-      this.beingUsed = '',
-      this.newStock = ''});
+  Inventory({
+    required this.id,
+    this.uid = '',
+    required this.productName,
+    required this.initStock,
+    required this.date,
+    required this.remarks,
+    this.beingUsed = '',
+    this.newStock = '',
+  });
 
   Map<String, dynamic> toJson() => {
         'id': id,

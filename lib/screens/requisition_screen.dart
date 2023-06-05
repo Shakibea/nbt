@@ -36,7 +36,7 @@ class RequisitionScreen extends StatelessWidget {
         title: const Text('Requisition'),
         backgroundColor: const Color(0xff662D91),
       ),
-      drawer: const AppDrawer(),
+      // drawer: const AppDrawer(),
       body: Column(
         children: [
           Container(

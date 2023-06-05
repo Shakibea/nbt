@@ -45,7 +45,7 @@ class InventoryListItem extends StatelessWidget {
                   padding: const EdgeInsets.all(5),
                   child: FittedBox(
                     child: Text(
-                      inventory.id,
+                      inventory.id.toString(),
                       style: GoogleFonts.openSans(
                         textStyle: const TextStyle(
                           fontSize: 18,

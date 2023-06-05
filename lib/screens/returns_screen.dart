@@ -42,7 +42,7 @@ class ReturnsScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: const AppDrawer(),
+      // drawer: const AppDrawer(),
       body: SizedBox(
         width: double.infinity,
         // height: (MediaQuery.of(context).size.height -

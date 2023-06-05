@@ -71,7 +71,7 @@ class POListScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: appBarForNewOrder('PO LIST'),
-      drawer: const AppDrawer(),
+      // drawer: const AppDrawer(),
       body: Column(
         children: [
           Container(

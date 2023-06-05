@@ -25,7 +25,7 @@ class InventoryScreen extends StatelessWidget {
 
     final Query inventories = FirebaseFirestore.instance
         .collection('inventories')
-        .orderBy('date', descending: true);
+        .orderBy('id', descending: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,14 +45,14 @@ class InventoryScreen extends StatelessWidget {
           )
         ],
       ),
-      drawer: const AppDrawer(),
+      // drawer: const AppDrawer(),
       body: StreamBuilder(
         stream: inventories.snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.hasData) {
             final snapShot = streamSnapshot.data!.docs;
             return ListView.builder(
-                itemCount: snapShot.length,
+                itemCount: snapShot.length ?? 0,
                 itemBuilder: (context, index) {
                   final documentSnapshotToList = snapShot
                       .map((e) =>

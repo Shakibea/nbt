@@ -89,7 +89,10 @@ class MainDashboardScreen extends StatelessWidget {
                             snapshot.hasData
                                 ? IconButton(
                                     alignment: Alignment.topCenter,
-                                    icon: const Icon(Icons.logout),
+                                    icon: const Icon(
+                                      Icons.logout,
+                                      color: Colors.white,
+                                    ),
                                     onPressed: () async {
                                       final pref =
                                           await SharedPreferences.getInstance();
