@@ -182,12 +182,12 @@ class _NewRequisitionScreenState extends State<EditRequisitionScreen> {
                     ModalRoute.withName(RequisitionScreen.routeName),
                   );
                 },
-                child: const Text(
-                  'Request Sent',
-                ),
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(const Color(0xffF77E0B)),
+                ),
+                child: const Text(
+                  'Request Sent',
                 ),
               ),
             ],

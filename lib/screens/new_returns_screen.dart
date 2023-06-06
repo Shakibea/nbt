@@ -161,7 +161,7 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                     FirebaseFirestore.instance.collection('orders').snapshots(),
                 builder: (context, snapshots) {
                   if (snapshots.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -254,20 +254,22 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                                   onSelected(opt);
                                                 },
                                                 child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        right: 60),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 60),
                                                     child: Card(
                                                         child: Container(
                                                       width: double.infinity,
                                                       padding:
-                                                          EdgeInsets.all(10),
+                                                          const EdgeInsets.all(
+                                                              10),
                                                       child: Text(opt),
                                                     ))));
                                           }).toList(),
                                         ))));
                               },
                             ),
-                            SizedBox(height: 15),
+                            const SizedBox(height: 15),
                             RawAutocomplete(
                               optionsBuilder:
                                   (TextEditingValue textEditingValue) {
@@ -343,13 +345,15 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                                   onSelected(opt);
                                                 },
                                                 child: Container(
-                                                    padding: EdgeInsets.only(
-                                                        right: 60),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 60),
                                                     child: Card(
                                                         child: Container(
                                                       width: double.infinity,
                                                       padding:
-                                                          EdgeInsets.all(10),
+                                                          const EdgeInsets.all(
+                                                              10),
                                                       child: Text(opt),
                                                     ))));
                                           }).toList(),
@@ -443,19 +447,20 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                               onSelected(opt);
                                             },
                                             child: Container(
-                                                padding:
-                                                    EdgeInsets.only(right: 60),
+                                                padding: const EdgeInsets.only(
+                                                    right: 60),
                                                 child: Card(
                                                     child: Container(
                                                   width: double.infinity,
-                                                  padding: EdgeInsets.all(10),
+                                                  padding:
+                                                      const EdgeInsets.all(10),
                                                   child: Text(opt),
                                                 ))));
                                       }).toList(),
                                     ))));
                           },
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         RawAutocomplete(
                           optionsBuilder: (TextEditingValue textEditingValue) {
                             if (textEditingValue.text == '') {
@@ -530,12 +535,13 @@ class _NewReturnsScreenState extends State<NewReturnsScreen> {
                                               onSelected(opt);
                                             },
                                             child: Container(
-                                                padding:
-                                                    EdgeInsets.only(right: 60),
+                                                padding: const EdgeInsets.only(
+                                                    right: 60),
                                                 child: Card(
                                                     child: Container(
                                                   width: double.infinity,
-                                                  padding: EdgeInsets.all(10),
+                                                  padding:
+                                                      const EdgeInsets.all(10),
                                                   child: Text(opt),
                                                 ))));
                                       }).toList(),
