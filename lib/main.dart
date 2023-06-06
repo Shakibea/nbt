@@ -10,6 +10,7 @@ import 'package:nbt/providers/products.dart';
 import 'package:nbt/screens/change_pin_screen.dart';
 import 'package:nbt/screens/edit_order_screen.dart';
 import 'package:nbt/screens/edit_requisition_screen.dart';
+import 'package:nbt/screens/edit_returns_screen.dart';
 import 'package:nbt/screens/login_screen.dart';
 import 'package:nbt/screens/new_order_page.dart';
 import 'package:nbt/screens/o_order_list_item_screen.dart';
@@ -38,6 +39,7 @@ import './screens/po_list_screen.dart';
 import './screens/new_orders_screen.dart';
 import './screens/main_dashboard_screen.dart';
 import './screens/old_orders_screen.dart';
+import './screens/returns_details_screen.dart';
 import 'dynamic form/DynamicProductForm.dart';
 
 Future main() async {
@@ -119,6 +121,8 @@ class MyApp extends StatelessWidget {
           RequisitionDetailsScreen.routeName: (_) => RequisitionDetailsScreen(),
           OrderDetailsScreen.routeName: (_) => OrderDetailsScreen(),
           ReturnsScreen.routeName: (_) => ReturnsScreen(),
+          ReturnsDetailsScreen.routeName: (_) => ReturnsDetailsScreen(),
+          EditReturnsScreen.routeName: (context) => EditReturnsScreen(),
           NewReturnsScreen.routeName: (_) => NewReturnsScreen(),
           OOrderScreen.routeName: (_) => OOrderScreen(),
           PartyDetailsScreen.routeName: (_) => PartyDetailsScreen(),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Return with ChangeNotifier {
   final String id;
-  String uid;
+  String? uid;
   final String productName;
   final String partyName;
   final String factoryName;
@@ -11,15 +11,16 @@ class Return with ChangeNotifier {
   final String remarks;
   final String quantity;
 
-  Return(
-      {required this.id,
-      this.uid = '',
-      required this.productName,
-      required this.partyName,
-      required this.factoryName,
-      required this.date,
-      required this.remarks,
-      required this.quantity});
+  Return({
+    required this.id,
+    this.uid,
+    required this.productName,
+    required this.partyName,
+    required this.factoryName,
+    required this.date,
+    required this.remarks,
+    required this.quantity,
+  });
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -40,5 +41,6 @@ class Return with ChangeNotifier {
         remarks: json['remarks'],
         quantity: json['quantity'],
         date: (json['date'] as Timestamp).toDate(),
+        uid: json['uid'],
       );
 }

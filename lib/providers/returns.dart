@@ -56,10 +56,20 @@ class Returns with ChangeNotifier {
     await docReturn.set(json);
   }
 
-  Future deleteRequisition(String id) async {
+  Future<Return?> readSingleReturn(String id) async {
+    final docOrder = FirebaseFirestore.instance.collection('returns').doc(id);
+    final snapShot = await docOrder.get();
+
+    if (snapShot.exists) {
+      return Return.fromJson(snapShot.data()!);
+    }
+    return null;
+  }
+
+  Future deleteRequisition(String uid) async {
     FirebaseFirestore.instance
         .collection('returns')
-        .where('id', isEqualTo: id)
+        .where('uid', isEqualTo: uid)
         .get()
         .then((snapshot) async {
       for (DocumentSnapshot ds in snapshot.docs) {
@@ -68,6 +78,27 @@ class Returns with ChangeNotifier {
       }
     });
   }
-//FIRESTORE END
 
+  Future<void> updateReturns(Return returns, String uid) async {
+    final docOrder = FirebaseFirestore.instance.collection('returns').doc(uid);
+    final updateReturn = Return(
+      id: returns.id,
+      uid: docOrder.id,
+      productName: returns.productName,
+      partyName: returns.partyName,
+      factoryName: returns.factoryName,
+      quantity: returns.quantity,
+      date: returns.date,
+      remarks: returns.remarks,
+    );
+
+    final json = updateReturn.toJson();
+    await docOrder.update(json);
+
+    notifyListeners();
+
+    // await docOrder.update(updateOrder as Map<String, dynamic>);
+  }
+
+//FIRESTORE END
 }

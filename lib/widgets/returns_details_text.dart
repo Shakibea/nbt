@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../utils/colors.dart';
 
-class OrderDetailsTitle extends StatelessWidget {
+class ReturnDetailsTitle extends StatelessWidget {
   final String title;
 
-  OrderDetailsTitle(this.title);
+  ReturnDetailsTitle(this.title);
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +13,11 @@ class OrderDetailsTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Color(0xff662D91),
-            // color: colors['returns'],
+            // color: Color(0xff662D91),
+            color: Color(0xff279758).withOpacity(0.85),
           ),
         ),
       ],
