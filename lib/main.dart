@@ -15,6 +15,8 @@ import 'package:nbt/screens/login_screen.dart';
 import 'package:nbt/screens/new_order_page.dart';
 import 'package:nbt/screens/o_order_list_item_screen.dart';
 import 'package:nbt/suggestion_page.dart';
+import 'package:nbt/utils/utils.dart';
+import 'package:nbt/widgets/snackbar_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:nbt/providers/inventories.dart';
@@ -45,6 +47,7 @@ import 'dynamic form/DynamicProductForm.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   // if (kIsWeb) {
   //   await Firebase.initializeApp(
   //     options: FirebaseOptions(

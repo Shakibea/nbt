@@ -25,8 +25,6 @@ class MainDashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final fireAuth = FirebaseAuth.instance;
 
-    final user = '';
-
     // void nagivatePage(Widget route) {
     //   Navigator.pushReplacementNamed(
     //       context, MaterialPageRoute(builder: (context) => route));
