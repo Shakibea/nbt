@@ -398,8 +398,8 @@ class _EditReturnsScreenState extends State<EditReturnsScreen> {
                     ),
                   ),
                 ),
-                maxLines: 3,
-                keyboardType: TextInputType.multiline,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
                 // focusNode: _descriptionFocusNode,
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -427,6 +427,7 @@ class _EditReturnsScreenState extends State<EditReturnsScreen> {
               SizedBox(height: space),
               TextFormField(
                 cursorColor: textFieldColor,
+                maxLines: 3,
                 decoration: InputDecoration(
                   label: const Text('Remarks'),
                   labelStyle: TextStyle(
@@ -443,7 +444,7 @@ class _EditReturnsScreenState extends State<EditReturnsScreen> {
                     ),
                   ),
                 ),
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus();
                 },
